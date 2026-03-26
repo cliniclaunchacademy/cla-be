@@ -1,0 +1,31 @@
+Folder structure
+
+make sure routes are defined under routes Folder
+    index.ts
+    auth.routes.ts
+    xyz.routes.ts
+
+controllers
+    auth.controller.ts
+    courses.controller.ts
+
+models
+    user.schema.ts
+    courses.schema.ts
+
+validators
+    user.validator.ts
+
+utils
+
+
+make sure code is modular and clean 
+
+in each controller function
+    - try catch block is necessary
+    - a sendResponse function is used to return responses like 200, 500, 400, 404, 403 etc
+    - this send resonse functino should log the response that its sending and then send the response
+    - each req.body if there is body data should be validated using joi
+    - Joi schema is defined under validators
+    - large processing is done in modular functions in utils folder and not in place
+
