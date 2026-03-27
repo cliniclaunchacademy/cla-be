@@ -1,9 +1,10 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { ExpressRequest } from '../../types/types';
 import { RecordingCategory } from '../../models/recording_category.schema';
 import { Recording } from '../../models/recording.schema';
 import { sendResponse } from '../../utils/sendResponse';
 
-export const getRecordingCategories = async (_req: Request, res: Response): Promise<void> => {
+export const getRecordingCategories = async (_req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const categories = await RecordingCategory.find({ status: 'published' }).sort({ order: 1 });
 
@@ -21,7 +22,7 @@ export const getRecordingCategories = async (_req: Request, res: Response): Prom
   }
 };
 
-export const getRecordingsByCategory = async (req: Request, res: Response): Promise<void> => {
+export const getRecordingsByCategory = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { categoryId } = req.params;
     const { search, from, to } = req.query;

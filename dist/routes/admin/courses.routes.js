@@ -1,0 +1,25 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const auth_middleware_1 = require("../../middleware/auth.middleware");
+const roles_1 = require("../../constants/roles");
+const courses_controller_1 = require("../../controllers/admin/courses.controller");
+const upload_1 = require("../../utils/upload");
+const router = (0, express_1.Router)();
+router.get('/', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.getCourses);
+router.post('/', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.createCourse);
+router.patch('/reorder', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.reorderCourses);
+router.get('/:courseId/editor', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.getCourseEditor);
+router.post('/:courseId/thumbnail', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), upload_1.imageUpload.single('thumbnail'), courses_controller_1.uploadCourseThumbnail);
+router.put('/:courseId', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.updateCourse);
+router.delete('/:courseId', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.deleteCourse);
+router.post('/:courseId/modules', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.createModule);
+router.patch('/:courseId/modules/reorder', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.reorderModules);
+router.put('/:courseId/modules/:moduleId', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.updateModule);
+router.delete('/:courseId/modules/:moduleId', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.deleteModule);
+router.post('/:courseId/modules/:moduleId/lessons', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.createLesson);
+router.patch('/:courseId/modules/:moduleId/lessons/reorder', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.reorderLessons);
+router.put('/:courseId/modules/:moduleId/lessons/:lessonId', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.updateLesson);
+router.delete('/:courseId/modules/:moduleId/lessons/:lessonId', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.deleteLesson);
+exports.default = router;
+//# sourceMappingURL=courses.routes.js.map

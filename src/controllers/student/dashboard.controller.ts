@@ -1,4 +1,5 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { ExpressRequest } from '../../types/types';
 import mongoose from 'mongoose';
 import { Course } from '../../models/course.schema';
 import { Lesson } from '../../models/lesson.schema';
@@ -8,7 +9,7 @@ import { Banner } from '../../models/banner.schema';
 import { AdminSettings } from '../../models/admin_settings.schema';
 import { sendResponse } from '../../utils/sendResponse';
 
-export const getDashboardStats = async (req: Request, res: Response): Promise<void> => {
+export const getDashboardStats = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const userId = new mongoose.Types.ObjectId(req.user!._id);
 
@@ -51,7 +52,7 @@ export const getDashboardStats = async (req: Request, res: Response): Promise<vo
   }
 };
 
-export const getContinueLearning = async (req: Request, res: Response): Promise<void> => {
+export const getContinueLearning = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const userId = new mongoose.Types.ObjectId(req.user!._id);
 
@@ -82,7 +83,7 @@ export const getContinueLearning = async (req: Request, res: Response): Promise<
   }
 };
 
-export const getDashboardBanners = async (_req: Request, res: Response): Promise<void> => {
+export const getDashboardBanners = async (_req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const banners = await Banner.find({ status: 'active' }).sort({ order: 1 });
     sendResponse(res, 200, { banners });
@@ -92,7 +93,7 @@ export const getDashboardBanners = async (_req: Request, res: Response): Promise
   }
 };
 
-export const getCommunityBanner = async (_req: Request, res: Response): Promise<void> => {
+export const getCommunityBanner = async (_req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const settings = await AdminSettings.findOne().lean();
     sendResponse(res, 200, { discordInviteUrl: settings?.discordInviteUrl || null });
@@ -102,7 +103,7 @@ export const getCommunityBanner = async (_req: Request, res: Response): Promise<
   }
 };
 
-export const getRecentActivity = async (req: Request, res: Response): Promise<void> => {
+export const getRecentActivity = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const userId = new mongoose.Types.ObjectId(req.user!._id);
 

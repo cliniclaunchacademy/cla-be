@@ -1,0 +1,26 @@
+import Joi from 'joi';
+export declare const createUserSchema: Joi.ObjectSchema<any>;
+export declare const editUserSchema: Joi.ObjectSchema<any>;
+export declare const createCourseSchema: Joi.ObjectSchema<any>;
+export declare const updateCourseSchema: Joi.ObjectSchema<any>;
+export declare const reorderSchema: Joi.ObjectSchema<any>;
+export declare const createModuleSchema: Joi.ObjectSchema<any>;
+export declare const updateModuleSchema: Joi.ObjectSchema<any>;
+export declare const createLessonSchema: Joi.ObjectSchema<any>;
+export declare const updateLessonSchema: Joi.ObjectSchema<any>;
+export declare const addResourceSchema: Joi.ObjectSchema<any>;
+export declare const updateResourceSchema: Joi.ObjectSchema<any>;
+export declare const createInstructorSchema: Joi.ObjectSchema<any>;
+export declare const updateInstructorSchema: Joi.ObjectSchema<any>;
+export declare const createRecordingCategorySchema: Joi.ObjectSchema<any>;
+export declare const updateRecordingCategorySchema: Joi.ObjectSchema<any>;
+export declare const createRecordingSchema: Joi.ObjectSchema<any>;
+export declare const updateRecordingSchema: Joi.ObjectSchema<any>;
+export declare const createLabSchema: Joi.ObjectSchema<any>;
+export declare const updateLabSchema: Joi.ObjectSchema<any>;
+export declare const updateApplicationStatusSchema: Joi.ObjectSchema<any>;
+export declare const uploadBannerSchema: Joi.ObjectSchema<any>;
+export declare const updateBannerSchema: Joi.ObjectSchema<any>;
+export declare const sendNotificationSchema: Joi.ObjectSchema<any>;
+export declare const saveSettingsSchema: Joi.ObjectSchema<any>;
+//# sourceMappingURL=admin.validator.d.ts.map

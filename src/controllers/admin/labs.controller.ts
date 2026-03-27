@@ -1,4 +1,5 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { ExpressRequest } from '../../types/types';
 import { LabPartner } from '../../models/lab_partner.schema';
 import { LabApplication } from '../../models/lab_application.schema';
 import { sendResponse } from '../../utils/sendResponse';
@@ -10,7 +11,7 @@ import {
   updateApplicationStatusSchema,
 } from '../../validators/admin.validator';
 
-export const getLabs = async (_req: Request, res: Response): Promise<void> => {
+export const getLabs = async (_req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const labs = await LabPartner.find().sort({ order: 1 });
 
@@ -28,7 +29,7 @@ export const getLabs = async (_req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const createLab = async (req: Request, res: Response): Promise<void> => {
+export const createLab = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = createLabSchema.validate(req.body);
     if (error) {
@@ -46,7 +47,7 @@ export const createLab = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const uploadLabLogo = async (req: Request, res: Response): Promise<void> => {
+export const uploadLabLogo = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { labId } = req.params;
 
@@ -70,7 +71,7 @@ export const uploadLabLogo = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-export const updateLab = async (req: Request, res: Response): Promise<void> => {
+export const updateLab = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = updateLabSchema.validate(req.body);
     if (error) {
@@ -93,7 +94,7 @@ export const updateLab = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const deleteLab = async (req: Request, res: Response): Promise<void> => {
+export const deleteLab = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { labId } = req.params;
 
@@ -115,7 +116,7 @@ export const deleteLab = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const reorderLabs = async (req: Request, res: Response): Promise<void> => {
+export const reorderLabs = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = reorderSchema.validate(req.body);
     if (error) {
@@ -135,7 +136,7 @@ export const reorderLabs = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-export const getLabApplications = async (req: Request, res: Response): Promise<void> => {
+export const getLabApplications = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 20;
@@ -202,7 +203,7 @@ export const getLabApplications = async (req: Request, res: Response): Promise<v
   }
 };
 
-export const getLabApplicationDetail = async (req: Request, res: Response): Promise<void> => {
+export const getLabApplicationDetail = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { applicationId } = req.params;
 
@@ -223,7 +224,7 @@ export const getLabApplicationDetail = async (req: Request, res: Response): Prom
   }
 };
 
-export const updateApplicationStatus = async (req: Request, res: Response): Promise<void> => {
+export const updateApplicationStatus = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = updateApplicationStatusSchema.validate(req.body);
     if (error) {

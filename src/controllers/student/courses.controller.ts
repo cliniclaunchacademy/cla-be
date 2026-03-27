@@ -1,4 +1,5 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { ExpressRequest } from '../../types/types';
 import mongoose from 'mongoose';
 import { Course } from '../../models/course.schema';
 import { Module } from '../../models/module.schema';
@@ -8,7 +9,7 @@ import { Progress } from '../../models/progress.schema';
 import { ActivityLog } from '../../models/activity_log.schema';
 import { sendResponse } from '../../utils/sendResponse';
 
-export const getCourses = async (req: Request, res: Response): Promise<void> => {
+export const getCourses = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const userId = new mongoose.Types.ObjectId(req.user!._id);
 
@@ -46,7 +47,7 @@ export const getCourses = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-export const getCourseDetail = async (req: Request, res: Response): Promise<void> => {
+export const getCourseDetail = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { courseId } = req.params;
     const userId = new mongoose.Types.ObjectId(req.user!._id);
@@ -98,7 +99,7 @@ export const getCourseDetail = async (req: Request, res: Response): Promise<void
   }
 };
 
-export const getLessonDetail = async (req: Request, res: Response): Promise<void> => {
+export const getLessonDetail = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { courseId, lessonId } = req.params;
     const userId = new mongoose.Types.ObjectId(req.user!._id);
@@ -171,7 +172,7 @@ export const getLessonDetail = async (req: Request, res: Response): Promise<void
   }
 };
 
-export const completeLesson = async (req: Request, res: Response): Promise<void> => {
+export const completeLesson = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { courseId, lessonId } = req.params;
     const userId = new mongoose.Types.ObjectId(req.user!._id);
@@ -215,7 +216,7 @@ export const completeLesson = async (req: Request, res: Response): Promise<void>
   }
 };
 
-export const flagVideo = async (req: Request, res: Response): Promise<void> => {
+export const flagVideo = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { courseId, lessonId } = req.params;
     const userId = new mongoose.Types.ObjectId(req.user!._id);
@@ -233,7 +234,7 @@ export const flagVideo = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const getStudentResources = async (req: Request, res: Response): Promise<void> => {
+export const getStudentResources = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     // Find all published resources grouped by course
     const resources = await LessonResource.find({ status: 'published' })

@@ -1,10 +1,11 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { ExpressRequest } from '../../types/types';
 import { User } from '../../models/user.schema';
 import { sendResponse } from '../../utils/sendResponse';
 import { updateProfileSchema } from '../../validators/student.validator';
 import { getFileUrl } from '../../utils/upload';
 
-export const getMe = async (req: Request, res: Response): Promise<void> => {
+export const getMe = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const user = await User.findById(req.user!._id).select('-password -resetToken -resetTokenExpiry');
     if (!user) {
@@ -18,7 +19,7 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const updateProfile = async (req: Request, res: Response): Promise<void> => {
+export const updateProfile = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = updateProfileSchema.validate(req.body);
     if (error) {
@@ -54,7 +55,7 @@ export const updateProfile = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-export const uploadProfilePhoto = async (req: Request, res: Response): Promise<void> => {
+export const uploadProfilePhoto = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     if (!req.file) {
       sendResponse(res, 400, { error: 'No image file provided.' });

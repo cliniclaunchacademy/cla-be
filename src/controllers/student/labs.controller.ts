@@ -1,10 +1,11 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { ExpressRequest } from '../../types/types';
 import mongoose from 'mongoose';
 import { LabPartner } from '../../models/lab_partner.schema';
 import { LabApplication } from '../../models/lab_application.schema';
 import { sendResponse } from '../../utils/sendResponse';
 
-export const getLabs = async (req: Request, res: Response): Promise<void> => {
+export const getLabs = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const userId = new mongoose.Types.ObjectId(req.user!._id);
 
@@ -29,7 +30,7 @@ export const getLabs = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const applyToLab = async (req: Request, res: Response): Promise<void> => {
+export const applyToLab = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { labId } = req.params;
     const userId = new mongoose.Types.ObjectId(req.user!._id);

@@ -1,9 +1,10 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { ExpressRequest } from '../../types/types';
 import mongoose from 'mongoose';
 import { NotificationRead } from '../../models/notification_read.schema';
 import { sendResponse } from '../../utils/sendResponse';
 
-export const getNotifications = async (req: Request, res: Response): Promise<void> => {
+export const getNotifications = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const userId = new mongoose.Types.ObjectId(req.user!._id);
 
@@ -32,7 +33,7 @@ export const getNotifications = async (req: Request, res: Response): Promise<voi
   }
 };
 
-export const markNotificationRead = async (req: Request, res: Response): Promise<void> => {
+export const markNotificationRead = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { notificationId } = req.params;
     const userId = new mongoose.Types.ObjectId(req.user!._id);
@@ -55,7 +56,7 @@ export const markNotificationRead = async (req: Request, res: Response): Promise
   }
 };
 
-export const markAllNotificationsRead = async (req: Request, res: Response): Promise<void> => {
+export const markAllNotificationsRead = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const userId = new mongoose.Types.ObjectId(req.user!._id);
 

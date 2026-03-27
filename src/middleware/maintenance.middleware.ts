@@ -1,9 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
+import { ExpressRequest } from '../types/types';
 import { AdminSettings } from '../models/admin_settings.schema';
 import { sendResponse } from '../utils/sendResponse';
 
 export const maintenanceMiddleware = async (
-  req: Request,
+  req: ExpressRequest,
   res: Response,
   next: NextFunction
 ): Promise<void> => {

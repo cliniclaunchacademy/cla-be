@@ -1,4 +1,5 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { ExpressRequest } from '../../types/types';
 import mongoose from 'mongoose';
 import { User } from '../../models/user.schema';
 import { Notification } from '../../models/notification.schema';
@@ -6,7 +7,7 @@ import { NotificationRead } from '../../models/notification_read.schema';
 import { sendResponse } from '../../utils/sendResponse';
 import { sendNotificationSchema } from '../../validators/admin.validator';
 
-export const sendNotification = async (req: Request, res: Response): Promise<void> => {
+export const sendNotification = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = sendNotificationSchema.validate(req.body);
     if (error) {
@@ -62,7 +63,7 @@ export const sendNotification = async (req: Request, res: Response): Promise<voi
   }
 };
 
-export const deleteNotification = async (req: Request, res: Response): Promise<void> => {
+export const deleteNotification = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { notificationId } = req.params;
 

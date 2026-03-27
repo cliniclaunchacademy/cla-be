@@ -1,10 +1,11 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { ExpressRequest } from '../../types/types';
 import { Banner } from '../../models/banner.schema';
 import { sendResponse } from '../../utils/sendResponse';
 import { getFileUrl } from '../../utils/upload';
 import { uploadBannerSchema, updateBannerSchema, reorderSchema } from '../../validators/admin.validator';
 
-export const getBanners = async (_req: Request, res: Response): Promise<void> => {
+export const getBanners = async (_req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const banners = await Banner.find().sort({ order: 1 });
     sendResponse(res, 200, { banners });
@@ -14,7 +15,7 @@ export const getBanners = async (_req: Request, res: Response): Promise<void> =>
   }
 };
 
-export const createBanner = async (req: Request, res: Response): Promise<void> => {
+export const createBanner = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     if (!req.file) {
       sendResponse(res, 400, { error: 'No image file provided.' });
@@ -44,7 +45,7 @@ export const createBanner = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-export const updateBanner = async (req: Request, res: Response): Promise<void> => {
+export const updateBanner = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = updateBannerSchema.validate(req.body);
     if (error) {
@@ -67,7 +68,7 @@ export const updateBanner = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-export const reorderBanners = async (req: Request, res: Response): Promise<void> => {
+export const reorderBanners = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = reorderSchema.validate(req.body);
     if (error) {
@@ -87,7 +88,7 @@ export const reorderBanners = async (req: Request, res: Response): Promise<void>
   }
 };
 
-export const deleteBanner = async (req: Request, res: Response): Promise<void> => {
+export const deleteBanner = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { bannerId } = req.params;
 

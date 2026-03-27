@@ -1,4 +1,5 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { ExpressRequest } from '../../types/types';
 import { Lesson } from '../../models/lesson.schema';
 import { LessonResource } from '../../models/lesson_resource.schema';
 import { Course } from '../../models/course.schema';
@@ -9,7 +10,7 @@ import {
   reorderSchema,
 } from '../../validators/admin.validator';
 
-export const addResource = async (req: Request, res: Response): Promise<void> => {
+export const addResource = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = addResourceSchema.validate(req.body);
     if (error) {
@@ -45,7 +46,7 @@ export const addResource = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-export const updateResource = async (req: Request, res: Response): Promise<void> => {
+export const updateResource = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = updateResourceSchema.validate(req.body);
     if (error) {
@@ -73,7 +74,7 @@ export const updateResource = async (req: Request, res: Response): Promise<void>
   }
 };
 
-export const deleteResource = async (req: Request, res: Response): Promise<void> => {
+export const deleteResource = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { resourceId } = req.params;
 
@@ -90,7 +91,7 @@ export const deleteResource = async (req: Request, res: Response): Promise<void>
   }
 };
 
-export const reorderResources = async (req: Request, res: Response): Promise<void> => {
+export const reorderResources = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = reorderSchema.validate(req.body);
     if (error) {
@@ -110,7 +111,7 @@ export const reorderResources = async (req: Request, res: Response): Promise<voi
   }
 };
 
-export const getAllResources = async (_req: Request, res: Response): Promise<void> => {
+export const getAllResources = async (_req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const courses = await Course.find().sort({ order: 1 }).select('title thumbnail');
 
@@ -133,7 +134,7 @@ export const getAllResources = async (_req: Request, res: Response): Promise<voi
   }
 };
 
-export const getResourcesByCourse = async (req: Request, res: Response): Promise<void> => {
+export const getResourcesByCourse = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { courseId } = req.params;
 

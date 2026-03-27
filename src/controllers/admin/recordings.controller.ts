@@ -1,4 +1,5 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { ExpressRequest } from '../../types/types';
 import { RecordingCategory } from '../../models/recording_category.schema';
 import { Recording } from '../../models/recording.schema';
 import { sendResponse } from '../../utils/sendResponse';
@@ -10,7 +11,7 @@ import {
   reorderSchema,
 } from '../../validators/admin.validator';
 
-export const getRecordingCategories = async (_req: Request, res: Response): Promise<void> => {
+export const getRecordingCategories = async (_req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const categories = await RecordingCategory.find().sort({ order: 1 });
 
@@ -28,7 +29,7 @@ export const getRecordingCategories = async (_req: Request, res: Response): Prom
   }
 };
 
-export const createRecordingCategory = async (req: Request, res: Response): Promise<void> => {
+export const createRecordingCategory = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = createRecordingCategorySchema.validate(req.body);
     if (error) {
@@ -46,7 +47,7 @@ export const createRecordingCategory = async (req: Request, res: Response): Prom
   }
 };
 
-export const updateRecordingCategory = async (req: Request, res: Response): Promise<void> => {
+export const updateRecordingCategory = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = updateRecordingCategorySchema.validate(req.body);
     if (error) {
@@ -73,7 +74,7 @@ export const updateRecordingCategory = async (req: Request, res: Response): Prom
   }
 };
 
-export const deleteRecordingCategory = async (req: Request, res: Response): Promise<void> => {
+export const deleteRecordingCategory = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { categoryId } = req.params;
 
@@ -95,7 +96,7 @@ export const deleteRecordingCategory = async (req: Request, res: Response): Prom
   }
 };
 
-export const reorderRecordingCategories = async (req: Request, res: Response): Promise<void> => {
+export const reorderRecordingCategories = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = reorderSchema.validate(req.body);
     if (error) {
@@ -115,7 +116,7 @@ export const reorderRecordingCategories = async (req: Request, res: Response): P
   }
 };
 
-export const getRecordings = async (req: Request, res: Response): Promise<void> => {
+export const getRecordings = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { categoryId } = req.params;
 
@@ -133,7 +134,7 @@ export const getRecordings = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-export const createRecording = async (req: Request, res: Response): Promise<void> => {
+export const createRecording = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = createRecordingSchema.validate(req.body);
     if (error) {
@@ -159,7 +160,7 @@ export const createRecording = async (req: Request, res: Response): Promise<void
   }
 };
 
-export const updateRecording = async (req: Request, res: Response): Promise<void> => {
+export const updateRecording = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = updateRecordingSchema.validate(req.body);
     if (error) {
@@ -186,7 +187,7 @@ export const updateRecording = async (req: Request, res: Response): Promise<void
   }
 };
 
-export const deleteRecording = async (req: Request, res: Response): Promise<void> => {
+export const deleteRecording = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { recordingId } = req.params;
 
@@ -203,7 +204,7 @@ export const deleteRecording = async (req: Request, res: Response): Promise<void
   }
 };
 
-export const reorderRecordings = async (req: Request, res: Response): Promise<void> => {
+export const reorderRecordings = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = reorderSchema.validate(req.body);
     if (error) {

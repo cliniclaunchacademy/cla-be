@@ -1,9 +1,10 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { ExpressRequest } from '../../types/types';
 import { AdminSettings } from '../../models/admin_settings.schema';
 import { sendResponse } from '../../utils/sendResponse';
 import { saveSettingsSchema } from '../../validators/admin.validator';
 
-export const getSettings = async (_req: Request, res: Response): Promise<void> => {
+export const getSettings = async (_req: ExpressRequest, res: Response): Promise<void> => {
   try {
     let settings = await AdminSettings.findOne();
 
@@ -20,7 +21,7 @@ export const getSettings = async (_req: Request, res: Response): Promise<void> =
   }
 };
 
-export const saveSettings = async (req: Request, res: Response): Promise<void> => {
+export const saveSettings = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = saveSettingsSchema.validate(req.body);
     if (error) {

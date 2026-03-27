@@ -1,4 +1,5 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { ExpressRequest } from '../../types/types';
 import { Course } from '../../models/course.schema';
 import { Module } from '../../models/module.schema';
 import { Lesson } from '../../models/lesson.schema';
@@ -15,7 +16,7 @@ import {
   updateLessonSchema,
 } from '../../validators/admin.validator';
 
-export const getCourses = async (_req: Request, res: Response): Promise<void> => {
+export const getCourses = async (_req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const courses = await Course.find()
       .sort({ order: 1 })
@@ -36,7 +37,7 @@ export const getCourses = async (_req: Request, res: Response): Promise<void> =>
   }
 };
 
-export const createCourse = async (req: Request, res: Response): Promise<void> => {
+export const createCourse = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = createCourseSchema.validate(req.body);
     if (error) {
@@ -66,7 +67,7 @@ export const createCourse = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-export const uploadCourseThumbnail = async (req: Request, res: Response): Promise<void> => {
+export const uploadCourseThumbnail = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { courseId } = req.params;
 
@@ -94,7 +95,7 @@ export const uploadCourseThumbnail = async (req: Request, res: Response): Promis
   }
 };
 
-export const updateCourse = async (req: Request, res: Response): Promise<void> => {
+export const updateCourse = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = updateCourseSchema.validate(req.body);
     if (error) {
@@ -131,7 +132,7 @@ export const updateCourse = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-export const reorderCourses = async (req: Request, res: Response): Promise<void> => {
+export const reorderCourses = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = reorderSchema.validate(req.body);
     if (error) {
@@ -152,7 +153,7 @@ export const reorderCourses = async (req: Request, res: Response): Promise<void>
   }
 };
 
-export const deleteCourse = async (req: Request, res: Response): Promise<void> => {
+export const deleteCourse = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { courseId } = req.params;
 
@@ -179,7 +180,7 @@ export const deleteCourse = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-export const getCourseEditor = async (req: Request, res: Response): Promise<void> => {
+export const getCourseEditor = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { courseId } = req.params;
 
@@ -210,7 +211,7 @@ export const getCourseEditor = async (req: Request, res: Response): Promise<void
 };
 
 // Module controllers
-export const createModule = async (req: Request, res: Response): Promise<void> => {
+export const createModule = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = createModuleSchema.validate(req.body);
     if (error) {
@@ -234,7 +235,7 @@ export const createModule = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-export const updateModule = async (req: Request, res: Response): Promise<void> => {
+export const updateModule = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = updateModuleSchema.validate(req.body);
     if (error) {
@@ -261,7 +262,7 @@ export const updateModule = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-export const reorderModules = async (req: Request, res: Response): Promise<void> => {
+export const reorderModules = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = reorderSchema.validate(req.body);
     if (error) {
@@ -281,7 +282,7 @@ export const reorderModules = async (req: Request, res: Response): Promise<void>
   }
 };
 
-export const deleteModule = async (req: Request, res: Response): Promise<void> => {
+export const deleteModule = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { moduleId } = req.params;
 
@@ -308,7 +309,7 @@ export const deleteModule = async (req: Request, res: Response): Promise<void> =
 };
 
 // Lesson controllers
-export const createLesson = async (req: Request, res: Response): Promise<void> => {
+export const createLesson = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = createLessonSchema.validate(req.body);
     if (error) {
@@ -345,7 +346,7 @@ export const createLesson = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-export const updateLesson = async (req: Request, res: Response): Promise<void> => {
+export const updateLesson = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = updateLessonSchema.validate(req.body);
     if (error) {
@@ -381,7 +382,7 @@ export const updateLesson = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-export const reorderLessons = async (req: Request, res: Response): Promise<void> => {
+export const reorderLessons = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = reorderSchema.validate(req.body);
     if (error) {
@@ -401,7 +402,7 @@ export const reorderLessons = async (req: Request, res: Response): Promise<void>
   }
 };
 
-export const deleteLesson = async (req: Request, res: Response): Promise<void> => {
+export const deleteLesson = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { lessonId } = req.params;
 

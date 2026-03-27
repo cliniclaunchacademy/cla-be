@@ -1,4 +1,5 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { ExpressRequest } from '../../types/types';
 import bcrypt from 'bcryptjs';
 import { User } from '../../models/user.schema';
 import { Progress } from '../../models/progress.schema';
@@ -7,7 +8,7 @@ import { sendResponse } from '../../utils/sendResponse';
 import { sendWelcomeEmail } from '../../utils/email';
 import { createUserSchema, editUserSchema } from '../../validators/admin.validator';
 
-export const getUsers = async (req: Request, res: Response): Promise<void> => {
+export const getUsers = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 20;
@@ -45,7 +46,7 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const createUser = async (req: Request, res: Response): Promise<void> => {
+export const createUser = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = createUserSchema.validate(req.body);
     if (error) {
@@ -102,7 +103,7 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-export const updateUser = async (req: Request, res: Response): Promise<void> => {
+export const updateUser = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = editUserSchema.validate(req.body);
     if (error) {
@@ -161,7 +162,7 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-export const banUser = async (req: Request, res: Response): Promise<void> => {
+export const banUser = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { userId } = req.params;
 
@@ -183,7 +184,7 @@ export const banUser = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const unbanUser = async (req: Request, res: Response): Promise<void> => {
+export const unbanUser = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { userId } = req.params;
 
@@ -205,7 +206,7 @@ export const unbanUser = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const resendWelcomeEmail = async (req: Request, res: Response): Promise<void> => {
+export const resendWelcomeEmail = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { userId } = req.params;
 
@@ -226,7 +227,7 @@ export const resendWelcomeEmail = async (req: Request, res: Response): Promise<v
   }
 };
 
-export const deleteUser = async (req: Request, res: Response): Promise<void> => {
+export const deleteUser = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { userId } = req.params;
 

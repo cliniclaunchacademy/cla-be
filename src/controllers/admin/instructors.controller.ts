@@ -1,4 +1,5 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { ExpressRequest } from '../../types/types';
 import { Instructor } from '../../models/instructor.schema';
 import { Course } from '../../models/course.schema';
 import { sendResponse } from '../../utils/sendResponse';
@@ -8,7 +9,7 @@ import {
   updateInstructorSchema,
 } from '../../validators/admin.validator';
 
-export const getInstructors = async (_req: Request, res: Response): Promise<void> => {
+export const getInstructors = async (_req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const instructors = await Instructor.find().sort({ createdAt: -1 });
 
@@ -26,7 +27,7 @@ export const getInstructors = async (_req: Request, res: Response): Promise<void
   }
 };
 
-export const createInstructor = async (req: Request, res: Response): Promise<void> => {
+export const createInstructor = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = createInstructorSchema.validate(req.body);
     if (error) {
@@ -42,7 +43,7 @@ export const createInstructor = async (req: Request, res: Response): Promise<voi
   }
 };
 
-export const uploadInstructorPhoto = async (req: Request, res: Response): Promise<void> => {
+export const uploadInstructorPhoto = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { instructorId } = req.params;
 
@@ -70,7 +71,7 @@ export const uploadInstructorPhoto = async (req: Request, res: Response): Promis
   }
 };
 
-export const updateInstructor = async (req: Request, res: Response): Promise<void> => {
+export const updateInstructor = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = updateInstructorSchema.validate(req.body);
     if (error) {
@@ -98,7 +99,7 @@ export const updateInstructor = async (req: Request, res: Response): Promise<voi
   }
 };
 
-export const deleteInstructor = async (req: Request, res: Response): Promise<void> => {
+export const deleteInstructor = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { instructorId } = req.params;
 

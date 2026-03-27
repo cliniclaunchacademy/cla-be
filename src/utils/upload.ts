@@ -1,7 +1,7 @@
 import multer, { StorageEngine, FileFilterCallback } from 'multer';
 import path from 'path';
 import fs from 'fs';
-import { Request } from 'express';
+import { ExpressRequest } from '../types/types';
 
 const ensureUploadDir = (): string => {
   const uploadDir = process.env.UPLOAD_DIR || 'uploads';
@@ -12,11 +12,11 @@ const ensureUploadDir = (): string => {
 };
 
 const imageStorage: StorageEngine = multer.diskStorage({
-  destination: (_req: Request, _file: Express.Multer.File, cb: (error: Error | null, destination: string) => void) => {
+  destination: (_req: ExpressRequest, _file: Express.Multer.File, cb: (error: Error | null, destination: string) => void) => {
     const uploadDir = ensureUploadDir();
     cb(null, uploadDir);
   },
-  filename: (_req: Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
+  filename: (_req: ExpressRequest, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
     const ext = path.extname(file.originalname).toLowerCase();
     cb(null, `${uniqueSuffix}${ext}`);
@@ -24,7 +24,7 @@ const imageStorage: StorageEngine = multer.diskStorage({
 });
 
 const imageFileFilter = (
-  _req: Request,
+  _req: ExpressRequest,
   file: Express.Multer.File,
   cb: FileFilterCallback
 ): void => {

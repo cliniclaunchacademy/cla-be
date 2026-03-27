@@ -1,4 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
+import { ExpressRequest } from '../types/types';
 import jwt from 'jsonwebtoken';
 import { sendResponse } from '../utils/sendResponse';
 import { Role } from '../constants/roles';
@@ -21,7 +22,7 @@ interface JwtPayload {
  * router.use(authenticate())              // token required, any role accepted
  */
 export const authenticate = (role?: Role) => {
-  return (req: Request, res: Response, next: NextFunction): void => {
+  return (req: ExpressRequest, res: Response, next: NextFunction): void => {
     try {
       const authHeader = req.headers.authorization;
 

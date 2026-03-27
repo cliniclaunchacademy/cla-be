@@ -1,4 +1,5 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { ExpressRequest } from '../types/types';
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -12,7 +13,7 @@ import {
   resetPasswordSchema,
 } from '../validators/auth.validator';
 
-export const login = async (req: Request, res: Response): Promise<void> => {
+export const login = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = loginSchema.validate(req.body);
     if (error) {
@@ -81,7 +82,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const forgotPassword = async (req: Request, res: Response): Promise<void> => {
+export const forgotPassword = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = forgotPasswordSchema.validate(req.body);
     if (error) {
@@ -117,7 +118,7 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
   }
 };
 
-export const resetPassword = async (req: Request, res: Response): Promise<void> => {
+export const resetPassword = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = resetPasswordSchema.validate(req.body);
     if (error) {

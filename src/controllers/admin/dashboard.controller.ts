@@ -1,11 +1,12 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { ExpressRequest } from '../../types/types';
 import { User } from '../../models/user.schema';
 import { Progress } from '../../models/progress.schema';
 import { ActivityLog } from '../../models/activity_log.schema';
 import { Notification } from '../../models/notification.schema';
 import { sendResponse } from '../../utils/sendResponse';
 
-export const getDashboardStats = async (_req: Request, res: Response): Promise<void> => {
+export const getDashboardStats = async (_req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
@@ -37,7 +38,7 @@ export const getDashboardStats = async (_req: Request, res: Response): Promise<v
   }
 };
 
-export const getRecentlyJoined = async (_req: Request, res: Response): Promise<void> => {
+export const getRecentlyJoined = async (_req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const users = await User.find({ role: 'student' })
       .sort({ createdAt: -1 })
@@ -51,7 +52,7 @@ export const getRecentlyJoined = async (_req: Request, res: Response): Promise<v
   }
 };
 
-export const getNotificationHistory = async (req: Request, res: Response): Promise<void> => {
+export const getNotificationHistory = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 20;
