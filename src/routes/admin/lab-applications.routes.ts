@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import { authenticate } from '../../middleware/auth.middleware';
+import { ROLES } from '../../constants/roles';
 import {
   getLabApplications,
   getLabApplicationDetail,
@@ -7,8 +9,8 @@ import {
 
 const router = Router();
 
-router.get('/', getLabApplications);
-router.get('/:applicationId', getLabApplicationDetail);
-router.patch('/:applicationId/status', updateApplicationStatus);
+router.get('/', authenticate(ROLES.ADMIN), getLabApplications);
+router.get('/:applicationId', authenticate(ROLES.ADMIN), getLabApplicationDetail);
+router.patch('/:applicationId/status', authenticate(ROLES.ADMIN), updateApplicationStatus);
 
 export default router;

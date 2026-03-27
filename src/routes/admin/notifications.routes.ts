@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import { authenticate } from '../../middleware/auth.middleware';
+import { ROLES } from '../../constants/roles';
 import {
   sendNotification,
   deleteNotification,
@@ -6,7 +8,7 @@ import {
 
 const router = Router();
 
-router.post('/', sendNotification);
-router.delete('/:notificationId', deleteNotification);
+router.post('/', authenticate(ROLES.ADMIN), sendNotification);
+router.delete('/:notificationId', authenticate(ROLES.ADMIN), deleteNotification);
 
 export default router;

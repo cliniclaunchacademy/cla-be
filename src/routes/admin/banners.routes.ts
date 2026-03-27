@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import { authenticate } from '../../middleware/auth.middleware';
+import { ROLES } from '../../constants/roles';
 import {
   getBanners,
   createBanner,
@@ -11,10 +13,10 @@ import { imageUpload } from '../../utils/upload';
 const router = Router();
 
 // reorder BEFORE :bannerId
-router.get('/', getBanners);
-router.post('/', imageUpload.single('image'), createBanner);
-router.patch('/reorder', reorderBanners);
-router.patch('/:bannerId', updateBanner);
-router.delete('/:bannerId', deleteBanner);
+router.get('/', authenticate(ROLES.ADMIN), getBanners);
+router.post('/', authenticate(ROLES.ADMIN), imageUpload.single('image'), createBanner);
+router.patch('/reorder', authenticate(ROLES.ADMIN), reorderBanners);
+router.patch('/:bannerId', authenticate(ROLES.ADMIN), updateBanner);
+router.delete('/:bannerId', authenticate(ROLES.ADMIN), deleteBanner);
 
 export default router;

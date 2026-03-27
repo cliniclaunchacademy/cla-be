@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import { authenticate } from '../../middleware/auth.middleware';
+import { ROLES } from '../../constants/roles';
 import {
   getInstructors,
   createInstructor,
@@ -10,10 +12,10 @@ import { imageUpload } from '../../utils/upload';
 
 const router = Router();
 
-router.get('/', getInstructors);
-router.post('/', createInstructor);
-router.post('/:instructorId/photo', imageUpload.single('photo'), uploadInstructorPhoto);
-router.put('/:instructorId', updateInstructor);
-router.delete('/:instructorId', deleteInstructor);
+router.get('/', authenticate(ROLES.ADMIN), getInstructors);
+router.post('/', authenticate(ROLES.ADMIN), createInstructor);
+router.post('/:instructorId/photo', authenticate(ROLES.ADMIN), imageUpload.single('photo'), uploadInstructorPhoto);
+router.put('/:instructorId', authenticate(ROLES.ADMIN), updateInstructor);
+router.delete('/:instructorId', authenticate(ROLES.ADMIN), deleteInstructor);
 
 export default router;

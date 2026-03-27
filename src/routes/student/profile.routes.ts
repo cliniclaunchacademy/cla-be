@@ -2,10 +2,10 @@ import { Router } from 'express';
 import { authenticate } from '../../middleware/auth.middleware';
 import { maintenanceMiddleware } from '../../middleware/maintenance.middleware';
 import { ROLES } from '../../constants/roles';
-import { getStudentResources } from '../../controllers/student/courses.controller';
+import { getMe } from '../../controllers/student/profile.controller';
 
 const router = Router();
 
-router.get('/', authenticate(ROLES.STUDENT), maintenanceMiddleware, getStudentResources);
+router.get('/me', authenticate(ROLES.STUDENT), maintenanceMiddleware, getMe);
 
 export default router;

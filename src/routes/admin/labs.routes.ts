@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import { authenticate } from '../../middleware/auth.middleware';
+import { ROLES } from '../../constants/roles';
 import {
   getLabs,
   createLab,
@@ -12,11 +14,11 @@ import { imageUpload } from '../../utils/upload';
 const router = Router();
 
 // reorder BEFORE :labId
-router.get('/', getLabs);
-router.post('/', createLab);
-router.patch('/reorder', reorderLabs);
-router.post('/:labId/logo', imageUpload.single('logo'), uploadLabLogo);
-router.put('/:labId', updateLab);
-router.delete('/:labId', deleteLab);
+router.get('/', authenticate(ROLES.ADMIN), getLabs);
+router.post('/', authenticate(ROLES.ADMIN), createLab);
+router.patch('/reorder', authenticate(ROLES.ADMIN), reorderLabs);
+router.post('/:labId/logo', authenticate(ROLES.ADMIN), imageUpload.single('logo'), uploadLabLogo);
+router.put('/:labId', authenticate(ROLES.ADMIN), updateLab);
+router.delete('/:labId', authenticate(ROLES.ADMIN), deleteLab);
 
 export default router;

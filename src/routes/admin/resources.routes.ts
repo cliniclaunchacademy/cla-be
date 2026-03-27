@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import { authenticate } from '../../middleware/auth.middleware';
+import { ROLES } from '../../constants/roles';
 import {
   getAllResources,
   getResourcesByCourse,
@@ -6,7 +8,7 @@ import {
 
 const router = Router();
 
-router.get('/', getAllResources);
-router.get('/:courseId', getResourcesByCourse);
+router.get('/', authenticate(ROLES.ADMIN), getAllResources);
+router.get('/:courseId', authenticate(ROLES.ADMIN), getResourcesByCourse);
 
 export default router;

@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import { authenticate } from '../../middleware/auth.middleware';
+import { ROLES } from '../../constants/roles';
 import {
   getDashboardStats,
   getRecentlyJoined,
@@ -7,8 +9,8 @@ import {
 
 const router = Router();
 
-router.get('/stats', getDashboardStats);
-router.get('/recently-joined', getRecentlyJoined);
-router.get('/notification-history', getNotificationHistory);
+router.get('/stats', authenticate(ROLES.ADMIN), getDashboardStats);
+router.get('/recently-joined', authenticate(ROLES.ADMIN), getRecentlyJoined);
+router.get('/notification-history', authenticate(ROLES.ADMIN), getNotificationHistory);
 
 export default router;
