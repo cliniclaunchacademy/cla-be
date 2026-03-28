@@ -1,0 +1,52 @@
+[
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c071",
+    "category": "65f1a2b3c4d5e6f7a8b9c061",
+    "title": "March Group Call — Phlebotomy Tips & Student Questions",
+    "subheading": "Monthly open call covering common challenges faced by new phlebotomists",
+    "videoEmbed": "<iframe src=\"https://player.vimeo.com/video/200000001\" width=\"640\" height=\"360\" frameborder=\"0\" allowfullscreen></iframe>",
+    "recordedDate": "2025-03-15T00:00:00.000Z",
+    "status": "published",
+    "order": 1
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c072",
+    "category": "65f1a2b3c4d5e6f7a8b9c061",
+    "title": "February Group Call — Student Progress & Placements Update",
+    "subheading": "Celebrating student milestones and sharing placement opportunities",
+    "videoEmbed": "<iframe src=\"https://player.vimeo.com/video/200000002\" width=\"640\" height=\"360\" frameborder=\"0\" allowfullscreen></iframe>",
+    "recordedDate": "2025-02-15T00:00:00.000Z",
+    "status": "published",
+    "order": 2
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c073",
+    "category": "65f1a2b3c4d5e6f7a8b9c062",
+    "title": "Live Q&A — Venepuncture: Common Mistakes & How to Avoid Them",
+    "subheading": "Dr. Sarah Mitchell answers your most frequently submitted questions",
+    "videoEmbed": "<iframe src=\"https://player.vimeo.com/video/200000003\" width=\"640\" height=\"360\" frameborder=\"0\" allowfullscreen></iframe>",
+    "recordedDate": "2025-03-05T00:00:00.000Z",
+    "status": "published",
+    "order": 1
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c074",
+    "category": "65f1a2b3c4d5e6f7a8b9c063",
+    "title": "Masterclass: Advanced Blood Collection in Complex Patients",
+    "subheading": "Handling paediatric, geriatric, and oncology patients with care",
+    "videoEmbed": "<iframe src=\"https://player.vimeo.com/video/200000004\" width=\"640\" height=\"360\" frameborder=\"0\" allowfullscreen></iframe>",
+    "recordedDate": "2025-02-22T00:00:00.000Z",
+    "status": "published",
+    "order": 1
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c075",
+    "category": "65f1a2b3c4d5e6f7a8b9c064",
+    "title": "Guest Speaker: Life as a Band 3 HCA — A Day in the Wards",
+    "subheading": "Hear firsthand from a working NHS healthcare assistant about daily routines and career growth",
+    "videoEmbed": "<iframe src=\"https://player.vimeo.com/video/200000005\" width=\"640\" height=\"360\" frameborder=\"0\" allowfullscreen></iframe>",
+    "recordedDate": "2025-01-28T00:00:00.000Z",
+    "status": "published",
+    "order": 1
+  }
+]

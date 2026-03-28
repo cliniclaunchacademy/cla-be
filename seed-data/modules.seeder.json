@@ -1,0 +1,44 @@
+[
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c031",
+    "course": "65f1a2b3c4d5e6f7a8b9c021",
+    "title": "Module 1: Introduction to Phlebotomy",
+    "order": 1
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c032",
+    "course": "65f1a2b3c4d5e6f7a8b9c021",
+    "title": "Module 2: Venepuncture Techniques",
+    "order": 2
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c033",
+    "course": "65f1a2b3c4d5e6f7a8b9c021",
+    "title": "Module 3: Safety, Infection Control & Compliance",
+    "order": 3
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c034",
+    "course": "65f1a2b3c4d5e6f7a8b9c022",
+    "title": "Module 1: Understanding the Heart & ECG",
+    "order": 1
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c035",
+    "course": "65f1a2b3c4d5e6f7a8b9c022",
+    "title": "Module 2: Identifying Common Arrhythmias",
+    "order": 2
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c036",
+    "course": "65f1a2b3c4d5e6f7a8b9c023",
+    "title": "Module 1: Effective Communication in Healthcare",
+    "order": 1
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c037",
+    "course": "65f1a2b3c4d5e6f7a8b9c023",
+    "title": "Module 2: Patient Dignity, Rights & Consent",
+    "order": 2
+  }
+]

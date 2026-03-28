@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c061",
+    "name": "Group Calls",
+    "status": "published",
+    "order": 1
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c062",
+    "name": "Q&A Sessions",
+    "status": "published",
+    "order": 2
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c063",
+    "name": "Masterclasses",
+    "status": "published",
+    "order": 3
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c064",
+    "name": "Guest Speakers",
+    "status": "published",
+    "order": 4
+  }
+]

@@ -1,0 +1,29 @@
+[
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c011",
+    "firstName": "Sarah",
+    "lastName": "Mitchell",
+    "title": "Lead Clinical Instructor — Phlebotomy & Blood Sciences",
+    "bio": "Dr. Sarah Mitchell is a registered phlebotomist with over 12 years of clinical experience across NHS and private healthcare settings. She specialises in blood collection techniques, patient safety, and laboratory compliance, and has trained hundreds of healthcare professionals throughout her career.",
+    "photo": null,
+    "status": "active"
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c012",
+    "firstName": "James",
+    "lastName": "Harrington",
+    "title": "Healthcare Training Specialist — Cardiac & Diagnostics",
+    "bio": "James Harrington is a cardiac physiologist with extensive experience in ECG interpretation and diagnostic testing. Having worked in both acute cardiology wards and community health clinics, he brings real-world clinical insight to every lesson he delivers.",
+    "photo": null,
+    "status": "active"
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c013",
+    "firstName": "Priya",
+    "lastName": "Sharma",
+    "title": "Patient Care & Communication Lead",
+    "bio": "Dr. Priya Sharma is a healthcare educator and former ward sister with a passion for patient-centred care. She has developed training programmes for NHS trusts focused on improving communication, dignity, and patient outcomes, and brings that expertise directly to the Academy.",
+    "photo": null,
+    "status": "active"
+  }
+]

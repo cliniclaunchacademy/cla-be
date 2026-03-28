@@ -1,0 +1,23 @@
+[
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c091",
+    "imageUrl": "/uploads/banner_welcome.jpg",
+    "label": "Welcome Banner",
+    "status": "active",
+    "order": 1
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c092",
+    "imageUrl": "/uploads/banner_ecg_launch.jpg",
+    "label": "ECG Course Launch",
+    "status": "active",
+    "order": 2
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c093",
+    "imageUrl": "/uploads/banner_discord.jpg",
+    "label": "Join Our Discord Community",
+    "status": "active",
+    "order": 3
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c081",
+    "name": "CityPath Diagnostics",
+    "subheading": "One of the UK's leading private diagnostic laboratories with phlebotomy placement opportunities across 40+ sites",
+    "logo": null,
+    "portalUrl": "https://portal.citypathdiagnostics.co.uk",
+    "applicationEmbed": null,
+    "status": "live",
+    "releaseDate": null,
+    "maintenanceMsg": null,
+    "order": 1
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c082",
+    "name": "MediScan Laboratories",
+    "subheading": "Specialising in rapid diagnostics and point-of-care testing — offering placements for qualified phlebotomists",
+    "logo": null,
+    "portalUrl": "https://careers.mediscanlab.co.uk",
+    "applicationEmbed": null,
+    "status": "live",
+    "releaseDate": null,
+    "maintenanceMsg": null,
+    "order": 2
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c083",
+    "name": "BioCore Testing Centre",
+    "subheading": "Community-based testing centres across London and the South East — perfect for newly qualified HCAs",
+    "logo": null,
+    "portalUrl": null,
+    "applicationEmbed": null,
+    "status": "coming_soon",
+    "releaseDate": "2025-07-01T00:00:00.000Z",
+    "maintenanceMsg": null,
+    "order": 3
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c084",
+    "name": "NovaCare Health Group",
+    "subheading": "A network of private GP clinics seeking experienced phlebotomists for part-time and full-time roles",
+    "logo": null,
+    "portalUrl": "https://novacare.co.uk/join-us",
+    "applicationEmbed": null,
+    "status": "maintenance",
+    "releaseDate": null,
+    "maintenanceMsg": "Applications temporarily paused while we update our portal. Back online shortly.",
+    "order": 4
+  }
+]

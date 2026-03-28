@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c001",
+    "email": "admin@cliniclaunch.com",
+    "password": "Admin@123456",
+    "firstName": "Platform",
+    "lastName": "Admin",
+    "username": "cla_admin",
+    "role": "admin",
+    "status": "active",
+    "is_whitelisted": true,
+    "welcomeEmailSent": true
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c002",
+    "email": "student@cliniclaunch.com",
+    "password": "Student@123456",
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "username": "jane.doe",
+    "role": "student",
+    "status": "active",
+    "is_whitelisted": true,
+    "welcomeEmailSent": true
+  }
+]

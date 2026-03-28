@@ -1,0 +1,57 @@
+[
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c051",
+    "lesson": "65f1a2b3c4d5e6f7a8b9c041",
+    "course": "65f1a2b3c4d5e6f7a8b9c021",
+    "title": "Phlebotomy Overview — Quick Reference Guide",
+    "type": "pdf",
+    "url": "/uploads/phlebotomy_overview_guide.pdf",
+    "description": "A concise one-page summary of the phlebotomy role, key responsibilities, and scope of practice in UK healthcare settings.",
+    "status": "published",
+    "order": 1
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c052",
+    "lesson": "65f1a2b3c4d5e6f7a8b9c041",
+    "course": "65f1a2b3c4d5e6f7a8b9c021",
+    "title": "Blood Collection Equipment Checklist",
+    "type": "pdf",
+    "url": "/uploads/equipment_checklist.pdf",
+    "description": "Printable checklist of all equipment needed before, during, and after a blood draw. Ideal for trainees to review before their first supervised procedure.",
+    "status": "published",
+    "order": 2
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c053",
+    "lesson": "65f1a2b3c4d5e6f7a8b9c043",
+    "course": "65f1a2b3c4d5e6f7a8b9c021",
+    "title": "Vacutainer Tube Colour Coding Chart",
+    "type": "pdf",
+    "url": "/uploads/vacutainer_colour_guide.pdf",
+    "description": "Full-colour reference card mapping tube colours to additives, test types, and required volumes. Keep this at your workstation.",
+    "status": "published",
+    "order": 1
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c054",
+    "lesson": "65f1a2b3c4d5e6f7a8b9c043",
+    "course": "65f1a2b3c4d5e6f7a8b9c021",
+    "title": "WHO Guidelines on Phlebotomy Practices",
+    "type": "link",
+    "url": "https://www.who.int/publications/i/item/9789241599221",
+    "description": "The World Health Organization's official best-practice guidelines for phlebotomy in healthcare settings — an essential reference document.",
+    "status": "published",
+    "order": 2
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c055",
+    "lesson": "65f1a2b3c4d5e6f7a8b9c047",
+    "course": "65f1a2b3c4d5e6f7a8b9c022",
+    "title": "12-Lead ECG Systematic Reading Worksheet",
+    "type": "pdf",
+    "url": "/uploads/ecg_reading_worksheet.pdf",
+    "description": "A structured worksheet to practise reading ECG traces using the methodical approach taught in this lesson. Includes 5 practice traces with an answer key.",
+    "status": "published",
+    "order": 1
+  }
+]

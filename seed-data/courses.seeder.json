@@ -1,0 +1,50 @@
+[
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c021",
+    "title": "Clinical Phlebotomy Programme",
+    "subheading": "Master the art of safe, professional blood collection",
+    "about": "This comprehensive programme takes you from the fundamentals of anatomy through to advanced venepuncture techniques used in real clinical settings. Designed for aspiring and practising healthcare assistants, the course covers equipment selection, patient identification, infection control, and post-procedure care — everything you need to perform confidently and safely.",
+    "thumbnail": null,
+    "instructor": "65f1a2b3c4d5e6f7a8b9c011",
+    "status": "published",
+    "comingSoon": false,
+    "releaseDate": null,
+    "order": 1
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c022",
+    "title": "ECG Interpretation Fundamentals",
+    "subheading": "Read and interpret ECG traces with confidence",
+    "about": "Understand the electrical activity of the heart and learn how to analyse ECG recordings systematically. This course walks you through normal sinus rhythm, common arrhythmias, and the key patterns every clinical professional should recognise. Suitable for healthcare assistants, nurses, and allied health professionals.",
+    "thumbnail": null,
+    "instructor": "65f1a2b3c4d5e6f7a8b9c012",
+    "status": "published",
+    "comingSoon": false,
+    "releaseDate": null,
+    "order": 2
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c023",
+    "title": "Patient Care & Communication Skills",
+    "subheading": "Build trust, confidence, and professionalism at the bedside",
+    "about": "Effective communication is at the heart of great patient care. This course explores how to build rapport quickly, deliver difficult information sensitively, uphold patient dignity and rights, and manage challenging interactions. Ideal for anyone working in a patient-facing healthcare role.",
+    "thumbnail": null,
+    "instructor": "65f1a2b3c4d5e6f7a8b9c013",
+    "status": "published",
+    "comingSoon": false,
+    "releaseDate": null,
+    "order": 3
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c024",
+    "title": "Healthcare Compliance & Documentation",
+    "subheading": "Stay compliant, reduce risk, and document with precision",
+    "about": "This course covers the legal and professional standards that govern documentation, record-keeping, and regulatory compliance in UK healthcare settings. Topics include GDPR for patient data, incident reporting, and audit trail best practices.",
+    "thumbnail": null,
+    "instructor": "65f1a2b3c4d5e6f7a8b9c013",
+    "status": "unpublished",
+    "comingSoon": true,
+    "releaseDate": "2025-09-01T00:00:00.000Z",
+    "order": 4
+  }
+]

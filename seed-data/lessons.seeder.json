@@ -1,0 +1,112 @@
+[
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c041",
+    "module": "65f1a2b3c4d5e6f7a8b9c031",
+    "course": "65f1a2b3c4d5e6f7a8b9c021",
+    "title": "What is Phlebotomy?",
+    "subheading": "An overview of the role, scope of practice, and why it matters",
+    "videoEmbed": "<iframe src=\"https://player.vimeo.com/video/100000001\" width=\"640\" height=\"360\" frameborder=\"0\" allowfullscreen></iframe>",
+    "status": "published",
+    "comingSoon": false,
+    "order": 1
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c042",
+    "module": "65f1a2b3c4d5e6f7a8b9c031",
+    "course": "65f1a2b3c4d5e6f7a8b9c021",
+    "title": "Anatomy of the Arm & Vein Selection",
+    "subheading": "Identifying the median cubital, cephalic, and basilic veins",
+    "videoEmbed": "<iframe src=\"https://player.vimeo.com/video/100000002\" width=\"640\" height=\"360\" frameborder=\"0\" allowfullscreen></iframe>",
+    "status": "published",
+    "comingSoon": false,
+    "order": 2
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c043",
+    "module": "65f1a2b3c4d5e6f7a8b9c031",
+    "course": "65f1a2b3c4d5e6f7a8b9c021",
+    "title": "Equipment & Blood Collection Tubes",
+    "subheading": "Understanding the Vacutainer system and tube colour coding",
+    "videoEmbed": "<iframe src=\"https://player.vimeo.com/video/100000003\" width=\"640\" height=\"360\" frameborder=\"0\" allowfullscreen></iframe>",
+    "status": "published",
+    "comingSoon": false,
+    "order": 3
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c044",
+    "module": "65f1a2b3c4d5e6f7a8b9c032",
+    "course": "65f1a2b3c4d5e6f7a8b9c021",
+    "title": "Performing a Straight Needle Draw",
+    "subheading": "Step-by-step technique for a standard antecubital fossa draw",
+    "videoEmbed": "<iframe src=\"https://player.vimeo.com/video/100000004\" width=\"640\" height=\"360\" frameborder=\"0\" allowfullscreen></iframe>",
+    "status": "published",
+    "comingSoon": false,
+    "order": 1
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c045",
+    "module": "65f1a2b3c4d5e6f7a8b9c032",
+    "course": "65f1a2b3c4d5e6f7a8b9c021",
+    "title": "Difficult Veins & Troubleshooting",
+    "subheading": "Strategies for paediatric, elderly, and dehydrated patients",
+    "videoEmbed": "<iframe src=\"https://player.vimeo.com/video/100000005\" width=\"640\" height=\"360\" frameborder=\"0\" allowfullscreen></iframe>",
+    "status": "published",
+    "comingSoon": false,
+    "order": 2
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c046",
+    "module": "65f1a2b3c4d5e6f7a8b9c034",
+    "course": "65f1a2b3c4d5e6f7a8b9c022",
+    "title": "How the Heart's Electrical System Works",
+    "subheading": "SA node, AV node, bundle of His, and Purkinje fibres explained",
+    "videoEmbed": "<iframe src=\"https://player.vimeo.com/video/100000006\" width=\"640\" height=\"360\" frameborder=\"0\" allowfullscreen></iframe>",
+    "status": "published",
+    "comingSoon": false,
+    "order": 1
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c047",
+    "module": "65f1a2b3c4d5e6f7a8b9c034",
+    "course": "65f1a2b3c4d5e6f7a8b9c022",
+    "title": "Reading a 12-Lead ECG: The Systematic Approach",
+    "subheading": "Rate, rhythm, axis, intervals — a methodical reading framework",
+    "videoEmbed": "<iframe src=\"https://player.vimeo.com/video/100000007\" width=\"640\" height=\"360\" frameborder=\"0\" allowfullscreen></iframe>",
+    "status": "published",
+    "comingSoon": false,
+    "order": 2
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c048",
+    "module": "65f1a2b3c4d5e6f7a8b9c036",
+    "course": "65f1a2b3c4d5e6f7a8b9c023",
+    "title": "Building Rapport with Patients",
+    "subheading": "First impressions, active listening, and non-verbal communication",
+    "videoEmbed": "<iframe src=\"https://player.vimeo.com/video/100000008\" width=\"640\" height=\"360\" frameborder=\"0\" allowfullscreen></iframe>",
+    "status": "published",
+    "comingSoon": false,
+    "order": 1
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c049",
+    "module": "65f1a2b3c4d5e6f7a8b9c037",
+    "course": "65f1a2b3c4d5e6f7a8b9c023",
+    "title": "Patient Dignity & Maintaining Privacy",
+    "subheading": "Practical steps to uphold dignity in every clinical interaction",
+    "videoEmbed": "<iframe src=\"https://player.vimeo.com/video/100000009\" width=\"640\" height=\"360\" frameborder=\"0\" allowfullscreen></iframe>",
+    "status": "published",
+    "comingSoon": false,
+    "order": 1
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c04a",
+    "module": "65f1a2b3c4d5e6f7a8b9c037",
+    "course": "65f1a2b3c4d5e6f7a8b9c023",
+    "title": "Informed Consent: What Every HCA Must Know",
+    "subheading": "Legal obligations, the Mental Capacity Act, and best practice",
+    "videoEmbed": "<iframe src=\"https://player.vimeo.com/video/100000010\" width=\"640\" height=\"360\" frameborder=\"0\" allowfullscreen></iframe>",
+    "status": "published",
+    "comingSoon": false,
+    "order": 2
+  }
+]
