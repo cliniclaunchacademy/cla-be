@@ -1,11 +1,12 @@
 import { Response } from 'express';
 import { ExpressRequest } from '../../types/types';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import { User } from '../../models/user.schema';
 import { Progress } from '../../models/progress.schema';
 import { ActivityLog } from '../../models/activity_log.schema';
 import { sendResponse } from '../../utils/sendResponse';
-import { sendWelcomeEmail } from '../../utils/email';
+import { sendWelcomeEmail, sendWelcomeSetPasswordEmail } from '../../utils/email';
 import { createUserSchema, editUserSchema } from '../../validators/admin.validator';
 
 export const getUsers = async (req: ExpressRequest, res: Response): Promise<void> => {
@@ -84,10 +85,10 @@ export const createUser = async (req: ExpressRequest, res: Response): Promise<vo
 
     if (shouldSendEmail) {
       try {
-        await sendWelcomeEmail(email, firstName, password);
+        await sendWelcomeEmail(email, firstName, lastName, password);
         await User.findByIdAndUpdate(user._id, { welcomeEmailSent: true });
-      } catch (emailErr) {
-        console.error('[SendWelcomeEmail Error]', emailErr);
+      } catch (emailErr: unknown) {
+        console.error('[SendWelcomeEmail Error]', emailErr instanceof Error ? emailErr.message : emailErr);
       }
     }
 
@@ -216,11 +217,13 @@ export const resendWelcomeEmail = async (req: ExpressRequest, res: Response): Pr
       return;
     }
 
-    // We don't have the plain password, so send a reset-type welcome
-    await sendWelcomeEmail(user.email, user.firstName, '(Please use your existing password)');
-    await User.findByIdAndUpdate(userId, { welcomeEmailSent: true });
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetTokenExpiry = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 
-    sendResponse(res, 200, { message: 'Welcome email resent successfully.' });
+    await User.findByIdAndUpdate(userId, { resetToken, resetTokenExpiry, welcomeEmailSent: true });
+    await sendWelcomeSetPasswordEmail(user.email, user.firstName, user.lastName, resetToken);
+
+    sendResponse(res, 200, { message: 'Welcome email sent.' });
   } catch (err) {
     console.error('[AdminResendWelcomeEmail Error]', err);
     sendResponse(res, 500, { error: 'Internal server error.' });

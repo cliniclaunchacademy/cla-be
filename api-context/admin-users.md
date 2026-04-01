@@ -61,7 +61,7 @@ Create a new user (student or admin).
   "lastName": "Doe",                 // required
   "password": "securepass123",       // required, min 8 characters
   "role": "student",                 // required: "student" or "admin"
-  "sendWelcomeEmail": true           // optional boolean
+  "sendWelcomeEmail": true           // optional boolean — if true, sends email with login credentials (email + plain password)
 }
 ```
 
@@ -89,6 +89,13 @@ Create a new user (student or admin).
 | `400` | Email already registered |
 | `400` | Username already taken |
 | `400` | Validation error (missing required fields, password too short, etc.) |
+
+### Welcome Email (on create)
+When `sendWelcomeEmail: true`, the user receives an email containing:
+- Their **first name**
+- Their **email address**
+- Their **plain text password** (only available at creation time)
+- A **Login** button linking to `FRONTEND_URL/login`
 
 ---
 
@@ -166,7 +173,7 @@ None
 
 ## POST `/api/admin/users/:userId/resend-email`
 
-Resend the welcome email to a user.
+Resend the welcome email to a user. Since the original password is hashed and unrecoverable, this generates a **set-password link** instead and emails it to the user.
 
 ### URL Parameters
 - `userId` — MongoDB ObjectId of the user
@@ -180,6 +187,17 @@ None
   "message": "Welcome email sent."
 }
 ```
+
+### Welcome Email (on resend)
+The user receives an email containing:
+- Their **first name**
+- Their **email address**
+- A **"Set Your Password"** button linking to `FRONTEND_URL/reset-password?token=<token>&welcome=true`
+- The token expires in **1 hour**
+
+### Notes
+- The frontend `/reset-password` page should detect `?welcome=true` to show "Set Your Password" wording instead of "Reset Your Password"
+- The user submits the form to `POST /api/auth/reset-password` with `{ token, password, confirmPassword }` — same endpoint as the forgot-password flow
 
 ---
 
