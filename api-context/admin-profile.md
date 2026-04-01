@@ -1,23 +1,23 @@
-# Student Profile API
+# Admin Profile API
 
-**Authentication:** Required — Student JWT (`Authorization: Bearer <token>`)
+**Authentication:** Required — Admin JWT (`Authorization: Bearer <token>`)
 
 ---
 
-## GET `/api/student/me`
+## GET `/api/admin/me`
 
-Fetch the currently authenticated student's profile.
+Fetch the currently authenticated admin's profile.
 
 ### Response `200`
 ```json
 {
   "user": {
     "_id": "64f1a2b3c4d5e6f7a8b9c0d1",
-    "email": "john@example.com",
-    "firstName": "John",
-    "lastName": "Doe",
-    "username": "johndoe",
-    "role": "student",
+    "email": "admin@cliniclaunch.com",
+    "firstName": "Admin",
+    "lastName": "User",
+    "username": "adminuser",
+    "role": "admin",
     "status": "active",
     "profilePhoto": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1234567890/cla/profile-photos/abc123.jpg",
     "lastLogin": "2024-01-15T10:30:00.000Z",
@@ -29,31 +29,34 @@ Fetch the currently authenticated student's profile.
 
 ---
 
-## PATCH `/api/student/settings/profile`
+## PATCH `/api/admin/profile`
 
-Update the student's profile information.
+Update the admin's profile information.
 
 ### Request Body (all optional — only send fields to change)
 ```json
 {
-  "firstName": "Jonathan",
-  "lastName": "Doe",
-  "username": "jon_doe"
+  "firstName": "John",
+  "lastName": "Smith",
+  "username": "john_admin"
 }
 ```
 
 ### Response `200`
 ```json
 {
-  "_id": "64f1a2b3c4d5e6f7a8b9c0d1",
-  "email": "john@example.com",
-  "firstName": "Jonathan",
-  "lastName": "Doe",
-  "username": "jon_doe",
-  "role": "student",
-  "status": "active",
-  "profilePhoto": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1234567890/cla/profile-photos/abc123.jpg",
-  "updatedAt": "2024-01-15T11:00:00.000Z"
+  "user": {
+    "_id": "64f1a2b3c4d5e6f7a8b9c0d1",
+    "email": "admin@cliniclaunch.com",
+    "firstName": "John",
+    "lastName": "Smith",
+    "username": "john_admin",
+    "role": "admin",
+    "status": "active",
+    "profilePhoto": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1234567890/cla/profile-photos/abc123.jpg",
+    "updatedAt": "2024-01-15T11:00:00.000Z"
+  },
+  "message": "Profile updated successfully."
 }
 ```
 
@@ -68,9 +71,9 @@ Update the student's profile information.
 
 ---
 
-## POST `/api/student/settings/photo`
+## POST `/api/admin/photo`
 
-Upload a profile photo for the student.
+Upload a profile photo for the admin.
 
 ### Request
 - **Content-Type:** `multipart/form-data`
@@ -86,6 +89,6 @@ Upload a profile photo for the student.
 ```
 
 ### Notes
-- Image is uploaded to Cloudinary under the `cla/profile-photos` folder
+- Image is uploaded to Cloudinary under the `cla/profile-photos` folder (same folder as student photos)
 - `profilePhoto` in the response is a full Cloudinary `https://` URL — use it directly as `<img src>`
 - Max file size: 5MB. Accepted formats: JPEG, PNG, WebP

@@ -1,5 +1,11 @@
 import Joi from 'joi';
 
+export const updateAdminProfileSchema = Joi.object({
+  firstName: Joi.string().trim().optional(),
+  lastName: Joi.string().trim().optional(),
+  username: Joi.string().trim().optional(),
+});
+
 export const createUserSchema = Joi.object({
   username: Joi.string().trim().required(),
   email: Joi.string().email().required(),

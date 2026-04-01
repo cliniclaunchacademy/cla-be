@@ -15,6 +15,7 @@ import adminLabApplicationsRoutes from './admin/lab-applications.routes';
 import adminBannersRoutes from './admin/banners.routes';
 import adminNotificationsRoutes from './admin/notifications.routes';
 import adminSettingsRoutes from './admin/settings.routes';
+import adminProfileRoutes from './admin/profile.routes';
 
 // Student routes
 import studentProfileRoutes from './student/profile.routes';
@@ -44,6 +45,7 @@ router.use('/admin/lab-applications', adminLabApplicationsRoutes);
 router.use('/admin/banners', adminBannersRoutes);
 router.use('/admin/notifications', adminNotificationsRoutes);
 router.use('/admin/settings', adminSettingsRoutes);
+router.use('/admin', adminProfileRoutes);
 
 // ─── Student ──────────────────────────────────────────────────────────────────
 router.use('/student', studentProfileRoutes);
