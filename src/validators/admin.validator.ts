@@ -28,6 +28,7 @@ export const createCourseSchema = Joi.object({
   status: Joi.string().valid('draft', 'unpublished', 'published').required(),
   comingSoon: Joi.boolean().optional(),
   releaseDate: Joi.date().optional(),
+  banner: Joi.string().optional().allow(''),
 });
 
 export const updateCourseSchema = Joi.object({
@@ -38,6 +39,7 @@ export const updateCourseSchema = Joi.object({
   status: Joi.string().valid('draft', 'unpublished', 'published').optional(),
   comingSoon: Joi.boolean().optional(),
   releaseDate: Joi.date().optional().allow(null),
+  banner: Joi.string().optional().allow(''),
 });
 
 export const reorderSchema = Joi.object({

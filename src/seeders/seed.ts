@@ -107,6 +107,7 @@ async function seed() {
     subheading: c.subheading,
     about: c.about,
     thumbnail: c.thumbnail,
+    banner: c.banner,
     instructor: toObjectId(c.instructor),
     status: c.status,
     comingSoon: c.comingSoon,

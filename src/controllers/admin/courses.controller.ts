@@ -45,13 +45,14 @@ export const createCourse = async (req: ExpressRequest, res: Response): Promise<
       return;
     }
 
-    const { title, subheading, about, instructorId, status, comingSoon, releaseDate } = value;
+    const { title, subheading, about, instructorId, status, comingSoon, releaseDate, banner } = value;
 
     const count = await Course.countDocuments();
     const course = await Course.create({
       title,
       subheading,
       about,
+      banner,
       instructor: instructorId,
       status,
       comingSoon: comingSoon || false,
@@ -109,6 +110,7 @@ export const updateCourse = async (req: ExpressRequest, res: Response): Promise<
     if (value.title !== undefined) updateData.title = value.title;
     if (value.subheading !== undefined) updateData.subheading = value.subheading;
     if (value.about !== undefined) updateData.about = value.about;
+    if (value.banner !== undefined) updateData.banner = value.banner;
     if (value.instructorId !== undefined) updateData.instructor = value.instructorId;
     if (value.status !== undefined) updateData.status = value.status;
     if (value.comingSoon !== undefined) updateData.comingSoon = value.comingSoon;
