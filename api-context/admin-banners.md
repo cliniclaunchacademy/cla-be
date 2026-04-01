@@ -16,16 +16,28 @@ Fetch all banners.
 {
   "banners": [
     {
-      "_id": "64f1a2b3c4d5e6f7a8b9c0b1",
-      "imageUrl": "http://localhost:5000/uploads/banner-abc123.jpg",
-      "label": "New Course Available!",
+      "_id": "65f1a2b3c4d5e6f7a8b9c091",
+      "imageUrl": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1775039328/cla/dashboard-carousel/CLA_Ad_4_web_jxafn5.jpg",
+      "label": "CLA Ad 4",
       "status": "active",
       "order": 1,
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "_id": "65f1a2b3c4d5e6f7a8b9c092",
+      "imageUrl": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1775039328/cla/dashboard-carousel/CLA_Ad_1_web_jgwog5.jpg",
+      "label": "CLA Ad 1",
+      "status": "active",
+      "order": 2,
       "createdAt": "2024-01-01T00:00:00.000Z"
     }
   ]
 }
 ```
+
+### Notes
+- `imageUrl` is a full Cloudinary URL (or any absolute URL) — not a local upload path
+- Up to 9 banners are seeded by default, all with `status: "active"`
 
 ### `status` values
 `active` | `inactive`

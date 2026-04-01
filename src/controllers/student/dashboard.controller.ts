@@ -66,6 +66,11 @@ export const getContinueLearning = async (req: ExpressRequest, res: Response): P
       return;
     }
 
+    const courseId = progress.course._id;
+    const totalLessons = await Lesson.countDocuments({ course: courseId, status: 'published' });
+    const completedLessons = await Progress.countDocuments({ user: userId, course: courseId, completed: true });
+    const progressPercent = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
+
     sendResponse(res, 200, {
       continueLearning: {
         lessonId: progress.lesson._id,
@@ -75,6 +80,9 @@ export const getContinueLearning = async (req: ExpressRequest, res: Response): P
         courseThumbnail: (progress.course as { thumbnail?: string }).thumbnail,
         lastWatched: progress.lastWatched,
         completed: progress.completed,
+        progressPercent,
+        completedLessons,
+        totalLessons,
       },
     });
   } catch (err) {

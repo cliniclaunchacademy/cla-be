@@ -14,32 +14,42 @@ Fetch all published resources across all courses and lessons available to the st
 {
   "resources": [
     {
-      "_id": "64f1a2b3c4d5e6f7a8b9c0r1",
-      "lesson": {
-        "_id": "64f1a2b3c4d5e6f7a8b9c0f1",
-        "title": "Lesson 3: Advanced Billing"
+      "_id": "65f1a2b3c4d5e6f7a8b9c051",
+      "course": {
+        "_id": "65f1a2b3c4d5e6f7a8b9c021",
+        "title": "Clinical Phlebotomy Programme",
+        "thumbnail": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1774942953/cla/courses-thumbnails/Cold_outreach_Mastery_qhj2hm.jpg"
       },
-      "title": "Billing Code Reference Guide",
+      "lesson": {
+        "_id": "65f1a2b3c4d5e6f7a8b9c041",
+        "title": "What is Phlebotomy?"
+      },
+      "title": "Phlebotomy Overview — Quick Reference Guide",
       "type": "pdf",
-      "url": "https://example.com/billing-guide.pdf",
-      "description": "A comprehensive reference for all billing codes",
+      "url": "https://www.orimi.com/pdf-test.pdf",
+      "description": "A concise one-page summary of the phlebotomy role, key responsibilities, and scope of practice.",
       "status": "published",
       "order": 1,
       "createdAt": "2024-01-10T00:00:00.000Z"
     },
     {
-      "_id": "64f1a2b3c4d5e6f7a8b9c0r2",
-      "lesson": {
-        "_id": "64f1a2b3c4d5e6f7a8b9c0f2",
-        "title": "Lesson 5: Patient Management"
+      "_id": "65f1a2b3c4d5e6f7a8b9c052",
+      "course": {
+        "_id": "65f1a2b3c4d5e6f7a8b9c021",
+        "title": "Clinical Phlebotomy Programme",
+        "thumbnail": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1774942953/cla/courses-thumbnails/Cold_outreach_Mastery_qhj2hm.jpg"
       },
-      "title": "Patient Intake Template",
+      "lesson": {
+        "_id": "65f1a2b3c4d5e6f7a8b9c041",
+        "title": "What is Phlebotomy?"
+      },
+      "title": "Blood Collection Equipment Checklist",
       "type": "file",
-      "url": "https://example.com/intake-template.docx",
-      "description": "A Word document template for patient intake",
+      "url": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1775031848/cla/courses-backgrounds/CLA_ResourcesConnector_playbook_tangn1.jpg",
+      "description": "Printable checklist of all equipment needed before, during, and after a blood draw.",
       "status": "published",
-      "order": 1,
-      "createdAt": "2024-01-12T00:00:00.000Z"
+      "order": 2,
+      "createdAt": "2024-01-10T00:00:00.000Z"
     }
   ]
 }
@@ -55,5 +65,6 @@ Fetch all published resources across all courses and lessons available to the st
 
 ### Notes
 - Only `published` resources are returned
-- Resources are from all courses — this is a global resources library view
-- To get resources for a specific lesson, use the lesson endpoint: `GET /api/student/courses/:courseId/lessons/:lessonId`
+- Both `course` and `lesson` are fully populated objects — use `course.title` to group resources by course on the frontend
+- Resources are sorted by course then by `order` within each course
+- To get resources for a specific lesson only, use: `GET /api/student/courses/:courseId/lessons/:lessonId`

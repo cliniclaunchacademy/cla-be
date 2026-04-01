@@ -45,7 +45,10 @@ Fetch the most recent lesson the student was watching (for the "Continue Learnin
     "courseTitle": "Introduction to Clinic Management",
     "courseThumbnail": "http://localhost:5000/uploads/thumb.jpg",
     "lastWatched": "2024-01-15T10:30:00.000Z",
-    "completed": false
+    "completed": false,
+    "progressPercent": 33,
+    "completedLessons": 4,
+    "totalLessons": 12
   }
 }
 ```
@@ -68,11 +71,18 @@ Fetch active banners for the dashboard carousel.
 {
   "banners": [
     {
-      "_id": "64f1a2b3c4d5e6f7a8b9c0b1",
-      "imageUrl": "http://localhost:5000/uploads/banner.jpg",
-      "label": "New Course Available!",
+      "_id": "65f1a2b3c4d5e6f7a8b9c091",
+      "imageUrl": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1775039328/cla/dashboard-carousel/CLA_Ad_4_web_jxafn5.jpg",
+      "label": "CLA Ad 4",
       "status": "active",
       "order": 1
+    },
+    {
+      "_id": "65f1a2b3c4d5e6f7a8b9c092",
+      "imageUrl": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1775039328/cla/dashboard-carousel/CLA_Ad_1_web_jgwog5.jpg",
+      "label": "CLA Ad 1",
+      "status": "active",
+      "order": 2
     }
   ]
 }
@@ -81,6 +91,8 @@ Fetch active banners for the dashboard carousel.
 ### Notes
 - Only banners with `status: "active"` are returned
 - Banners are ordered by their `order` field
+- `imageUrl` is a full Cloudinary URL — render it directly as an `<img src>` or carousel slide
+- Up to 9 banners are currently seeded
 
 ---
 

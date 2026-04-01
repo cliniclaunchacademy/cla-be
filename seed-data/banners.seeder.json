@@ -1,23 +1,65 @@
 [
   {
     "_id": "65f1a2b3c4d5e6f7a8b9c091",
-    "imageUrl": "/uploads/banner_welcome.jpg",
-    "label": "Welcome Banner",
+    "imageUrl": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1775039328/cla/dashboard-carousel/CLA_Ad_4_web_jxafn5.jpg",
+    "label": "CLA Ad 4",
     "status": "active",
     "order": 1
   },
   {
     "_id": "65f1a2b3c4d5e6f7a8b9c092",
-    "imageUrl": "/uploads/banner_ecg_launch.jpg",
-    "label": "ECG Course Launch",
+    "imageUrl": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1775039328/cla/dashboard-carousel/CLA_Ad_1_web_jgwog5.jpg",
+    "label": "CLA Ad 1",
     "status": "active",
     "order": 2
   },
   {
     "_id": "65f1a2b3c4d5e6f7a8b9c093",
-    "imageUrl": "/uploads/banner_discord.jpg",
-    "label": "Join Our Discord Community",
+    "imageUrl": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1775039326/cla/dashboard-carousel/CLA_Ad_6_web_v30tbr.jpg",
+    "label": "CLA Ad 6",
     "status": "active",
     "order": 3
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c094",
+    "imageUrl": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1775039327/cla/dashboard-carousel/CLA_Ad_2_web_zahcfv.jpg",
+    "label": "CLA Ad 2",
+    "status": "active",
+    "order": 4
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c095",
+    "imageUrl": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1775039327/cla/dashboard-carousel/CLA_Ad_5_web_rk3sqs.jpg",
+    "label": "CLA Ad 5",
+    "status": "active",
+    "order": 5
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c096",
+    "imageUrl": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1775039326/cla/dashboard-carousel/CLA_Ad_7_web_htxsjr.jpg",
+    "label": "CLA Ad 7",
+    "status": "active",
+    "order": 6
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c097",
+    "imageUrl": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1775039326/cla/dashboard-carousel/CLA_Ad_3_web_xx2qp8.jpg",
+    "label": "CLA Ad 3",
+    "status": "active",
+    "order": 7
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c098",
+    "imageUrl": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1775039325/cla/dashboard-carousel/CLA_Ad_8_web_pmbvah.jpg",
+    "label": "CLA Ad 8",
+    "status": "active",
+    "order": 8
+  },
+  {
+    "_id": "65f1a2b3c4d5e6f7a8b9c099",
+    "imageUrl": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1775039325/cla/dashboard-carousel/CLA_Main_banner_2_wkch26.jpg",
+    "label": "CLA Main Banner",
+    "status": "active",
+    "order": 9
   }
 ]

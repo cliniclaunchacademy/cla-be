@@ -236,30 +236,28 @@ export const flagVideo = async (req: ExpressRequest, res: Response): Promise<voi
 
 export const getStudentResources = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
-    // Find all published resources grouped by course
     const resources = await LessonResource.find({ status: 'published' })
-      .populate({ path: 'course', select: 'title thumbnail status' })
+      .populate({ path: 'course', select: 'title thumbnail' })
       .populate({ path: 'lesson', select: 'title' })
       .sort({ course: 1, order: 1 });
 
-    // Group by course
-    const grouped: Record<string, { course: Record<string, unknown>; resources: unknown[] }> = {};
+    const result = resources.map((r) => {
+      const obj = r.toObject() as unknown as Record<string, unknown>;
+      return {
+        _id: obj._id,
+        course: obj.course,
+        lesson: obj.lesson,
+        title: obj.title,
+        type: obj.type,
+        url: obj.url,
+        description: obj.description,
+        status: obj.status,
+        order: obj.order,
+        createdAt: obj.createdAt,
+      };
+    });
 
-    for (const resource of resources) {
-      const courseObj = resource.course as { _id: { toString(): string }; title?: string; thumbnail?: string; status?: string } | null;
-      if (!courseObj) continue;
-
-      const courseIdStr = courseObj._id.toString();
-      if (!grouped[courseIdStr]) {
-        grouped[courseIdStr] = {
-          course: courseObj as unknown as Record<string, unknown>,
-          resources: [],
-        };
-      }
-      grouped[courseIdStr].resources.push(resource.toObject());
-    }
-
-    sendResponse(res, 200, { resources: Object.values(grouped) });
+    sendResponse(res, 200, { resources: result });
   } catch (err) {
     console.error('[GetStudentResources Error]', err);
     sendResponse(res, 500, { error: 'Internal server error.' });

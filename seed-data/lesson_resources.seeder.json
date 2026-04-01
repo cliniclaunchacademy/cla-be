@@ -5,7 +5,7 @@
     "course": "65f1a2b3c4d5e6f7a8b9c021",
     "title": "Phlebotomy Overview — Quick Reference Guide",
     "type": "pdf",
-    "url": "/uploads/phlebotomy_overview_guide.pdf",
+    "url": "https://www.orimi.com/pdf-test.pdf",
     "description": "A concise one-page summary of the phlebotomy role, key responsibilities, and scope of practice in UK healthcare settings.",
     "status": "published",
     "order": 1
@@ -15,8 +15,8 @@
     "lesson": "65f1a2b3c4d5e6f7a8b9c041",
     "course": "65f1a2b3c4d5e6f7a8b9c021",
     "title": "Blood Collection Equipment Checklist",
-    "type": "pdf",
-    "url": "/uploads/equipment_checklist.pdf",
+    "type": "file",
+    "url": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1775031848/cla/courses-backgrounds/CLA_ResourcesConnector_playbook_tangn1.jpg",
     "description": "Printable checklist of all equipment needed before, during, and after a blood draw. Ideal for trainees to review before their first supervised procedure.",
     "status": "published",
     "order": 2
@@ -27,7 +27,7 @@
     "course": "65f1a2b3c4d5e6f7a8b9c021",
     "title": "Vacutainer Tube Colour Coding Chart",
     "type": "pdf",
-    "url": "/uploads/vacutainer_colour_guide.pdf",
+    "url": "https://www.orimi.com/pdf-test.pdf",
     "description": "Full-colour reference card mapping tube colours to additives, test types, and required volumes. Keep this at your workstation.",
     "status": "published",
     "order": 1
@@ -48,8 +48,8 @@
     "lesson": "65f1a2b3c4d5e6f7a8b9c047",
     "course": "65f1a2b3c4d5e6f7a8b9c022",
     "title": "12-Lead ECG Systematic Reading Worksheet",
-    "type": "pdf",
-    "url": "/uploads/ecg_reading_worksheet.pdf",
+    "type": "file",
+    "url": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1775031848/cla/courses-backgrounds/CLA_ResourcesConnector_playbook_tangn1.jpg",
     "description": "A structured worksheet to practise reading ECG traces using the methodical approach taught in this lesson. Includes 5 practice traces with an answer key.",
     "status": "published",
     "order": 1
