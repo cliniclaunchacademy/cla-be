@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { authenticate } from '../../middleware/auth.middleware';
 import { ROLES } from '../../constants/roles';
+import { resourceFileUpload } from '../../utils/upload';
 import {
   addResource,
   updateResource,
@@ -11,9 +12,9 @@ import {
 const router = Router();
 
 // Resources on a lesson — reorder BEFORE :resourceId
-router.post('/:lessonId/resources', authenticate(ROLES.ADMIN), addResource);
+router.post('/:lessonId/resources', authenticate(ROLES.ADMIN), resourceFileUpload.single('file'), addResource);
 router.patch('/:lessonId/resources/reorder', authenticate(ROLES.ADMIN), reorderResources);
-router.put('/:lessonId/resources/:resourceId', authenticate(ROLES.ADMIN), updateResource);
+router.put('/:lessonId/resources/:resourceId', authenticate(ROLES.ADMIN), resourceFileUpload.single('file'), updateResource);
 router.delete('/:lessonId/resources/:resourceId', authenticate(ROLES.ADMIN), deleteResource);
 
 export default router;

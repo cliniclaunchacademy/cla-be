@@ -29,13 +29,21 @@ export const imageUpload = multer({
   },
 });
 
+export const resourceFileUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 20 * 1024 * 1024, // 20MB
+  },
+});
+
 export const uploadToCloudinary = (
   buffer: Buffer,
-  folder: string
+  folder: string,
+  resourceType: 'image' | 'raw' | 'auto' = 'image'
 ): Promise<string> => {
   return new Promise((resolve, reject) => {
     cloudinary.uploader
-      .upload_stream({ folder, resource_type: 'image' }, (error, result) => {
+      .upload_stream({ folder, resource_type: resourceType }, (error, result) => {
         if (error || !result) return reject(error || new Error('Cloudinary upload failed.'));
         resolve(result.secure_url);
       })

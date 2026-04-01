@@ -4,6 +4,7 @@ import { Lesson } from '../../models/lesson.schema';
 import { LessonResource } from '../../models/lesson_resource.schema';
 import { Course } from '../../models/course.schema';
 import { sendResponse } from '../../utils/sendResponse';
+import { uploadToCloudinary } from '../../utils/upload';
 import {
   addResourceSchema,
   updateResourceSchema,
@@ -15,6 +16,17 @@ export const addResource = async (req: ExpressRequest, res: Response): Promise<v
     const { error, value } = addResourceSchema.validate(req.body);
     if (error) {
       sendResponse(res, 400, { error: error.details[0].message });
+      return;
+    }
+
+    let url: string = value.url || '';
+
+    if (req.file) {
+      url = await uploadToCloudinary(req.file.buffer, 'cla/lesson-resources', 'auto');
+    }
+
+    if (!url) {
+      sendResponse(res, 400, { error: 'A file upload or url is required.' });
       return;
     }
 
@@ -33,7 +45,7 @@ export const addResource = async (req: ExpressRequest, res: Response): Promise<v
       course: lesson.course,
       title: value.title,
       type: value.type,
-      url: value.url,
+      url,
       description: value.description,
       status: value.status,
       order: count + 1,
@@ -55,6 +67,10 @@ export const updateResource = async (req: ExpressRequest, res: Response): Promis
     }
 
     const { resourceId } = req.params;
+
+    if (req.file) {
+      value.url = await uploadToCloudinary(req.file.buffer, 'cla/lesson-resources', 'auto');
+    }
 
     const resource = await LessonResource.findByIdAndUpdate(
       resourceId,

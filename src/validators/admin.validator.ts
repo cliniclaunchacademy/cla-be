@@ -81,7 +81,7 @@ export const updateLessonSchema = Joi.object({
 export const addResourceSchema = Joi.object({
   title: Joi.string().trim().required(),
   type: Joi.string().valid('file', 'link', 'pdf', 'video').required(),
-  url: Joi.string().required(),
+  url: Joi.string().optional().allow(''),
   description: Joi.string().optional().allow(''),
   status: Joi.string().valid('published', 'hidden').required(),
 });
