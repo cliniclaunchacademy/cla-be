@@ -151,7 +151,7 @@ Fetch full course structure for the course editor (includes modules and lessons)
     "title": "Introduction to Clinic Management",
     "subheading": "Learn the basics",
     "about": "Full description...",
-    "thumbnail": "http://localhost:5000/uploads/thumb.jpg",
+    "thumbnail": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1234567890/cla/courses-thumbnails/abc123.jpg",
     "instructor": { /* instructor object */ },
     "status": "published",
     "comingSoon": false,
@@ -195,10 +195,15 @@ Upload a thumbnail image for a course.
 ### Response `200`
 ```json
 {
-  "thumbnail": "http://localhost:5000/uploads/thumbnail-abc123.jpg",
+  "thumbnail": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1234567890/cla/courses-thumbnails/abc123.jpg",
   "message": "Thumbnail uploaded."
 }
 ```
+
+### Notes
+- Image is uploaded to Cloudinary under the `cla/courses-thumbnails` folder
+- Response URL is a full Cloudinary `https://` URL — save and use it directly as `<img src>`
+- Max file size: 5MB. Accepted formats: JPEG, PNG, WebP
 
 ---
 

@@ -132,10 +132,15 @@ Upload a logo image for a lab.
 ### Response `200`
 ```json
 {
-  "logo": "http://localhost:5000/uploads/lab-logo-abc123.jpg",
+  "logo": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1234567890/cla/lab-logos/abc123.jpg",
   "message": "Lab logo updated."
 }
 ```
+
+### Notes
+- Image is uploaded to Cloudinary under the `cla/lab-logos` folder
+- Response URL is a full Cloudinary `https://` URL — save and use it directly as `<img src>`
+- Max file size: 5MB. Accepted formats: JPEG, PNG, WebP
 
 ---
 

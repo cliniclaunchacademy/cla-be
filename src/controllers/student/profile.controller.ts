@@ -3,7 +3,7 @@ import { ExpressRequest } from '../../types/types';
 import { User } from '../../models/user.schema';
 import { sendResponse } from '../../utils/sendResponse';
 import { updateProfileSchema } from '../../validators/student.validator';
-import { getFileUrl } from '../../utils/upload';
+import { uploadToCloudinary } from '../../utils/upload';
 
 export const getMe = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
@@ -62,7 +62,7 @@ export const uploadProfilePhoto = async (req: ExpressRequest, res: Response): Pr
       return;
     }
 
-    const photoUrl = getFileUrl(req.file.filename);
+    const photoUrl = await uploadToCloudinary(req.file.buffer, 'cla/profile-photos');
 
     await User.findByIdAndUpdate(req.user!._id, { profilePhoto: photoUrl });
 

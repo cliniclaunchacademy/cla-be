@@ -3,7 +3,7 @@ import { ExpressRequest } from '../../types/types';
 import { LabPartner } from '../../models/lab_partner.schema';
 import { LabApplication } from '../../models/lab_application.schema';
 import { sendResponse } from '../../utils/sendResponse';
-import { getFileUrl } from '../../utils/upload';
+import { uploadToCloudinary } from '../../utils/upload';
 import {
   createLabSchema,
   updateLabSchema,
@@ -56,7 +56,7 @@ export const uploadLabLogo = async (req: ExpressRequest, res: Response): Promise
       return;
     }
 
-    const logoUrl = getFileUrl(req.file.filename);
+    const logoUrl = await uploadToCloudinary(req.file.buffer, 'cla/lab-logos');
     const lab = await LabPartner.findByIdAndUpdate(labId, { $set: { logo: logoUrl } }, { new: true });
 
     if (!lab) {

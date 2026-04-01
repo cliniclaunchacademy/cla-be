@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { ExpressRequest } from '../../types/types';
 import { Banner } from '../../models/banner.schema';
 import { sendResponse } from '../../utils/sendResponse';
-import { getFileUrl } from '../../utils/upload';
+import { uploadToCloudinary } from '../../utils/upload';
 import { uploadBannerSchema, updateBannerSchema, reorderSchema } from '../../validators/admin.validator';
 
 export const getBanners = async (_req: ExpressRequest, res: Response): Promise<void> => {
@@ -28,7 +28,7 @@ export const createBanner = async (req: ExpressRequest, res: Response): Promise<
       return;
     }
 
-    const imageUrl = getFileUrl(req.file.filename);
+    const imageUrl = await uploadToCloudinary(req.file.buffer, 'cla/dashboard-carousel');
     const count = await Banner.countDocuments();
 
     const banner = await Banner.create({

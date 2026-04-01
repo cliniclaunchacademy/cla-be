@@ -5,7 +5,7 @@ import { Module } from '../../models/module.schema';
 import { Lesson } from '../../models/lesson.schema';
 import { LessonResource } from '../../models/lesson_resource.schema';
 import { sendResponse } from '../../utils/sendResponse';
-import { getFileUrl } from '../../utils/upload';
+import { uploadToCloudinary } from '../../utils/upload';
 import {
   createCourseSchema,
   updateCourseSchema,
@@ -77,7 +77,7 @@ export const uploadCourseThumbnail = async (req: ExpressRequest, res: Response):
       return;
     }
 
-    const thumbnailUrl = getFileUrl(req.file.filename);
+    const thumbnailUrl = await uploadToCloudinary(req.file.buffer, 'cla/courses-thumbnails');
     const course = await Course.findByIdAndUpdate(
       courseId,
       { $set: { thumbnail: thumbnailUrl } },

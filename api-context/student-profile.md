@@ -80,7 +80,12 @@ Upload a profile photo for the student.
 ### Response `200`
 ```json
 {
-  "profilePhoto": "http://localhost:5000/uploads/profile-abc123.jpg",
+  "profilePhoto": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1234567890/cla/profile-photos/abc123.jpg",
   "message": "Profile photo updated."
 }
 ```
+
+### Notes
+- Image is uploaded to Cloudinary under the `cla/profile-photos` folder
+- `profilePhoto` in the response is a full Cloudinary `https://` URL — use it directly as `<img src>`
+- Max file size: 5MB. Accepted formats: JPEG, PNG, WebP

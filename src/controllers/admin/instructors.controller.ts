@@ -3,7 +3,7 @@ import { ExpressRequest } from '../../types/types';
 import { Instructor } from '../../models/instructor.schema';
 import { Course } from '../../models/course.schema';
 import { sendResponse } from '../../utils/sendResponse';
-import { getFileUrl } from '../../utils/upload';
+import { uploadToCloudinary } from '../../utils/upload';
 import {
   createInstructorSchema,
   updateInstructorSchema,
@@ -52,7 +52,7 @@ export const uploadInstructorPhoto = async (req: ExpressRequest, res: Response):
       return;
     }
 
-    const photoUrl = getFileUrl(req.file.filename);
+    const photoUrl = await uploadToCloudinary(req.file.buffer, 'cla/instructors');
     const instructor = await Instructor.findByIdAndUpdate(
       instructorId,
       { $set: { photo: photoUrl } },

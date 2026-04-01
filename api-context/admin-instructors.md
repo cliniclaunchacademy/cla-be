@@ -102,10 +102,15 @@ Upload a profile photo for an instructor.
 ### Response `200`
 ```json
 {
-  "photo": "http://localhost:5000/uploads/instructor-abc123.jpg",
+  "photo": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1234567890/cla/instructors/abc123.jpg",
   "message": "Instructor photo updated."
 }
 ```
+
+### Notes
+- Image is uploaded to Cloudinary under the `cla/instructors` folder
+- Response URL is a full Cloudinary `https://` URL — save and use it directly as `<img src>`
+- Max file size: 5MB. Accepted formats: JPEG, PNG, WebP
 
 ---
 

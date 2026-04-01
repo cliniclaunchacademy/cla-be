@@ -1,26 +1,11 @@
-import multer, { StorageEngine, FileFilterCallback } from 'multer';
-import path from 'path';
-import fs from 'fs';
+import multer, { FileFilterCallback } from 'multer';
+import { v2 as cloudinary } from 'cloudinary';
 import { ExpressRequest } from '../types/types';
 
-const ensureUploadDir = (): string => {
-  const uploadDir = process.env.UPLOAD_DIR || 'uploads';
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-  }
-  return uploadDir;
-};
-
-const imageStorage: StorageEngine = multer.diskStorage({
-  destination: (_req: ExpressRequest, _file: Express.Multer.File, cb: (error: Error | null, destination: string) => void) => {
-    const uploadDir = ensureUploadDir();
-    cb(null, uploadDir);
-  },
-  filename: (_req: ExpressRequest, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
-    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    const ext = path.extname(file.originalname).toLowerCase();
-    cb(null, `${uniqueSuffix}${ext}`);
-  },
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 const imageFileFilter = (
@@ -37,13 +22,23 @@ const imageFileFilter = (
 };
 
 export const imageUpload = multer({
-  storage: imageStorage,
+  storage: multer.memoryStorage(),
   fileFilter: imageFileFilter,
   limits: {
     fileSize: 5 * 1024 * 1024, // 5MB
   },
 });
 
-export const getFileUrl = (filename: string): string => {
-  return `/uploads/${filename}`;
+export const uploadToCloudinary = (
+  buffer: Buffer,
+  folder: string
+): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader
+      .upload_stream({ folder, resource_type: 'image' }, (error, result) => {
+        if (error || !result) return reject(error || new Error('Cloudinary upload failed.'));
+        resolve(result.secure_url);
+      })
+      .end(buffer);
+  });
 };
