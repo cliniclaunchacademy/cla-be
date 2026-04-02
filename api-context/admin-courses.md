@@ -168,7 +168,7 @@ Fetch full course structure for the course editor (includes modules and lessons)
           "_id": "64f1a2b3c4d5e6f7a8b9c0f1",
           "title": "Lesson 1: Welcome",
           "subheading": "Introduction to the course",
-          "videoEmbed": "<iframe src='...'></iframe>",
+          "videoEmbed": "https://player.vimeo.com/video/1159391844",
           "status": "published",
           "order": 1
         }
@@ -293,7 +293,7 @@ Create a new lesson within a module.
 {
   "title": "Lesson 3: Deep Dive",         // required
   "subheading": "A detailed walkthrough", // optional
-  "videoEmbed": "<iframe ...></iframe>",  // optional, raw embed HTML
+  "videoEmbed": "https://player.vimeo.com/video/123456789", // optional, plain video player URL
   "status": "draft",                      // required: "draft" | "published"
   "comingSoon": false,                    // optional boolean
   "releaseDate": null                     // optional ISO date or null
@@ -306,7 +306,7 @@ Create a new lesson within a module.
   "_id": "64f1a2b3c4d5e6f7a8b9c0f3",
   "title": "Lesson 3: Deep Dive",
   "subheading": "A detailed walkthrough",
-  "videoEmbed": "<iframe ...></iframe>",
+  "videoEmbed": "https://player.vimeo.com/video/123456789",
   "status": "draft",
   "comingSoon": false,
   "releaseDate": null,
@@ -327,7 +327,7 @@ Update an existing lesson.
 {
   "title": "Updated Lesson Title",
   "subheading": "Updated subheading",
-  "videoEmbed": "<iframe ...></iframe>",
+  "videoEmbed": "https://player.vimeo.com/video/123456789",
   "status": "published",
   "comingSoon": false,
   "releaseDate": null

@@ -66,7 +66,7 @@ Fetch all published recordings within a specific category, with optional filters
       "_id": "64f1a2b3c4d5e6f7a8b9c0r1",
       "title": "Clinic Efficiency Tips",
       "subheading": "Streamline your workflow in 5 steps",
-      "videoEmbed": "<iframe src='https://vimeo.com/...'></iframe>",
+      "videoEmbed": "https://player.vimeo.com/video/123456789",
       "recordedDate": "2024-01-10T00:00:00.000Z",
       "status": "published",
       "order": 1
@@ -75,7 +75,7 @@ Fetch all published recordings within a specific category, with optional filters
       "_id": "64f1a2b3c4d5e6f7a8b9c0r2",
       "title": "Patient Communication Mastery",
       "subheading": "How to handle difficult conversations",
-      "videoEmbed": "<iframe src='https://vimeo.com/...'></iframe>",
+      "videoEmbed": "https://player.vimeo.com/video/123456789",
       "recordedDate": "2024-01-03T00:00:00.000Z",
       "status": "published",
       "order": 2
@@ -86,6 +86,6 @@ Fetch all published recordings within a specific category, with optional filters
 
 ### Notes
 - Only `published` recordings are returned
-- `videoEmbed` contains raw HTML embed code — render it directly with `dangerouslySetInnerHTML` or equivalent
+- `videoEmbed` is a plain video player URL (e.g. `https://player.vimeo.com/video/...`) — use it as the `src` of an `<iframe>` on the frontend
 - `recordedDate` is the original recording date (not upload date)
 - Use `from` and `to` together to filter by date range

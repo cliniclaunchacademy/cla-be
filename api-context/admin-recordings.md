@@ -132,7 +132,7 @@ Fetch all recordings within a specific category.
       "_id": "64f1a2b3c4d5e6f7a8b9c0r1",
       "title": "Clinic Efficiency Tips",
       "subheading": "How to streamline your clinic workflow",
-      "videoEmbed": "<iframe src='...'></iframe>",
+      "videoEmbed": "https://player.vimeo.com/video/123456789",
       "recordedDate": "2024-01-10T00:00:00.000Z",
       "status": "published",
       "order": 1
@@ -155,7 +155,7 @@ Add a new recording to a category.
 {
   "title": "Clinic Efficiency Tips",               // required
   "subheading": "Streamline your workflow",        // optional
-  "videoEmbed": "<iframe src='...'></iframe>",     // required, raw embed HTML/URL
+  "videoEmbed": "https://player.vimeo.com/video/123456789",     // required, plain video player URL
   "recordedDate": "2024-01-10T00:00:00.000Z",      // optional ISO date or null
   "status": "published"                            // required: "published" | "hidden"
 }
@@ -168,7 +168,7 @@ Add a new recording to a category.
   "category": "64f1a2b3c4d5e6f7a8b9c0d1",
   "title": "Clinic Efficiency Tips",
   "subheading": "Streamline your workflow",
-  "videoEmbed": "<iframe src='...'></iframe>",
+  "videoEmbed": "https://player.vimeo.com/video/123456789",
   "recordedDate": "2024-01-10T00:00:00.000Z",
   "status": "published",
   "order": 2,
@@ -190,7 +190,7 @@ Update an existing recording.
 {
   "title": "Updated Recording Title",
   "subheading": "Updated subheading",
-  "videoEmbed": "<iframe src='...'></iframe>",
+  "videoEmbed": "https://player.vimeo.com/video/123456789",
   "recordedDate": "2024-02-01T00:00:00.000Z",
   "status": "hidden"
 }
