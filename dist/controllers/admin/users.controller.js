@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.resendWelcomeEmail = exports.unbanUser = exports.banUser = exports.updateUser = exports.createUser = exports.getUsers = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const crypto_1 = __importDefault(require("crypto"));
 const user_schema_1 = require("../../models/user.schema");
 const progress_schema_1 = require("../../models/progress.schema");
 const activity_log_schema_1 = require("../../models/activity_log.schema");
@@ -81,11 +82,11 @@ const createUser = async (req, res) => {
         });
         if (shouldSendEmail) {
             try {
-                await (0, email_1.sendWelcomeEmail)(email, firstName, password);
+                await (0, email_1.sendWelcomeEmail)(email, firstName, lastName, password);
                 await user_schema_1.User.findByIdAndUpdate(user._id, { welcomeEmailSent: true });
             }
             catch (emailErr) {
-                console.error('[SendWelcomeEmail Error]', emailErr);
+                console.error('[SendWelcomeEmail Error]', emailErr instanceof Error ? emailErr.message : emailErr);
             }
         }
         const userObj = user.toObject();
@@ -194,9 +195,11 @@ const resendWelcomeEmail = async (req, res) => {
             (0, sendResponse_1.sendResponse)(res, 404, { error: 'User not found.' });
             return;
         }
-        await (0, email_1.sendWelcomeEmail)(user.email, user.firstName, '(Please use your existing password)');
-        await user_schema_1.User.findByIdAndUpdate(userId, { welcomeEmailSent: true });
-        (0, sendResponse_1.sendResponse)(res, 200, { message: 'Welcome email resent successfully.' });
+        const resetToken = crypto_1.default.randomBytes(32).toString('hex');
+        const resetTokenExpiry = new Date(Date.now() + 60 * 60 * 1000);
+        await user_schema_1.User.findByIdAndUpdate(userId, { resetToken, resetTokenExpiry, welcomeEmailSent: true });
+        await (0, email_1.sendWelcomeSetPasswordEmail)(user.email, user.firstName, user.lastName, resetToken);
+        (0, sendResponse_1.sendResponse)(res, 200, { message: 'Welcome email sent.' });
     }
     catch (err) {
         console.error('[AdminResendWelcomeEmail Error]', err);

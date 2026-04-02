@@ -44,7 +44,7 @@ const uploadInstructorPhoto = async (req, res) => {
             (0, sendResponse_1.sendResponse)(res, 400, { error: 'No image file provided.' });
             return;
         }
-        const photoUrl = (0, upload_1.getFileUrl)(req.file.filename);
+        const photoUrl = await (0, upload_1.uploadToCloudinary)(req.file.buffer, 'cla/instructors');
         const instructor = await instructor_schema_1.Instructor.findByIdAndUpdate(instructorId, { $set: { photo: photoUrl } }, { new: true });
         if (!instructor) {
             (0, sendResponse_1.sendResponse)(res, 404, { error: 'Instructor not found.' });

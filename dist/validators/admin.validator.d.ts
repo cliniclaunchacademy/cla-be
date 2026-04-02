@@ -1,4 +1,5 @@
 import Joi from 'joi';
+export declare const updateAdminProfileSchema: Joi.ObjectSchema<any>;
 export declare const createUserSchema: Joi.ObjectSchema<any>;
 export declare const editUserSchema: Joi.ObjectSchema<any>;
 export declare const createCourseSchema: Joi.ObjectSchema<any>;

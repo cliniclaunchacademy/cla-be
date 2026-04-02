@@ -5,12 +5,21 @@ const lesson_schema_1 = require("../../models/lesson.schema");
 const lesson_resource_schema_1 = require("../../models/lesson_resource.schema");
 const course_schema_1 = require("../../models/course.schema");
 const sendResponse_1 = require("../../utils/sendResponse");
+const upload_1 = require("../../utils/upload");
 const admin_validator_1 = require("../../validators/admin.validator");
 const addResource = async (req, res) => {
     try {
         const { error, value } = admin_validator_1.addResourceSchema.validate(req.body);
         if (error) {
             (0, sendResponse_1.sendResponse)(res, 400, { error: error.details[0].message });
+            return;
+        }
+        let url = value.url || '';
+        if (req.file) {
+            url = await (0, upload_1.uploadToCloudinary)(req.file.buffer, 'cla/lesson-resources', 'auto');
+        }
+        if (!url) {
+            (0, sendResponse_1.sendResponse)(res, 400, { error: 'A file upload or url is required.' });
             return;
         }
         const { lessonId } = req.params;
@@ -25,7 +34,7 @@ const addResource = async (req, res) => {
             course: lesson.course,
             title: value.title,
             type: value.type,
-            url: value.url,
+            url,
             description: value.description,
             status: value.status,
             order: count + 1,
@@ -46,6 +55,9 @@ const updateResource = async (req, res) => {
             return;
         }
         const { resourceId } = req.params;
+        if (req.file) {
+            value.url = await (0, upload_1.uploadToCloudinary)(req.file.buffer, 'cla/lesson-resources', 'auto');
+        }
         const resource = await lesson_resource_schema_1.LessonResource.findByIdAndUpdate(resourceId, { $set: value }, { new: true });
         if (!resource) {
             (0, sendResponse_1.sendResponse)(res, 404, { error: 'Resource not found.' });

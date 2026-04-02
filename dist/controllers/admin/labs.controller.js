@@ -45,7 +45,7 @@ const uploadLabLogo = async (req, res) => {
             (0, sendResponse_1.sendResponse)(res, 400, { error: 'No image file provided.' });
             return;
         }
-        const logoUrl = (0, upload_1.getFileUrl)(req.file.filename);
+        const logoUrl = await (0, upload_1.uploadToCloudinary)(req.file.buffer, 'cla/lab-logos');
         const lab = await lab_partner_schema_1.LabPartner.findByIdAndUpdate(labId, { $set: { logo: logoUrl } }, { new: true });
         if (!lab) {
             (0, sendResponse_1.sendResponse)(res, 404, { error: 'Lab not found.' });

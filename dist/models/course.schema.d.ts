@@ -4,6 +4,7 @@ export interface ICourse extends Document {
     subheading?: string;
     about?: string;
     thumbnail?: string;
+    banner?: string;
     instructor: Types.ObjectId;
     status: 'published' | 'unpublished' | 'draft';
     comingSoon: boolean;

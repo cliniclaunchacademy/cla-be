@@ -3,8 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.saveSettingsSchema = exports.sendNotificationSchema = exports.updateBannerSchema = exports.uploadBannerSchema = exports.updateApplicationStatusSchema = exports.updateLabSchema = exports.createLabSchema = exports.updateRecordingSchema = exports.createRecordingSchema = exports.updateRecordingCategorySchema = exports.createRecordingCategorySchema = exports.updateInstructorSchema = exports.createInstructorSchema = exports.updateResourceSchema = exports.addResourceSchema = exports.updateLessonSchema = exports.createLessonSchema = exports.updateModuleSchema = exports.createModuleSchema = exports.reorderSchema = exports.updateCourseSchema = exports.createCourseSchema = exports.editUserSchema = exports.createUserSchema = void 0;
+exports.saveSettingsSchema = exports.sendNotificationSchema = exports.updateBannerSchema = exports.uploadBannerSchema = exports.updateApplicationStatusSchema = exports.updateLabSchema = exports.createLabSchema = exports.updateRecordingSchema = exports.createRecordingSchema = exports.updateRecordingCategorySchema = exports.createRecordingCategorySchema = exports.updateInstructorSchema = exports.createInstructorSchema = exports.updateResourceSchema = exports.addResourceSchema = exports.updateLessonSchema = exports.createLessonSchema = exports.updateModuleSchema = exports.createModuleSchema = exports.reorderSchema = exports.updateCourseSchema = exports.createCourseSchema = exports.editUserSchema = exports.createUserSchema = exports.updateAdminProfileSchema = void 0;
 const joi_1 = __importDefault(require("joi"));
+exports.updateAdminProfileSchema = joi_1.default.object({
+    firstName: joi_1.default.string().trim().optional(),
+    lastName: joi_1.default.string().trim().optional(),
+    username: joi_1.default.string().trim().optional(),
+});
 exports.createUserSchema = joi_1.default.object({
     username: joi_1.default.string().trim().required(),
     email: joi_1.default.string().email().required(),
@@ -31,6 +36,7 @@ exports.createCourseSchema = joi_1.default.object({
     status: joi_1.default.string().valid('draft', 'unpublished', 'published').required(),
     comingSoon: joi_1.default.boolean().optional(),
     releaseDate: joi_1.default.date().optional(),
+    banner: joi_1.default.string().optional().allow(''),
 });
 exports.updateCourseSchema = joi_1.default.object({
     title: joi_1.default.string().trim().optional(),
@@ -40,6 +46,7 @@ exports.updateCourseSchema = joi_1.default.object({
     status: joi_1.default.string().valid('draft', 'unpublished', 'published').optional(),
     comingSoon: joi_1.default.boolean().optional(),
     releaseDate: joi_1.default.date().optional().allow(null),
+    banner: joi_1.default.string().optional().allow(''),
 });
 exports.reorderSchema = joi_1.default.object({
     order: joi_1.default.array().items(joi_1.default.string()).required(),
@@ -69,7 +76,7 @@ exports.updateLessonSchema = joi_1.default.object({
 exports.addResourceSchema = joi_1.default.object({
     title: joi_1.default.string().trim().required(),
     type: joi_1.default.string().valid('file', 'link', 'pdf', 'video').required(),
-    url: joi_1.default.string().required(),
+    url: joi_1.default.string().optional().allow(''),
     description: joi_1.default.string().optional().allow(''),
     status: joi_1.default.string().valid('published', 'hidden').required(),
 });

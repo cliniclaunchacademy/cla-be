@@ -33,12 +33,13 @@ const createCourse = async (req, res) => {
             (0, sendResponse_1.sendResponse)(res, 400, { error: error.details[0].message });
             return;
         }
-        const { title, subheading, about, instructorId, status, comingSoon, releaseDate } = value;
+        const { title, subheading, about, instructorId, status, comingSoon, releaseDate, banner } = value;
         const count = await course_schema_1.Course.countDocuments();
         const course = await course_schema_1.Course.create({
             title,
             subheading,
             about,
+            banner,
             instructor: instructorId,
             status,
             comingSoon: comingSoon || false,
@@ -61,7 +62,7 @@ const uploadCourseThumbnail = async (req, res) => {
             (0, sendResponse_1.sendResponse)(res, 400, { error: 'No image file provided.' });
             return;
         }
-        const thumbnailUrl = (0, upload_1.getFileUrl)(req.file.filename);
+        const thumbnailUrl = await (0, upload_1.uploadToCloudinary)(req.file.buffer, 'cla/courses-thumbnails');
         const course = await course_schema_1.Course.findByIdAndUpdate(courseId, { $set: { thumbnail: thumbnailUrl } }, { new: true });
         if (!course) {
             (0, sendResponse_1.sendResponse)(res, 404, { error: 'Course not found.' });
@@ -90,6 +91,8 @@ const updateCourse = async (req, res) => {
             updateData.subheading = value.subheading;
         if (value.about !== undefined)
             updateData.about = value.about;
+        if (value.banner !== undefined)
+            updateData.banner = value.banner;
         if (value.instructorId !== undefined)
             updateData.instructor = value.instructorId;
         if (value.status !== undefined)

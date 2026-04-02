@@ -1,4 +1,5 @@
-import { Request, Response } from 'express';
-export declare const getRecordingCategories: (_req: Request, res: Response) => Promise<void>;
-export declare const getRecordingsByCategory: (req: Request, res: Response) => Promise<void>;
+import { Response } from 'express';
+import { ExpressRequest } from '../../types/types';
+export declare const getRecordingCategories: (_req: ExpressRequest, res: Response) => Promise<void>;
+export declare const getRecordingsByCategory: (req: ExpressRequest, res: Response) => Promise<void>;
 //# sourceMappingURL=recordings.controller.d.ts.map

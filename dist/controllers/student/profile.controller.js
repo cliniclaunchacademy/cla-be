@@ -57,7 +57,7 @@ const uploadProfilePhoto = async (req, res) => {
             (0, sendResponse_1.sendResponse)(res, 400, { error: 'No image file provided.' });
             return;
         }
-        const photoUrl = (0, upload_1.getFileUrl)(req.file.filename);
+        const photoUrl = await (0, upload_1.uploadToCloudinary)(req.file.buffer, 'cla/profile-photos');
         await user_schema_1.User.findByIdAndUpdate(req.user._id, { profilePhoto: photoUrl });
         (0, sendResponse_1.sendResponse)(res, 200, { profilePhoto: photoUrl, message: 'Profile photo updated.' });
     }

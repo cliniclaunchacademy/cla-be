@@ -50,6 +50,9 @@ const courseSchema = new mongoose_1.Schema({
     thumbnail: {
         type: String,
     },
+    banner: {
+        type: String,
+    },
     instructor: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: 'Instructor',

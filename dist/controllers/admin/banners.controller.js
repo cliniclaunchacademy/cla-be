@@ -27,7 +27,7 @@ const createBanner = async (req, res) => {
             (0, sendResponse_1.sendResponse)(res, 400, { error: error.details[0].message });
             return;
         }
-        const imageUrl = (0, upload_1.getFileUrl)(req.file.filename);
+        const imageUrl = await (0, upload_1.uploadToCloudinary)(req.file.buffer, 'cla/dashboard-carousel');
         const count = await banner_schema_1.Banner.countDocuments();
         const banner = await banner_schema_1.Banner.create({
             imageUrl,

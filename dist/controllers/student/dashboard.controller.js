@@ -58,6 +58,10 @@ const getContinueLearning = async (req, res) => {
             (0, sendResponse_1.sendResponse)(res, 200, { continueLearning: null });
             return;
         }
+        const courseId = progress.course._id;
+        const totalLessons = await lesson_schema_1.Lesson.countDocuments({ course: courseId, status: 'published' });
+        const completedLessons = await progress_schema_1.Progress.countDocuments({ user: userId, course: courseId, completed: true });
+        const progressPercent = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
         (0, sendResponse_1.sendResponse)(res, 200, {
             continueLearning: {
                 lessonId: progress.lesson._id,
@@ -67,6 +71,9 @@ const getContinueLearning = async (req, res) => {
                 courseThumbnail: progress.course.thumbnail,
                 lastWatched: progress.lastWatched,
                 completed: progress.completed,
+                progressPercent,
+                completedLessons,
+                totalLessons,
             },
         });
     }

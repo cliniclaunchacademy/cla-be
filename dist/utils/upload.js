@@ -3,27 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getFileUrl = exports.imageUpload = void 0;
+exports.uploadToCloudinary = exports.resourceFileUpload = exports.imageUpload = void 0;
 const multer_1 = __importDefault(require("multer"));
-const path_1 = __importDefault(require("path"));
-const fs_1 = __importDefault(require("fs"));
-const ensureUploadDir = () => {
-    const uploadDir = process.env.UPLOAD_DIR || 'uploads';
-    if (!fs_1.default.existsSync(uploadDir)) {
-        fs_1.default.mkdirSync(uploadDir, { recursive: true });
-    }
-    return uploadDir;
-};
-const imageStorage = multer_1.default.diskStorage({
-    destination: (_req, _file, cb) => {
-        const uploadDir = ensureUploadDir();
-        cb(null, uploadDir);
-    },
-    filename: (_req, file, cb) => {
-        const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-        const ext = path_1.default.extname(file.originalname).toLowerCase();
-        cb(null, `${uniqueSuffix}${ext}`);
-    },
+const cloudinary_1 = require("cloudinary");
+cloudinary_1.v2.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 const imageFileFilter = (_req, file, cb) => {
     const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
@@ -35,14 +21,28 @@ const imageFileFilter = (_req, file, cb) => {
     }
 };
 exports.imageUpload = (0, multer_1.default)({
-    storage: imageStorage,
+    storage: multer_1.default.memoryStorage(),
     fileFilter: imageFileFilter,
     limits: {
         fileSize: 5 * 1024 * 1024,
     },
 });
-const getFileUrl = (filename) => {
-    return `/uploads/${filename}`;
+exports.resourceFileUpload = (0, multer_1.default)({
+    storage: multer_1.default.memoryStorage(),
+    limits: {
+        fileSize: 20 * 1024 * 1024,
+    },
+});
+const uploadToCloudinary = (buffer, folder, resourceType = 'image') => {
+    return new Promise((resolve, reject) => {
+        cloudinary_1.v2.uploader
+            .upload_stream({ folder, resource_type: resourceType }, (error, result) => {
+            if (error || !result)
+                return reject(error || new Error('Cloudinary upload failed.'));
+            resolve(result.secure_url);
+        })
+            .end(buffer);
+    });
 };
-exports.getFileUrl = getFileUrl;
+exports.uploadToCloudinary = uploadToCloudinary;
 //# sourceMappingURL=upload.js.map

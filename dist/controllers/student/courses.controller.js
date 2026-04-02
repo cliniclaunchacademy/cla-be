@@ -187,24 +187,25 @@ exports.flagVideo = flagVideo;
 const getStudentResources = async (req, res) => {
     try {
         const resources = await lesson_resource_schema_1.LessonResource.find({ status: 'published' })
-            .populate({ path: 'course', select: 'title thumbnail status' })
+            .populate({ path: 'course', select: 'title thumbnail' })
             .populate({ path: 'lesson', select: 'title' })
             .sort({ course: 1, order: 1 });
-        const grouped = {};
-        for (const resource of resources) {
-            const courseObj = resource.course;
-            if (!courseObj)
-                continue;
-            const courseIdStr = courseObj._id.toString();
-            if (!grouped[courseIdStr]) {
-                grouped[courseIdStr] = {
-                    course: courseObj,
-                    resources: [],
-                };
-            }
-            grouped[courseIdStr].resources.push(resource.toObject());
-        }
-        (0, sendResponse_1.sendResponse)(res, 200, { resources: Object.values(grouped) });
+        const result = resources.map((r) => {
+            const obj = r.toObject();
+            return {
+                _id: obj._id,
+                course: obj.course,
+                lesson: obj.lesson,
+                title: obj.title,
+                type: obj.type,
+                url: obj.url,
+                description: obj.description,
+                status: obj.status,
+                order: obj.order,
+                createdAt: obj.createdAt,
+            };
+        });
+        (0, sendResponse_1.sendResponse)(res, 200, { resources: result });
     }
     catch (err) {
         console.error('[GetStudentResources Error]', err);
