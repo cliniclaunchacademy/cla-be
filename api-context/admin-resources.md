@@ -147,7 +147,7 @@ Updated resource object.
 
 ---
 
-## DELETE `/api/admin/resources/:lessonId/resources/:resourceId`
+## DELETE `/api/admin/lessons/:lessonId/resources/:resourceId`
 
 Delete a resource.
 
@@ -162,7 +162,7 @@ Delete a resource.
 
 ---
 
-## PATCH `/api/admin/resources/:lessonId/resources/reorder`
+## PATCH `/api/admin/lessons/:lessonId/resources/reorder`
 
 Update the display order of resources within a lesson.
 
