@@ -15,6 +15,16 @@ export const getBanners = async (_req: ExpressRequest, res: Response): Promise<v
   }
 };
 
+export const getActiveBanners = async (_req: ExpressRequest, res: Response): Promise<void> => {
+  try {
+    const banners = await Banner.find({ status: 'active' }).sort({ order: 1 });
+    sendResponse(res, 200, { banners });
+  } catch (err) {
+    console.error('[AdminGetActiveBanners Error]', err);
+    sendResponse(res, 500, { error: 'Internal server error.' });
+  }
+};
+
 export const createBanner = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     if (!req.file) {
