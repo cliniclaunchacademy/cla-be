@@ -138,7 +138,11 @@ export const updateCourse = async (req: ExpressRequest, res: Response): Promise<
     if (value.title !== undefined) updateData.title = value.title;
     if (value.subheading !== undefined) updateData.subheading = value.subheading;
     if (value.about !== undefined) updateData.about = value.about;
-    if (value.banner !== undefined) updateData.banner = value.banner;
+    if (req.file) {
+      updateData.banner = await uploadToCloudinary(req.file.buffer, 'cla/courses-backgrounds');
+    } else if (value.banner !== undefined) {
+      updateData.banner = value.banner;
+    }
     if (value.instructorId !== undefined) updateData.instructor = value.instructorId;
     if (value.status !== undefined) updateData.status = value.status;
     if (value.comingSoon !== undefined) updateData.comingSoon = value.comingSoon;

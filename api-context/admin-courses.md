@@ -83,19 +83,23 @@ Update an existing course.
 ### URL Parameters
 - `courseId` — MongoDB ObjectId of the course
 
-### Request Body (all optional)
-```json
-{
-  "title": "Updated Title",
-  "subheading": "Updated subheading",
-  "about": "Updated description",
-  "banner": "https://res.cloudinary.com/example/image/upload/new-banner.jpg",  // send "" to clear
-  "instructorId": "64f1a2b3c4d5e6f7a8b9c0d2",
-  "status": "published",
-  "comingSoon": true,
-  "releaseDate": "2024-08-01T00:00:00.000Z"  // send null to remove
-}
-```
+### Request
+Supports both `application/json` and `multipart/form-data`.
+
+Use `multipart/form-data` when uploading a banner image file. All other fields can be sent as form fields or JSON.
+
+### Fields (all optional)
+| Field | Type | Description |
+|-------|------|-------------|
+| `title` | string | Course title |
+| `subheading` | string | Course subheading |
+| `about` | string | Course description |
+| `bannerImage` | file | Banner image file (JPEG, PNG, WebP) — if provided, uploaded to Cloudinary and URL saved as `banner` |
+| `banner` | string | Banner URL string — used only if `bannerImage` is not provided. Send `""` to clear |
+| `instructorId` | string | Instructor ObjectId |
+| `status` | string | `"draft"` \| `"unpublished"` \| `"published"` |
+| `comingSoon` | boolean | |
+| `releaseDate` | string | ISO date or `null` to remove |
 
 ### Response `200`
 Updated course object.
