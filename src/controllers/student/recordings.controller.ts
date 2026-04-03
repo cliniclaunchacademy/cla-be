@@ -8,52 +8,47 @@ export const getRecordingCategories = async (_req: ExpressRequest, res: Response
   try {
     const categories = await RecordingCategory.find({ status: 'published' }).sort({ order: 1 });
 
-    const categoriesWithCount = await Promise.all(
+    const categoriesWithRecordings = await Promise.all(
       categories.map(async (cat) => {
-        const recordingCount = await Recording.countDocuments({ category: cat._id, status: 'published' });
-        return { ...cat.toObject(), recordingCount };
+        const recordings = await Recording.find({ category: cat._id, status: 'published' })
+          .sort({ order: 1 })
+          .select('_id title subheading videoEmbed recordedDate');
+        return { _id: cat._id, name: cat.name, recordings };
       })
     );
 
-    sendResponse(res, 200, { categories: categoriesWithCount });
+    sendResponse(res, 200, { categories: categoriesWithRecordings });
   } catch (err) {
     console.error('[GetRecordingCategories Error]', err);
     sendResponse(res, 500, { error: 'Internal server error.' });
   }
 };
 
-export const getRecordingsByCategory = async (req: ExpressRequest, res: Response): Promise<void> => {
+export const getRecording = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
-    const { categoryId } = req.params;
-    const { search, from, to } = req.query;
+    const { id } = req.params;
 
-    const category = await RecordingCategory.findOne({ _id: categoryId, status: 'published' });
-    if (!category) {
-      sendResponse(res, 404, { error: 'Recording category not found.' });
+    const recording = await Recording.findOne({ _id: id, status: 'published' }).populate<{
+      category: { name: string };
+    }>({ path: 'category', select: 'name' });
+
+    if (!recording) {
+      sendResponse(res, 404, { error: 'Recording not found.' });
       return;
     }
 
-    const filter: Record<string, unknown> = { category: categoryId, status: 'published' };
-
-    if (search) {
-      filter.title = { $regex: search, $options: 'i' };
-    }
-
-    if (from || to) {
-      const dateFilter: Record<string, Date> = {};
-      if (from) dateFilter.$gte = new Date(from as string);
-      if (to) dateFilter.$lte = new Date(to as string);
-      filter.recordedDate = dateFilter;
-    }
-
-    const recordings = await Recording.find(filter).sort({ order: 1 });
-
     sendResponse(res, 200, {
-      category: category.toObject(),
-      recordings,
+      recording: {
+        _id: recording._id,
+        title: recording.title,
+        subheading: recording.subheading,
+        videoEmbed: recording.videoEmbed,
+        recordedDate: recording.recordedDate,
+        categoryName: recording.category.name,
+      },
     });
   } catch (err) {
-    console.error('[GetRecordingsByCategory Error]', err);
+    console.error('[GetRecording Error]', err);
     sendResponse(res, 500, { error: 'Internal server error.' });
   }
 };

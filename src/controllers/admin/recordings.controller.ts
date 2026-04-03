@@ -169,9 +169,11 @@ export const updateRecording = async (req: ExpressRequest, res: Response): Promi
     }
 
     const { recordingId } = req.params;
+    const { categoryId, ...rest } = value;
+    const updateData = { ...rest, ...(categoryId !== undefined && { category: categoryId }) };
     const recording = await Recording.findByIdAndUpdate(
       recordingId,
-      { $set: value },
+      { $set: updateData },
       { new: true }
     );
 

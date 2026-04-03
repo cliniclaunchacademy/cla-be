@@ -134,6 +134,7 @@ export const updateRecordingSchema = Joi.object({
   videoEmbed: Joi.string().optional(),
   recordedDate: Joi.date().optional().allow(null),
   status: Joi.string().valid('published', 'hidden').optional(),
+  categoryId: Joi.string().optional(),
 });
 
 export const createLabSchema = Joi.object({

@@ -192,7 +192,8 @@ Update an existing recording.
   "subheading": "Updated subheading",
   "videoEmbed": "https://player.vimeo.com/video/123456789",
   "recordedDate": "2024-02-01T00:00:00.000Z",
-  "status": "hidden"
+  "status": "hidden",
+  "categoryId": "64f1a2b3c4d5e6f7a8b9c0d2"
 }
 ```
 
