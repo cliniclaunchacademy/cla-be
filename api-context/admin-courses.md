@@ -207,6 +207,33 @@ Upload a thumbnail image for a course.
 
 ---
 
+## POST `/api/admin/courses/:courseId/banner`
+
+Upload a banner image for a course.
+
+### URL Parameters
+- `courseId` — MongoDB ObjectId of the course
+
+### Request
+- **Content-Type:** `multipart/form-data`
+- **Field name:** `banner`
+- **Accepted formats:** JPEG, PNG, WebP
+
+### Response `200`
+```json
+{
+  "banner": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1234567890/cla/courses-backgrounds/abc123.jpg",
+  "message": "Banner uploaded."
+}
+```
+
+### Notes
+- Image is uploaded to Cloudinary under the `cla/courses-backgrounds` folder
+- Response URL is a full Cloudinary `https://` URL — save and use it directly as `<img src>`
+- Max file size: 5MB. Accepted formats: JPEG, PNG, WebP
+
+---
+
 # MODULES
 
 **Base path:** `/api/admin/courses/:courseId/modules`

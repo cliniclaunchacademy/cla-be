@@ -5,6 +5,7 @@ import {
   getCourses,
   createCourse,
   uploadCourseThumbnail,
+  uploadCourseBanner,
   updateCourse,
   reorderCourses,
   deleteCourse,
@@ -28,6 +29,7 @@ router.post('/', authenticate(ROLES.ADMIN), createCourse);
 router.patch('/reorder', authenticate(ROLES.ADMIN), reorderCourses);
 router.get('/:courseId/editor', authenticate(ROLES.ADMIN), getCourseEditor);
 router.post('/:courseId/thumbnail', authenticate(ROLES.ADMIN), imageUpload.single('thumbnail'), uploadCourseThumbnail);
+router.post('/:courseId/banner', authenticate(ROLES.ADMIN), imageUpload.single('banner'), uploadCourseBanner);
 router.put('/:courseId', authenticate(ROLES.ADMIN), updateCourse);
 router.delete('/:courseId', authenticate(ROLES.ADMIN), deleteCourse);
 

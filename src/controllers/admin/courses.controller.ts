@@ -96,6 +96,34 @@ export const uploadCourseThumbnail = async (req: ExpressRequest, res: Response):
   }
 };
 
+export const uploadCourseBanner = async (req: ExpressRequest, res: Response): Promise<void> => {
+  try {
+    const { courseId } = req.params;
+
+    if (!req.file) {
+      sendResponse(res, 400, { error: 'No image file provided.' });
+      return;
+    }
+
+    const bannerUrl = await uploadToCloudinary(req.file.buffer, 'cla/courses-backgrounds');
+    const course = await Course.findByIdAndUpdate(
+      courseId,
+      { $set: { banner: bannerUrl } },
+      { new: true }
+    );
+
+    if (!course) {
+      sendResponse(res, 404, { error: 'Course not found.' });
+      return;
+    }
+
+    sendResponse(res, 200, { banner: bannerUrl, message: 'Banner uploaded.' });
+  } catch (err) {
+    console.error('[AdminUploadCourseBanner Error]', err);
+    sendResponse(res, 500, { error: 'Internal server error.' });
+  }
+};
+
 export const updateCourse = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = updateCourseSchema.validate(req.body);
