@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteBanner = exports.reorderBanners = exports.updateBanner = exports.createBanner = exports.getBanners = void 0;
+exports.deleteBanner = exports.reorderBanners = exports.updateBanner = exports.createBanner = exports.getActiveBanners = exports.getBanners = void 0;
 const banner_schema_1 = require("../../models/banner.schema");
 const sendResponse_1 = require("../../utils/sendResponse");
 const upload_1 = require("../../utils/upload");
@@ -16,6 +16,17 @@ const getBanners = async (_req, res) => {
     }
 };
 exports.getBanners = getBanners;
+const getActiveBanners = async (_req, res) => {
+    try {
+        const banners = await banner_schema_1.Banner.find({ status: 'active' }).sort({ order: 1 });
+        (0, sendResponse_1.sendResponse)(res, 200, { banners });
+    }
+    catch (err) {
+        console.error('[AdminGetActiveBanners Error]', err);
+        (0, sendResponse_1.sendResponse)(res, 500, { error: 'Internal server error.' });
+    }
+};
+exports.getActiveBanners = getActiveBanners;
 const createBanner = async (req, res) => {
     try {
         if (!req.file) {

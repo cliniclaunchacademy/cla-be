@@ -3,6 +3,7 @@ import { ExpressRequest } from '../../types/types';
 export declare const getCourses: (_req: ExpressRequest, res: Response) => Promise<void>;
 export declare const createCourse: (req: ExpressRequest, res: Response) => Promise<void>;
 export declare const uploadCourseThumbnail: (req: ExpressRequest, res: Response) => Promise<void>;
+export declare const uploadCourseBanner: (req: ExpressRequest, res: Response) => Promise<void>;
 export declare const updateCourse: (req: ExpressRequest, res: Response) => Promise<void>;
 export declare const reorderCourses: (req: ExpressRequest, res: Response) => Promise<void>;
 export declare const deleteCourse: (req: ExpressRequest, res: Response) => Promise<void>;

@@ -11,7 +11,8 @@ router.post('/', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), cours
 router.patch('/reorder', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.reorderCourses);
 router.get('/:courseId/editor', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.getCourseEditor);
 router.post('/:courseId/thumbnail', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), upload_1.imageUpload.single('thumbnail'), courses_controller_1.uploadCourseThumbnail);
-router.put('/:courseId', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.updateCourse);
+router.post('/:courseId/banner', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), upload_1.imageUpload.single('banner'), courses_controller_1.uploadCourseBanner);
+router.put('/:courseId', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), upload_1.imageUpload.single('bannerImage'), courses_controller_1.updateCourse);
 router.delete('/:courseId', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.deleteCourse);
 router.post('/:courseId/modules', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.createModule);
 router.patch('/:courseId/modules/reorder', (0, auth_middleware_1.authenticate)(roles_1.ROLES.ADMIN), courses_controller_1.reorderModules);

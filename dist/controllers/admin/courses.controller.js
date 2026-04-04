@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteLesson = exports.reorderLessons = exports.updateLesson = exports.createLesson = exports.deleteModule = exports.reorderModules = exports.updateModule = exports.createModule = exports.getCourseEditor = exports.deleteCourse = exports.reorderCourses = exports.updateCourse = exports.uploadCourseThumbnail = exports.createCourse = exports.getCourses = void 0;
+exports.deleteLesson = exports.reorderLessons = exports.updateLesson = exports.createLesson = exports.deleteModule = exports.reorderModules = exports.updateModule = exports.createModule = exports.getCourseEditor = exports.deleteCourse = exports.reorderCourses = exports.updateCourse = exports.uploadCourseBanner = exports.uploadCourseThumbnail = exports.createCourse = exports.getCourses = void 0;
 const course_schema_1 = require("../../models/course.schema");
 const module_schema_1 = require("../../models/module.schema");
 const lesson_schema_1 = require("../../models/lesson.schema");
@@ -76,6 +76,27 @@ const uploadCourseThumbnail = async (req, res) => {
     }
 };
 exports.uploadCourseThumbnail = uploadCourseThumbnail;
+const uploadCourseBanner = async (req, res) => {
+    try {
+        const { courseId } = req.params;
+        if (!req.file) {
+            (0, sendResponse_1.sendResponse)(res, 400, { error: 'No image file provided.' });
+            return;
+        }
+        const bannerUrl = await (0, upload_1.uploadToCloudinary)(req.file.buffer, 'cla/courses-backgrounds');
+        const course = await course_schema_1.Course.findByIdAndUpdate(courseId, { $set: { banner: bannerUrl } }, { new: true });
+        if (!course) {
+            (0, sendResponse_1.sendResponse)(res, 404, { error: 'Course not found.' });
+            return;
+        }
+        (0, sendResponse_1.sendResponse)(res, 200, { banner: bannerUrl, message: 'Banner uploaded.' });
+    }
+    catch (err) {
+        console.error('[AdminUploadCourseBanner Error]', err);
+        (0, sendResponse_1.sendResponse)(res, 500, { error: 'Internal server error.' });
+    }
+};
+exports.uploadCourseBanner = uploadCourseBanner;
 const updateCourse = async (req, res) => {
     try {
         const { error, value } = admin_validator_1.updateCourseSchema.validate(req.body);
@@ -91,8 +112,12 @@ const updateCourse = async (req, res) => {
             updateData.subheading = value.subheading;
         if (value.about !== undefined)
             updateData.about = value.about;
-        if (value.banner !== undefined)
+        if (req.file) {
+            updateData.banner = await (0, upload_1.uploadToCloudinary)(req.file.buffer, 'cla/courses-backgrounds');
+        }
+        else if (value.banner !== undefined) {
             updateData.banner = value.banner;
+        }
         if (value.instructorId !== undefined)
             updateData.instructor = value.instructorId;
         if (value.status !== undefined)

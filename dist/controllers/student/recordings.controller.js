@@ -1,17 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRecordingsByCategory = exports.getRecordingCategories = void 0;
+exports.getRecording = exports.getRecordingCategories = void 0;
 const recording_category_schema_1 = require("../../models/recording_category.schema");
 const recording_schema_1 = require("../../models/recording.schema");
 const sendResponse_1 = require("../../utils/sendResponse");
 const getRecordingCategories = async (_req, res) => {
     try {
         const categories = await recording_category_schema_1.RecordingCategory.find({ status: 'published' }).sort({ order: 1 });
-        const categoriesWithCount = await Promise.all(categories.map(async (cat) => {
-            const recordingCount = await recording_schema_1.Recording.countDocuments({ category: cat._id, status: 'published' });
-            return { ...cat.toObject(), recordingCount };
+        const categoriesWithRecordings = await Promise.all(categories.map(async (cat) => {
+            const recordings = await recording_schema_1.Recording.find({ category: cat._id, status: 'published' })
+                .sort({ order: 1 })
+                .select('_id title subheading videoEmbed recordedDate');
+            return { _id: cat._id, name: cat.name, recordings };
         }));
-        (0, sendResponse_1.sendResponse)(res, 200, { categories: categoriesWithCount });
+        (0, sendResponse_1.sendResponse)(res, 200, { categories: categoriesWithRecordings });
     }
     catch (err) {
         console.error('[GetRecordingCategories Error]', err);
@@ -19,37 +21,29 @@ const getRecordingCategories = async (_req, res) => {
     }
 };
 exports.getRecordingCategories = getRecordingCategories;
-const getRecordingsByCategory = async (req, res) => {
+const getRecording = async (req, res) => {
     try {
-        const { categoryId } = req.params;
-        const { search, from, to } = req.query;
-        const category = await recording_category_schema_1.RecordingCategory.findOne({ _id: categoryId, status: 'published' });
-        if (!category) {
-            (0, sendResponse_1.sendResponse)(res, 404, { error: 'Recording category not found.' });
+        const { id } = req.params;
+        const recording = await recording_schema_1.Recording.findOne({ _id: id, status: 'published' }).populate({ path: 'category', select: 'name' });
+        if (!recording) {
+            (0, sendResponse_1.sendResponse)(res, 404, { error: 'Recording not found.' });
             return;
         }
-        const filter = { category: categoryId, status: 'published' };
-        if (search) {
-            filter.title = { $regex: search, $options: 'i' };
-        }
-        if (from || to) {
-            const dateFilter = {};
-            if (from)
-                dateFilter.$gte = new Date(from);
-            if (to)
-                dateFilter.$lte = new Date(to);
-            filter.recordedDate = dateFilter;
-        }
-        const recordings = await recording_schema_1.Recording.find(filter).sort({ order: 1 });
         (0, sendResponse_1.sendResponse)(res, 200, {
-            category: category.toObject(),
-            recordings,
+            recording: {
+                _id: recording._id,
+                title: recording.title,
+                subheading: recording.subheading,
+                videoEmbed: recording.videoEmbed,
+                recordedDate: recording.recordedDate,
+                categoryName: recording.category.name,
+            },
         });
     }
     catch (err) {
-        console.error('[GetRecordingsByCategory Error]', err);
+        console.error('[GetRecording Error]', err);
         (0, sendResponse_1.sendResponse)(res, 500, { error: 'Internal server error.' });
     }
 };
-exports.getRecordingsByCategory = getRecordingsByCategory;
+exports.getRecording = getRecording;
 //# sourceMappingURL=recordings.controller.js.map

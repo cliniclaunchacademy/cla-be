@@ -122,6 +122,7 @@ exports.updateRecordingSchema = joi_1.default.object({
     videoEmbed: joi_1.default.string().optional(),
     recordedDate: joi_1.default.date().optional().allow(null),
     status: joi_1.default.string().valid('published', 'hidden').optional(),
+    categoryId: joi_1.default.string().optional(),
 });
 exports.createLabSchema = joi_1.default.object({
     name: joi_1.default.string().trim().required(),

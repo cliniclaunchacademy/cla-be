@@ -7,6 +7,6 @@ const roles_1 = require("../../constants/roles");
 const recordings_controller_1 = require("../../controllers/student/recordings.controller");
 const router = (0, express_1.Router)();
 router.get('/', (0, auth_middleware_1.authenticate)(roles_1.ROLES.STUDENT), maintenance_middleware_1.maintenanceMiddleware, recordings_controller_1.getRecordingCategories);
-router.get('/:categoryId', (0, auth_middleware_1.authenticate)(roles_1.ROLES.STUDENT), maintenance_middleware_1.maintenanceMiddleware, recordings_controller_1.getRecordingsByCategory);
+router.get('/:id', (0, auth_middleware_1.authenticate)(roles_1.ROLES.STUDENT), maintenance_middleware_1.maintenanceMiddleware, recordings_controller_1.getRecording);
 exports.default = router;
 //# sourceMappingURL=recordings.routes.js.map

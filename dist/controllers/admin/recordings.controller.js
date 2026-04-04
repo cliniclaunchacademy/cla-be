@@ -143,7 +143,9 @@ const updateRecording = async (req, res) => {
             return;
         }
         const { recordingId } = req.params;
-        const recording = await recording_schema_1.Recording.findByIdAndUpdate(recordingId, { $set: value }, { new: true });
+        const { categoryId, ...rest } = value;
+        const updateData = { ...rest, ...(categoryId !== undefined && { category: categoryId }) };
+        const recording = await recording_schema_1.Recording.findByIdAndUpdate(recordingId, { $set: updateData }, { new: true });
         if (!recording) {
             (0, sendResponse_1.sendResponse)(res, 404, { error: 'Recording not found.' });
             return;
