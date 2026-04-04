@@ -159,6 +159,10 @@ export const updateCourse = async (req: ExpressRequest, res: Response): Promise<
       return;
     }
 
+    if (value.status === 'published') {
+      await Lesson.updateMany({ course: courseId }, { $set: { status: 'published' } });
+    }
+
     sendResponse(res, 200, { course, message: 'Course updated successfully.' });
   } catch (err) {
     console.error('[AdminUpdateCourse Error]', err);
