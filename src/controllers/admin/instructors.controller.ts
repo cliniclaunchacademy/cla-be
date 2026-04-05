@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { ExpressRequest } from '../../types/types';
 import { Instructor } from '../../models/instructor.schema';
 import { Course } from '../../models/course.schema';
-import { sendResponse } from '../../utils/sendResponse';
+import { sendResponse, sendError } from '../../utils/sendResponse';
 import { uploadToCloudinary } from '../../utils/upload';
 import {
   createInstructorSchema,
@@ -23,7 +23,7 @@ export const getInstructors = async (_req: ExpressRequest, res: Response): Promi
     sendResponse(res, 200, { instructors: instructorsWithCount });
   } catch (err) {
     console.error('[AdminGetInstructors Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load instructors. Please try again.');
   }
 };
 
@@ -31,7 +31,7 @@ export const createInstructor = async (req: ExpressRequest, res: Response): Prom
   try {
     const { error, value } = createInstructorSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -39,7 +39,7 @@ export const createInstructor = async (req: ExpressRequest, res: Response): Prom
     sendResponse(res, 201, { instructor, message: 'Instructor created successfully.' });
   } catch (err) {
     console.error('[AdminCreateInstructor Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to create instructor. Please try again.');
   }
 };
 
@@ -48,7 +48,7 @@ export const uploadInstructorPhoto = async (req: ExpressRequest, res: Response):
     const { instructorId } = req.params;
 
     if (!req.file) {
-      sendResponse(res, 400, { error: 'No image file provided.' });
+      sendError(res, 400, 'Please select an image file to upload.');
       return;
     }
 
@@ -60,14 +60,14 @@ export const uploadInstructorPhoto = async (req: ExpressRequest, res: Response):
     );
 
     if (!instructor) {
-      sendResponse(res, 404, { error: 'Instructor not found.' });
+      sendError(res, 404, 'Instructor not found.');
       return;
     }
 
     sendResponse(res, 200, { photo: photoUrl, message: 'Instructor photo updated.' });
   } catch (err) {
     console.error('[AdminUploadInstructorPhoto Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to upload instructor photo. Please try again.');
   }
 };
 
@@ -75,7 +75,7 @@ export const updateInstructor = async (req: ExpressRequest, res: Response): Prom
   try {
     const { error, value } = updateInstructorSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -88,14 +88,14 @@ export const updateInstructor = async (req: ExpressRequest, res: Response): Prom
     );
 
     if (!instructor) {
-      sendResponse(res, 404, { error: 'Instructor not found.' });
+      sendError(res, 404, 'Instructor not found.');
       return;
     }
 
     sendResponse(res, 200, { instructor, message: 'Instructor updated.' });
   } catch (err) {
     console.error('[AdminUpdateInstructor Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to update instructor. Please try again.');
   }
 };
 
@@ -105,7 +105,7 @@ export const deleteInstructor = async (req: ExpressRequest, res: Response): Prom
 
     const instructor = await Instructor.findById(instructorId);
     if (!instructor) {
-      sendResponse(res, 404, { error: 'Instructor not found.' });
+      sendError(res, 404, 'Instructor not found.');
       return;
     }
 
@@ -116,9 +116,7 @@ export const deleteInstructor = async (req: ExpressRequest, res: Response): Prom
     });
 
     if (activeCourse) {
-      sendResponse(res, 400, {
-        error: 'Cannot delete instructor assigned to published or unpublished courses.',
-      });
+      sendError(res, 400, 'This instructor is assigned to one or more active courses. Please reassign those courses before deleting this instructor.');
       return;
     }
 
@@ -126,6 +124,6 @@ export const deleteInstructor = async (req: ExpressRequest, res: Response): Prom
     sendResponse(res, 200, { message: 'Instructor deleted.' });
   } catch (err) {
     console.error('[AdminDeleteInstructor Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to delete instructor. Please try again.');
   }
 };

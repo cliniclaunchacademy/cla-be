@@ -3,7 +3,7 @@ import { ExpressRequest } from '../../types/types';
 import mongoose from 'mongoose';
 import { LabPartner } from '../../models/lab_partner.schema';
 import { LabApplication } from '../../models/lab_application.schema';
-import { sendResponse } from '../../utils/sendResponse';
+import { sendResponse, sendError } from '../../utils/sendResponse';
 
 export const getLabs = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
@@ -26,7 +26,7 @@ export const getLabs = async (req: ExpressRequest, res: Response): Promise<void>
     sendResponse(res, 200, { labs: labsWithApplicationStatus });
   } catch (err) {
     console.error('[GetLabs Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load lab partners. Please try again.');
   }
 };
 
@@ -37,13 +37,13 @@ export const applyToLab = async (req: ExpressRequest, res: Response): Promise<vo
 
     const lab = await LabPartner.findById(labId);
     if (!lab) {
-      sendResponse(res, 404, { error: 'Lab not found.' });
+      sendError(res, 404, 'Lab partner not found.');
       return;
     }
 
     const existingApplication = await LabApplication.findOne({ user: userId, lab: labId });
     if (existingApplication) {
-      sendResponse(res, 400, { error: 'You have already applied to this lab.' });
+      sendError(res, 400, 'You have already applied to this lab partner.');
       return;
     }
 
@@ -61,6 +61,6 @@ export const applyToLab = async (req: ExpressRequest, res: Response): Promise<vo
     });
   } catch (err) {
     console.error('[ApplyToLab Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to submit application. Please try again.');
   }
 };

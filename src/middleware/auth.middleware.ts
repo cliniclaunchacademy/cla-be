@@ -1,7 +1,7 @@
 import { Response, NextFunction } from 'express';
 import { ExpressRequest } from '../types/types';
 import jwt from 'jsonwebtoken';
-import { sendResponse } from '../utils/sendResponse';
+import { sendError } from '../utils/sendResponse';
 import { Role } from '../constants/roles';
 
 interface JwtPayload {
@@ -27,7 +27,7 @@ export const authenticate = (role?: Role) => {
       const authHeader = req.headers.authorization;
 
       if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        sendResponse(res, 401, { error: 'No token provided. Authorization denied.' });
+        sendError(res, 401, 'You are not logged in. Please log in to continue.');
         return;
       }
 
@@ -35,14 +35,14 @@ export const authenticate = (role?: Role) => {
       const secret = process.env.JWT_SECRET;
 
       if (!secret) {
-        sendResponse(res, 500, { error: 'JWT secret not configured.' });
+        sendError(res, 500, 'Server configuration error. Please contact support.');
         return;
       }
 
       const decoded = jwt.verify(token, secret) as JwtPayload;
 
       if (role && decoded.role !== role) {
-        sendResponse(res, 403, { error: 'Access denied. Insufficient permissions.' });
+        sendError(res, 403, 'You do not have permission to access this page.');
         return;
       }
 
@@ -54,11 +54,11 @@ export const authenticate = (role?: Role) => {
       next();
     } catch (err) {
       if (err instanceof jwt.TokenExpiredError) {
-        sendResponse(res, 401, { error: 'Token has expired. Please log in again.' });
+        sendError(res, 401, 'Your session has expired. Please log in again.');
       } else if (err instanceof jwt.JsonWebTokenError) {
-        sendResponse(res, 401, { error: 'Invalid token. Authorization denied.' });
+        sendError(res, 401, 'Invalid session. Please log in again.');
       } else {
-        sendResponse(res, 401, { error: 'Authentication failed.' });
+        sendError(res, 401, 'Authentication failed. Please log in again.');
       }
     }
   };

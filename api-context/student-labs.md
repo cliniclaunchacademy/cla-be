@@ -110,6 +110,8 @@ None
 ```
 
 ### Errors
+All error responses follow the standard structure: `{ "success": false, "error": "Human-readable message." }` — see `overview.md`.
+
 | Status | Condition |
 |--------|-----------|
 | `400` | Student has already applied to this lab |

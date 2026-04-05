@@ -38,11 +38,18 @@ Login with email and password.
 ```
 
 ### Errors
-| Status | Condition |
-|--------|-----------|
-| `400` | Missing fields or invalid email format |
-| `401` | Wrong email or password |
-| `403` | Account is banned, inactive, or not whitelisted |
+All error responses follow this structure (see `overview.md`):
+```json
+{ "success": false, "error": "Human-readable message." }
+```
+
+| Status | `error` message | Condition |
+|--------|-----------------|-----------|
+| `400` | `"email" is required` / similar | Missing or invalid fields |
+| `401` | `"Incorrect email or password."` | Wrong credentials |
+| `403` | `"Your account has been suspended. Please contact support."` | Account banned |
+| `403` | `"Your account is inactive. Please contact support."` | Account inactive |
+| `403` | `"Your account is not authorized to access this platform. Please contact support."` | Not whitelisted |
 
 ### Notes
 - Store the `token` in localStorage or a cookie for subsequent requests
@@ -97,8 +104,8 @@ Reset password using the token received in email.
 ```
 
 ### Errors
-| Status | Condition |
-|--------|-----------|
-| `400` | Token is invalid or expired |
-| `400` | Passwords do not match |
-| `400` | Password too short (min 8 chars) |
+| Status | `error` message | Condition |
+|--------|-----------------|-----------|
+| `400` | `"This password reset link is invalid or has expired. Please request a new one."` | Bad/expired token |
+| `400` | `"Passwords do not match."` | Passwords don't match |
+| `400` | Joi validation message | Password too short (min 8 chars) |

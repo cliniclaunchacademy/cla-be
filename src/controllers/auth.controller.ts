@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/user.schema';
 import { ActivityLog } from '../models/activity_log.schema';
-import { sendResponse } from '../utils/sendResponse';
+import { sendResponse, sendError } from '../utils/sendResponse';
 import { sendPasswordResetEmail } from '../utils/email';
 import {
   loginSchema,
@@ -17,7 +17,7 @@ export const login = async (req: ExpressRequest, res: Response): Promise<void> =
   try {
     const { error, value } = loginSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -25,28 +25,28 @@ export const login = async (req: ExpressRequest, res: Response): Promise<void> =
 
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
-      sendResponse(res, 401, { error: 'Incorrect email or password.' });
+      sendError(res, 401, 'Incorrect email or password.');
       return;
     }
 
     if (user.status === 'banned') {
-      sendResponse(res, 403, { error: 'Your account has been suspended.' });
+      sendError(res, 403, 'Your account has been suspended. Please contact support.');
       return;
     }
 
     if (user.status === 'inactive') {
-      sendResponse(res, 403, { error: 'Your account is inactive. Please contact support.' });
+      sendError(res, 403, 'Your account is inactive. Please contact support.');
       return;
     }
 
     if (!user.is_whitelisted) {
-      sendResponse(res, 403, { error: 'Your account is not authorized to access this platform.' });
+      sendError(res, 403, 'Your account is not authorized to access this platform. Please contact support.');
       return;
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      sendResponse(res, 401, { error: 'Incorrect email or password.' });
+      sendError(res, 401, 'Incorrect email or password.');
       return;
     }
 
@@ -60,7 +60,7 @@ export const login = async (req: ExpressRequest, res: Response): Promise<void> =
 
     const secret = process.env.JWT_SECRET;
     if (!secret) {
-      sendResponse(res, 500, { error: 'Server configuration error.' });
+      sendError(res, 500, 'Server configuration error. Please contact support.');
       return;
     }
 
@@ -78,7 +78,7 @@ export const login = async (req: ExpressRequest, res: Response): Promise<void> =
     sendResponse(res, 200, { token, user: userObj });
   } catch (err) {
     console.error('[Login Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Login failed. Please try again.');
   }
 };
 
@@ -86,7 +86,7 @@ export const forgotPassword = async (req: ExpressRequest, res: Response): Promis
   try {
     const { error, value } = forgotPasswordSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -114,7 +114,7 @@ export const forgotPassword = async (req: ExpressRequest, res: Response): Promis
     sendResponse(res, 200, { message: successMessage });
   } catch (err) {
     console.error('[ForgotPassword Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to send password reset email. Please try again.');
   }
 };
 
@@ -122,14 +122,14 @@ export const resetPassword = async (req: ExpressRequest, res: Response): Promise
   try {
     const { error, value } = resetPasswordSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
     const { token, password, confirmPassword } = value;
 
     if (password !== confirmPassword) {
-      sendResponse(res, 400, { error: 'Passwords do not match.' });
+      sendError(res, 400, 'Passwords do not match.');
       return;
     }
 
@@ -141,7 +141,7 @@ export const resetPassword = async (req: ExpressRequest, res: Response): Promise
     });
 
     if (!user) {
-      sendResponse(res, 400, { error: 'Reset link is invalid or has expired.' });
+      sendError(res, 400, 'This password reset link is invalid or has expired. Please request a new one.');
       return;
     }
 
@@ -151,9 +151,9 @@ export const resetPassword = async (req: ExpressRequest, res: Response): Promise
     user.resetTokenExpiry = undefined;
     await user.save();
 
-    sendResponse(res, 200, { message: 'Password updated. Please log in.' });
+    sendResponse(res, 200, { message: 'Password updated successfully. Please log in.' });
   } catch (err) {
     console.error('[ResetPassword Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to reset password. Please try again.');
   }
 };

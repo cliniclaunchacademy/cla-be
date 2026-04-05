@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { ExpressRequest } from '../../types/types';
 import mongoose from 'mongoose';
 import { NotificationRead } from '../../models/notification_read.schema';
-import { sendResponse } from '../../utils/sendResponse';
+import { sendResponse, sendError } from '../../utils/sendResponse';
 
 export const getNotifications = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
@@ -29,7 +29,7 @@ export const getNotifications = async (req: ExpressRequest, res: Response): Prom
     sendResponse(res, 200, { unreadCount, notifications });
   } catch (err) {
     console.error('[GetNotifications Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load notifications. Please try again.');
   }
 };
 
@@ -45,14 +45,14 @@ export const markNotificationRead = async (req: ExpressRequest, res: Response): 
     );
 
     if (!notificationRead) {
-      sendResponse(res, 404, { error: 'Notification not found.' });
+      sendError(res, 404, 'Notification not found.');
       return;
     }
 
     sendResponse(res, 200, { read: true, readAt: notificationRead.readAt });
   } catch (err) {
     console.error('[MarkNotificationRead Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to mark notification as read. Please try again.');
   }
 };
 
@@ -68,6 +68,6 @@ export const markAllNotificationsRead = async (req: ExpressRequest, res: Respons
     sendResponse(res, 200, { updatedCount: result.modifiedCount });
   } catch (err) {
     console.error('[MarkAllNotificationsRead Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to mark notifications as read. Please try again.');
   }
 };

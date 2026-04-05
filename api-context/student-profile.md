@@ -58,6 +58,8 @@ Update the student's profile information.
 ```
 
 ### Errors
+All error responses follow the standard structure: `{ "success": false, "error": "Human-readable message." }` — see `overview.md`.
+
 | Status | Condition |
 |--------|-----------|
 | `400` | Username already taken by another user |

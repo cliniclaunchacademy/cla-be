@@ -1,7 +1,7 @@
 import { Response, NextFunction } from 'express';
 import { ExpressRequest } from '../types/types';
 import { AdminSettings } from '../models/admin_settings.schema';
-import { sendResponse } from '../utils/sendResponse';
+import { sendError } from '../utils/sendResponse';
 
 export const maintenanceMiddleware = async (
   req: ExpressRequest,
@@ -24,9 +24,7 @@ export const maintenanceMiddleware = async (
     const settings = await AdminSettings.findOne().lean();
 
     if (settings?.maintenanceMode) {
-      sendResponse(res, 503, {
-        error: settings.maintenanceMessage || 'Platform is under maintenance.',
-      });
+      sendError(res, 503, settings.maintenanceMessage || 'The platform is currently undergoing maintenance. Please check back soon.');
       return;
     }
 

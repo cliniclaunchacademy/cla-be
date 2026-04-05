@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { ExpressRequest } from '../../types/types';
 import { Banner } from '../../models/banner.schema';
-import { sendResponse } from '../../utils/sendResponse';
+import { sendResponse, sendError } from '../../utils/sendResponse';
 import { uploadToCloudinary } from '../../utils/upload';
 import { uploadBannerSchema, updateBannerSchema, reorderSchema } from '../../validators/admin.validator';
 
@@ -11,7 +11,7 @@ export const getBanners = async (_req: ExpressRequest, res: Response): Promise<v
     sendResponse(res, 200, { banners });
   } catch (err) {
     console.error('[AdminGetBanners Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load banners. Please try again.');
   }
 };
 
@@ -21,20 +21,20 @@ export const getActiveBanners = async (_req: ExpressRequest, res: Response): Pro
     sendResponse(res, 200, { banners });
   } catch (err) {
     console.error('[AdminGetActiveBanners Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load banners. Please try again.');
   }
 };
 
 export const createBanner = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     if (!req.file) {
-      sendResponse(res, 400, { error: 'No image file provided.' });
+      sendError(res, 400, 'Please select an image file to upload.');
       return;
     }
 
     const { error, value } = uploadBannerSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -51,7 +51,7 @@ export const createBanner = async (req: ExpressRequest, res: Response): Promise<
     sendResponse(res, 201, { banner, message: 'Banner created.' });
   } catch (err) {
     console.error('[AdminCreateBanner Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to create banner. Please try again.');
   }
 };
 
@@ -59,7 +59,7 @@ export const updateBanner = async (req: ExpressRequest, res: Response): Promise<
   try {
     const { error, value } = updateBannerSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -67,14 +67,14 @@ export const updateBanner = async (req: ExpressRequest, res: Response): Promise<
     const banner = await Banner.findByIdAndUpdate(bannerId, { $set: value }, { new: true });
 
     if (!banner) {
-      sendResponse(res, 404, { error: 'Banner not found.' });
+      sendError(res, 404, 'Banner not found.');
       return;
     }
 
     sendResponse(res, 200, { banner, message: 'Banner updated.' });
   } catch (err) {
     console.error('[AdminUpdateBanner Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to update banner. Please try again.');
   }
 };
 
@@ -82,7 +82,7 @@ export const reorderBanners = async (req: ExpressRequest, res: Response): Promis
   try {
     const { error, value } = reorderSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -94,7 +94,7 @@ export const reorderBanners = async (req: ExpressRequest, res: Response): Promis
     sendResponse(res, 200, { message: 'Banners reordered.' });
   } catch (err) {
     console.error('[AdminReorderBanners Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to reorder banners. Please try again.');
   }
 };
 
@@ -104,13 +104,13 @@ export const deleteBanner = async (req: ExpressRequest, res: Response): Promise<
 
     const banner = await Banner.findByIdAndDelete(bannerId);
     if (!banner) {
-      sendResponse(res, 404, { error: 'Banner not found.' });
+      sendError(res, 404, 'Banner not found.');
       return;
     }
 
     sendResponse(res, 200, { message: 'Banner deleted.' });
   } catch (err) {
     console.error('[AdminDeleteBanner Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to delete banner. Please try again.');
   }
 };

@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { ExpressRequest } from '../../types/types';
 import { RecordingCategory } from '../../models/recording_category.schema';
 import { Recording } from '../../models/recording.schema';
-import { sendResponse } from '../../utils/sendResponse';
+import { sendResponse, sendError } from '../../utils/sendResponse';
 import {
   createRecordingCategorySchema,
   updateRecordingCategorySchema,
@@ -25,7 +25,7 @@ export const getRecordingCategories = async (_req: ExpressRequest, res: Response
     sendResponse(res, 200, { categories: categoriesWithCount });
   } catch (err) {
     console.error('[AdminGetRecordingCategories Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load recording categories. Please try again.');
   }
 };
 
@@ -33,7 +33,7 @@ export const createRecordingCategory = async (req: ExpressRequest, res: Response
   try {
     const { error, value } = createRecordingCategorySchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -43,7 +43,7 @@ export const createRecordingCategory = async (req: ExpressRequest, res: Response
     sendResponse(res, 201, { category, message: 'Recording category created.' });
   } catch (err) {
     console.error('[AdminCreateRecordingCategory Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to create recording category. Please try again.');
   }
 };
 
@@ -51,7 +51,7 @@ export const updateRecordingCategory = async (req: ExpressRequest, res: Response
   try {
     const { error, value } = updateRecordingCategorySchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -63,14 +63,14 @@ export const updateRecordingCategory = async (req: ExpressRequest, res: Response
     );
 
     if (!category) {
-      sendResponse(res, 404, { error: 'Category not found.' });
+      sendError(res, 404, 'Recording category not found.');
       return;
     }
 
     sendResponse(res, 200, { category, message: 'Category updated.' });
   } catch (err) {
     console.error('[AdminUpdateRecordingCategory Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to update recording category. Please try again.');
   }
 };
 
@@ -80,7 +80,7 @@ export const deleteRecordingCategory = async (req: ExpressRequest, res: Response
 
     const category = await RecordingCategory.findById(categoryId);
     if (!category) {
-      sendResponse(res, 404, { error: 'Category not found.' });
+      sendError(res, 404, 'Recording category not found.');
       return;
     }
 
@@ -92,7 +92,7 @@ export const deleteRecordingCategory = async (req: ExpressRequest, res: Response
     sendResponse(res, 200, { message: 'Category and all recordings deleted.' });
   } catch (err) {
     console.error('[AdminDeleteRecordingCategory Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to delete recording category. Please try again.');
   }
 };
 
@@ -100,7 +100,7 @@ export const reorderRecordingCategories = async (req: ExpressRequest, res: Respo
   try {
     const { error, value } = reorderSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -112,7 +112,7 @@ export const reorderRecordingCategories = async (req: ExpressRequest, res: Respo
     sendResponse(res, 200, { message: 'Categories reordered.' });
   } catch (err) {
     console.error('[AdminReorderRecordingCategories Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to reorder categories. Please try again.');
   }
 };
 
@@ -122,7 +122,7 @@ export const getRecordings = async (req: ExpressRequest, res: Response): Promise
 
     const category = await RecordingCategory.findById(categoryId);
     if (!category) {
-      sendResponse(res, 404, { error: 'Category not found.' });
+      sendError(res, 404, 'Recording category not found.');
       return;
     }
 
@@ -130,7 +130,7 @@ export const getRecordings = async (req: ExpressRequest, res: Response): Promise
     sendResponse(res, 200, { category: category.toObject(), recordings });
   } catch (err) {
     console.error('[AdminGetRecordings Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load recordings. Please try again.');
   }
 };
 
@@ -138,7 +138,7 @@ export const createRecording = async (req: ExpressRequest, res: Response): Promi
   try {
     const { error, value } = createRecordingSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -146,7 +146,7 @@ export const createRecording = async (req: ExpressRequest, res: Response): Promi
 
     const category = await RecordingCategory.findById(categoryId);
     if (!category) {
-      sendResponse(res, 404, { error: 'Category not found.' });
+      sendError(res, 404, 'Recording category not found.');
       return;
     }
 
@@ -156,7 +156,7 @@ export const createRecording = async (req: ExpressRequest, res: Response): Promi
     sendResponse(res, 201, { recording, message: 'Recording created.' });
   } catch (err) {
     console.error('[AdminCreateRecording Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to create recording. Please try again.');
   }
 };
 
@@ -164,7 +164,7 @@ export const updateRecording = async (req: ExpressRequest, res: Response): Promi
   try {
     const { error, value } = updateRecordingSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -178,14 +178,14 @@ export const updateRecording = async (req: ExpressRequest, res: Response): Promi
     );
 
     if (!recording) {
-      sendResponse(res, 404, { error: 'Recording not found.' });
+      sendError(res, 404, 'Recording not found.');
       return;
     }
 
     sendResponse(res, 200, { recording, message: 'Recording updated.' });
   } catch (err) {
     console.error('[AdminUpdateRecording Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to update recording. Please try again.');
   }
 };
 
@@ -195,14 +195,14 @@ export const deleteRecording = async (req: ExpressRequest, res: Response): Promi
 
     const recording = await Recording.findByIdAndDelete(recordingId);
     if (!recording) {
-      sendResponse(res, 404, { error: 'Recording not found.' });
+      sendError(res, 404, 'Recording not found.');
       return;
     }
 
     sendResponse(res, 200, { message: 'Recording deleted.' });
   } catch (err) {
     console.error('[AdminDeleteRecording Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to delete recording. Please try again.');
   }
 };
 
@@ -210,7 +210,7 @@ export const reorderRecordings = async (req: ExpressRequest, res: Response): Pro
   try {
     const { error, value } = reorderSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -222,6 +222,6 @@ export const reorderRecordings = async (req: ExpressRequest, res: Response): Pro
     sendResponse(res, 200, { message: 'Recordings reordered.' });
   } catch (err) {
     console.error('[AdminReorderRecordings Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to reorder recordings. Please try again.');
   }
 };

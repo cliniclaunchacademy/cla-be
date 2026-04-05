@@ -4,7 +4,7 @@ import { User } from '../../models/user.schema';
 import { Progress } from '../../models/progress.schema';
 import { ActivityLog } from '../../models/activity_log.schema';
 import { Notification } from '../../models/notification.schema';
-import { sendResponse } from '../../utils/sendResponse';
+import { sendResponse, sendError } from '../../utils/sendResponse';
 
 export const getDashboardStats = async (_req: ExpressRequest, res: Response): Promise<void> => {
   try {
@@ -34,7 +34,7 @@ export const getDashboardStats = async (_req: ExpressRequest, res: Response): Pr
     });
   } catch (err) {
     console.error('[AdminDashboardStats Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load dashboard stats. Please try again.');
   }
 };
 
@@ -48,7 +48,7 @@ export const getRecentlyJoined = async (_req: ExpressRequest, res: Response): Pr
     sendResponse(res, 200, { users });
   } catch (err) {
     console.error('[AdminRecentlyJoined Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load recently joined users. Please try again.');
   }
 };
 
@@ -78,6 +78,6 @@ export const getNotificationHistory = async (req: ExpressRequest, res: Response)
     });
   } catch (err) {
     console.error('[AdminNotificationHistory Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load notification history. Please try again.');
   }
 };

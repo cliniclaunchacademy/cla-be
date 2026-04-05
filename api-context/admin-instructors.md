@@ -127,6 +127,8 @@ Delete an instructor.
 ```
 
 ### Errors
+All error responses follow the standard structure: `{ "success": false, "error": "Human-readable message." }` — see `overview.md`.
+
 | Status | Condition |
 |--------|-----------|
 | `400` | Instructor is assigned to one or more published or unpublished courses — unassign them first |

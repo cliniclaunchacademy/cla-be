@@ -5,7 +5,7 @@ import crypto from 'crypto';
 import { User } from '../../models/user.schema';
 import { Progress } from '../../models/progress.schema';
 import { ActivityLog } from '../../models/activity_log.schema';
-import { sendResponse } from '../../utils/sendResponse';
+import { sendResponse, sendError } from '../../utils/sendResponse';
 import { sendWelcomeEmail, sendWelcomeSetPasswordEmail } from '../../utils/email';
 import { createUserSchema, editUserSchema } from '../../validators/admin.validator';
 
@@ -43,7 +43,7 @@ export const getUsers = async (req: ExpressRequest, res: Response): Promise<void
     });
   } catch (err) {
     console.error('[AdminGetUsers Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load users. Please try again.');
   }
 };
 
@@ -51,7 +51,7 @@ export const createUser = async (req: ExpressRequest, res: Response): Promise<vo
   try {
     const { error, value } = createUserSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -59,13 +59,13 @@ export const createUser = async (req: ExpressRequest, res: Response): Promise<vo
 
     const existingEmail = await User.findOne({ email });
     if (existingEmail) {
-      sendResponse(res, 400, { error: 'Email is already registered.' });
+      sendError(res, 400, 'A user with this email address already exists.');
       return;
     }
 
     const existingUsername = await User.findOne({ username });
     if (existingUsername) {
-      sendResponse(res, 400, { error: 'Username is already taken.' });
+      sendError(res, 400, 'This username is already taken. Please choose a different one.');
       return;
     }
 
@@ -100,7 +100,7 @@ export const createUser = async (req: ExpressRequest, res: Response): Promise<vo
     sendResponse(res, 201, { user: userObj, message: 'User created successfully.' });
   } catch (err) {
     console.error('[AdminCreateUser Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to create user. Please try again.');
   }
 };
 
@@ -108,7 +108,7 @@ export const updateUser = async (req: ExpressRequest, res: Response): Promise<vo
   try {
     const { error, value } = editUserSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -117,14 +117,14 @@ export const updateUser = async (req: ExpressRequest, res: Response): Promise<vo
 
     const user = await User.findById(userId);
     if (!user) {
-      sendResponse(res, 404, { error: 'User not found.' });
+      sendError(res, 404, 'User not found.');
       return;
     }
 
     if (username && username !== user.username) {
       const existing = await User.findOne({ username, _id: { $ne: userId } });
       if (existing) {
-        sendResponse(res, 400, { error: 'Username is already taken.' });
+        sendError(res, 400, 'This username is already taken. Please choose a different one.');
         return;
       }
     }
@@ -132,7 +132,7 @@ export const updateUser = async (req: ExpressRequest, res: Response): Promise<vo
     if (email && email !== user.email) {
       const existing = await User.findOne({ email, _id: { $ne: userId } });
       if (existing) {
-        sendResponse(res, 400, { error: 'Email is already registered.' });
+        sendError(res, 400, 'A user with this email address already exists.');
         return;
       }
     }
@@ -159,7 +159,7 @@ export const updateUser = async (req: ExpressRequest, res: Response): Promise<vo
     sendResponse(res, 200, { user: updated, message: 'User updated successfully.' });
   } catch (err) {
     console.error('[AdminUpdateUser Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to update user. Please try again.');
   }
 };
 
@@ -174,14 +174,14 @@ export const banUser = async (req: ExpressRequest, res: Response): Promise<void>
     ).select('-password -resetToken -resetTokenExpiry');
 
     if (!user) {
-      sendResponse(res, 404, { error: 'User not found.' });
+      sendError(res, 404, 'User not found.');
       return;
     }
 
     sendResponse(res, 200, { user, message: 'User has been banned.' });
   } catch (err) {
     console.error('[AdminBanUser Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to ban user. Please try again.');
   }
 };
 
@@ -196,14 +196,14 @@ export const unbanUser = async (req: ExpressRequest, res: Response): Promise<voi
     ).select('-password -resetToken -resetTokenExpiry');
 
     if (!user) {
-      sendResponse(res, 404, { error: 'User not found.' });
+      sendError(res, 404, 'User not found.');
       return;
     }
 
     sendResponse(res, 200, { user, message: 'User has been unbanned.' });
   } catch (err) {
     console.error('[AdminUnbanUser Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to unban user. Please try again.');
   }
 };
 
@@ -213,7 +213,7 @@ export const resendWelcomeEmail = async (req: ExpressRequest, res: Response): Pr
 
     const user = await User.findById(userId);
     if (!user) {
-      sendResponse(res, 404, { error: 'User not found.' });
+      sendError(res, 404, 'User not found.');
       return;
     }
 
@@ -223,10 +223,10 @@ export const resendWelcomeEmail = async (req: ExpressRequest, res: Response): Pr
     await User.findByIdAndUpdate(userId, { resetToken, resetTokenExpiry, welcomeEmailSent: true });
     await sendWelcomeSetPasswordEmail(user.email, user.firstName, user.lastName, resetToken);
 
-    sendResponse(res, 200, { message: 'Welcome email sent.' });
+    sendResponse(res, 200, { message: 'Welcome email sent successfully.' });
   } catch (err) {
     console.error('[AdminResendWelcomeEmail Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to send welcome email. Please try again.');
   }
 };
 
@@ -236,7 +236,7 @@ export const deleteUser = async (req: ExpressRequest, res: Response): Promise<vo
 
     const user = await User.findById(userId);
     if (!user) {
-      sendResponse(res, 404, { error: 'User not found.' });
+      sendError(res, 404, 'User not found.');
       return;
     }
 
@@ -249,6 +249,6 @@ export const deleteUser = async (req: ExpressRequest, res: Response): Promise<vo
     sendResponse(res, 200, { message: 'User deleted successfully.' });
   } catch (err) {
     console.error('[AdminDeleteUser Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to delete user. Please try again.');
   }
 };

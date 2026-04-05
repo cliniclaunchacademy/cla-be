@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { ExpressRequest } from '../../types/types';
 import { RecordingCategory } from '../../models/recording_category.schema';
 import { Recording } from '../../models/recording.schema';
-import { sendResponse } from '../../utils/sendResponse';
+import { sendResponse, sendError } from '../../utils/sendResponse';
 
 export const getRecordingCategories = async (_req: ExpressRequest, res: Response): Promise<void> => {
   try {
@@ -20,7 +20,7 @@ export const getRecordingCategories = async (_req: ExpressRequest, res: Response
     sendResponse(res, 200, { categories: categoriesWithRecordings });
   } catch (err) {
     console.error('[GetRecordingCategories Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load recordings. Please try again.');
   }
 };
 
@@ -33,7 +33,7 @@ export const getRecording = async (req: ExpressRequest, res: Response): Promise<
     }>({ path: 'category', select: 'name' });
 
     if (!recording) {
-      sendResponse(res, 404, { error: 'Recording not found.' });
+      sendError(res, 404, 'Recording not found.');
       return;
     }
 
@@ -49,6 +49,6 @@ export const getRecording = async (req: ExpressRequest, res: Response): Promise<
     });
   } catch (err) {
     console.error('[GetRecording Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load recording. Please try again.');
   }
 };

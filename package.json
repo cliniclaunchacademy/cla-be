@@ -6,7 +6,8 @@
     "dev": "ts-node-dev --respawn src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "seed:mock": "ts-node src/seeders/seed.ts"
+    "seed:mock": "ts-node src/seeders/seed.ts",
+    "sync:api-context": "cp -f api-context/*.md ../cla-fe/api-context/"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

@@ -4,7 +4,7 @@ import { Course } from '../../models/course.schema';
 import { Module } from '../../models/module.schema';
 import { Lesson } from '../../models/lesson.schema';
 import { LessonResource } from '../../models/lesson_resource.schema';
-import { sendResponse } from '../../utils/sendResponse';
+import { sendResponse, sendError } from '../../utils/sendResponse';
 import { uploadToCloudinary } from '../../utils/upload';
 import {
   createCourseSchema,
@@ -33,7 +33,7 @@ export const getCourses = async (_req: ExpressRequest, res: Response): Promise<v
     sendResponse(res, 200, { courses: coursesWithCounts });
   } catch (err) {
     console.error('[AdminGetCourses Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load courses. Please try again.');
   }
 };
 
@@ -41,7 +41,7 @@ export const createCourse = async (req: ExpressRequest, res: Response): Promise<
   try {
     const { error, value } = createCourseSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -64,7 +64,7 @@ export const createCourse = async (req: ExpressRequest, res: Response): Promise<
     sendResponse(res, 201, { course: populated, message: 'Course created successfully.' });
   } catch (err) {
     console.error('[AdminCreateCourse Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to create course. Please try again.');
   }
 };
 
@@ -73,7 +73,7 @@ export const uploadCourseThumbnail = async (req: ExpressRequest, res: Response):
     const { courseId } = req.params;
 
     if (!req.file) {
-      sendResponse(res, 400, { error: 'No image file provided.' });
+      sendError(res, 400, 'Please select an image file to upload.');
       return;
     }
 
@@ -85,14 +85,14 @@ export const uploadCourseThumbnail = async (req: ExpressRequest, res: Response):
     );
 
     if (!course) {
-      sendResponse(res, 404, { error: 'Course not found.' });
+      sendError(res, 404, 'Course not found.');
       return;
     }
 
     sendResponse(res, 200, { thumbnail: thumbnailUrl, message: 'Thumbnail uploaded.' });
   } catch (err) {
     console.error('[AdminUploadCourseThumbnail Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to upload thumbnail. Please try again.');
   }
 };
 
@@ -101,7 +101,7 @@ export const uploadCourseBanner = async (req: ExpressRequest, res: Response): Pr
     const { courseId } = req.params;
 
     if (!req.file) {
-      sendResponse(res, 400, { error: 'No image file provided.' });
+      sendError(res, 400, 'Please select an image file to upload.');
       return;
     }
 
@@ -113,14 +113,14 @@ export const uploadCourseBanner = async (req: ExpressRequest, res: Response): Pr
     );
 
     if (!course) {
-      sendResponse(res, 404, { error: 'Course not found.' });
+      sendError(res, 404, 'Course not found.');
       return;
     }
 
     sendResponse(res, 200, { banner: bannerUrl, message: 'Banner uploaded.' });
   } catch (err) {
     console.error('[AdminUploadCourseBanner Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to upload banner. Please try again.');
   }
 };
 
@@ -128,7 +128,7 @@ export const updateCourse = async (req: ExpressRequest, res: Response): Promise<
   try {
     const { error, value } = updateCourseSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -155,7 +155,7 @@ export const updateCourse = async (req: ExpressRequest, res: Response): Promise<
     ).populate({ path: 'instructor', select: 'firstName lastName title' });
 
     if (!course) {
-      sendResponse(res, 404, { error: 'Course not found.' });
+      sendError(res, 404, 'Course not found.');
       return;
     }
 
@@ -166,7 +166,7 @@ export const updateCourse = async (req: ExpressRequest, res: Response): Promise<
     sendResponse(res, 200, { course, message: 'Course updated successfully.' });
   } catch (err) {
     console.error('[AdminUpdateCourse Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to update course. Please try again.');
   }
 };
 
@@ -174,7 +174,7 @@ export const reorderCourses = async (req: ExpressRequest, res: Response): Promis
   try {
     const { error, value } = reorderSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -187,7 +187,7 @@ export const reorderCourses = async (req: ExpressRequest, res: Response): Promis
     sendResponse(res, 200, { message: 'Courses reordered successfully.' });
   } catch (err) {
     console.error('[AdminReorderCourses Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to reorder courses. Please try again.');
   }
 };
 
@@ -197,7 +197,7 @@ export const deleteCourse = async (req: ExpressRequest, res: Response): Promise<
 
     const course = await Course.findById(courseId);
     if (!course) {
-      sendResponse(res, 404, { error: 'Course not found.' });
+      sendError(res, 404, 'Course not found.');
       return;
     }
 
@@ -214,7 +214,7 @@ export const deleteCourse = async (req: ExpressRequest, res: Response): Promise<
     sendResponse(res, 200, { message: 'Course and all related content deleted.' });
   } catch (err) {
     console.error('[AdminDeleteCourse Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to delete course. Please try again.');
   }
 };
 
@@ -228,7 +228,7 @@ export const getCourseEditor = async (req: ExpressRequest, res: Response): Promi
     });
 
     if (!course) {
-      sendResponse(res, 404, { error: 'Course not found.' });
+      sendError(res, 404, 'Course not found.');
       return;
     }
 
@@ -244,7 +244,7 @@ export const getCourseEditor = async (req: ExpressRequest, res: Response): Promi
     sendResponse(res, 200, { course: course.toObject(), modules: modulesWithLessons });
   } catch (err) {
     console.error('[AdminGetCourseEditor Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load course editor. Please try again.');
   }
 };
 
@@ -253,7 +253,7 @@ export const createModule = async (req: ExpressRequest, res: Response): Promise<
   try {
     const { error, value } = createModuleSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -269,7 +269,7 @@ export const createModule = async (req: ExpressRequest, res: Response): Promise<
     sendResponse(res, 201, { module, message: 'Module created successfully.' });
   } catch (err) {
     console.error('[AdminCreateModule Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to create module. Please try again.');
   }
 };
 
@@ -277,7 +277,7 @@ export const updateModule = async (req: ExpressRequest, res: Response): Promise<
   try {
     const { error, value } = updateModuleSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -289,14 +289,14 @@ export const updateModule = async (req: ExpressRequest, res: Response): Promise<
     );
 
     if (!module) {
-      sendResponse(res, 404, { error: 'Module not found.' });
+      sendError(res, 404, 'Module not found.');
       return;
     }
 
     sendResponse(res, 200, { module, message: 'Module updated.' });
   } catch (err) {
     console.error('[AdminUpdateModule Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to update module. Please try again.');
   }
 };
 
@@ -304,7 +304,7 @@ export const reorderModules = async (req: ExpressRequest, res: Response): Promis
   try {
     const { error, value } = reorderSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -316,7 +316,7 @@ export const reorderModules = async (req: ExpressRequest, res: Response): Promis
     sendResponse(res, 200, { message: 'Modules reordered successfully.' });
   } catch (err) {
     console.error('[AdminReorderModules Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to reorder modules. Please try again.');
   }
 };
 
@@ -326,7 +326,7 @@ export const deleteModule = async (req: ExpressRequest, res: Response): Promise<
 
     const module = await Module.findById(moduleId);
     if (!module) {
-      sendResponse(res, 404, { error: 'Module not found.' });
+      sendError(res, 404, 'Module not found.');
       return;
     }
 
@@ -342,7 +342,7 @@ export const deleteModule = async (req: ExpressRequest, res: Response): Promise<
     sendResponse(res, 200, { message: 'Module and lessons deleted.' });
   } catch (err) {
     console.error('[AdminDeleteModule Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to delete module. Please try again.');
   }
 };
 
@@ -351,7 +351,7 @@ export const createLesson = async (req: ExpressRequest, res: Response): Promise<
   try {
     const { error, value } = createLessonSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -359,7 +359,7 @@ export const createLesson = async (req: ExpressRequest, res: Response): Promise<
 
     const module = await Module.findOne({ _id: moduleId, course: courseId });
     if (!module) {
-      sendResponse(res, 404, { error: 'Module not found.' });
+      sendError(res, 404, 'Module not found.');
       return;
     }
 
@@ -380,7 +380,7 @@ export const createLesson = async (req: ExpressRequest, res: Response): Promise<
     sendResponse(res, 201, { lesson, message: 'Lesson created successfully.' });
   } catch (err) {
     console.error('[AdminCreateLesson Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to create lesson. Please try again.');
   }
 };
 
@@ -388,7 +388,7 @@ export const updateLesson = async (req: ExpressRequest, res: Response): Promise<
   try {
     const { error, value } = updateLessonSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -409,14 +409,14 @@ export const updateLesson = async (req: ExpressRequest, res: Response): Promise<
     );
 
     if (!lesson) {
-      sendResponse(res, 404, { error: 'Lesson not found.' });
+      sendError(res, 404, 'Lesson not found.');
       return;
     }
 
     sendResponse(res, 200, { lesson, message: 'Lesson updated.' });
   } catch (err) {
     console.error('[AdminUpdateLesson Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to update lesson. Please try again.');
   }
 };
 
@@ -424,7 +424,7 @@ export const reorderLessons = async (req: ExpressRequest, res: Response): Promis
   try {
     const { error, value } = reorderSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -436,7 +436,7 @@ export const reorderLessons = async (req: ExpressRequest, res: Response): Promis
     sendResponse(res, 200, { message: 'Lessons reordered successfully.' });
   } catch (err) {
     console.error('[AdminReorderLessons Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to reorder lessons. Please try again.');
   }
 };
 
@@ -446,7 +446,7 @@ export const deleteLesson = async (req: ExpressRequest, res: Response): Promise<
 
     const lesson = await Lesson.findById(lessonId);
     if (!lesson) {
-      sendResponse(res, 404, { error: 'Lesson not found.' });
+      sendError(res, 404, 'Lesson not found.');
       return;
     }
 
@@ -458,6 +458,6 @@ export const deleteLesson = async (req: ExpressRequest, res: Response): Promise<
     sendResponse(res, 200, { message: 'Lesson and resources deleted.' });
   } catch (err) {
     console.error('[AdminDeleteLesson Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to delete lesson. Please try again.');
   }
 };

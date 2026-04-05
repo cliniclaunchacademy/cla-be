@@ -7,7 +7,7 @@ import { Lesson } from '../../models/lesson.schema';
 import { LessonResource } from '../../models/lesson_resource.schema';
 import { Progress } from '../../models/progress.schema';
 import { ActivityLog } from '../../models/activity_log.schema';
-import { sendResponse } from '../../utils/sendResponse';
+import { sendResponse, sendError } from '../../utils/sendResponse';
 
 export const getCourses = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
@@ -43,7 +43,7 @@ export const getCourses = async (req: ExpressRequest, res: Response): Promise<vo
     sendResponse(res, 200, { courses: coursesWithProgress });
   } catch (err) {
     console.error('[GetCourses Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load courses. Please try again.');
   }
 };
 
@@ -58,7 +58,7 @@ export const getCourseDetail = async (req: ExpressRequest, res: Response): Promi
     });
 
     if (!course) {
-      sendResponse(res, 404, { error: 'Course not found.' });
+      sendError(res, 404, 'Course not found.');
       return;
     }
 
@@ -95,7 +95,7 @@ export const getCourseDetail = async (req: ExpressRequest, res: Response): Promi
     });
   } catch (err) {
     console.error('[GetCourseDetail Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load course details. Please try again.');
   }
 };
 
@@ -106,7 +106,7 @@ export const getLessonDetail = async (req: ExpressRequest, res: Response): Promi
 
     const lesson = await Lesson.findOne({ _id: lessonId, course: courseId });
     if (!lesson) {
-      sendResponse(res, 404, { error: 'Lesson not found.' });
+      sendError(res, 404, 'Lesson not found.');
       return;
     }
 
@@ -168,7 +168,7 @@ export const getLessonDetail = async (req: ExpressRequest, res: Response): Promi
     });
   } catch (err) {
     console.error('[GetLessonDetail Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load lesson. Please try again.');
   }
 };
 
@@ -212,7 +212,7 @@ export const completeLesson = async (req: ExpressRequest, res: Response): Promis
     });
   } catch (err) {
     console.error('[CompleteLesson Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to mark lesson as complete. Please try again.');
   }
 };
 
@@ -230,7 +230,7 @@ export const flagVideo = async (req: ExpressRequest, res: Response): Promise<voi
     sendResponse(res, 200, { flagged: true });
   } catch (err) {
     console.error('[FlagVideo Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to flag video. Please try again.');
   }
 };
 
@@ -260,6 +260,6 @@ export const getStudentResources = async (req: ExpressRequest, res: Response): P
     sendResponse(res, 200, { resources: result });
   } catch (err) {
     console.error('[GetStudentResources Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load resources. Please try again.');
   }
 };

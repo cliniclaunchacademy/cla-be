@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { ExpressRequest } from '../../types/types';
 import { LabPartner } from '../../models/lab_partner.schema';
 import { LabApplication } from '../../models/lab_application.schema';
-import { sendResponse } from '../../utils/sendResponse';
+import { sendResponse, sendError } from '../../utils/sendResponse';
 import { uploadToCloudinary } from '../../utils/upload';
 import {
   createLabSchema,
@@ -25,7 +25,7 @@ export const getLabs = async (_req: ExpressRequest, res: Response): Promise<void
     sendResponse(res, 200, { labs: labsWithCount });
   } catch (err) {
     console.error('[AdminGetLabs Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load lab partners. Please try again.');
   }
 };
 
@@ -33,7 +33,7 @@ export const createLab = async (req: ExpressRequest, res: Response): Promise<voi
   try {
     const { error, value } = createLabSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -43,7 +43,7 @@ export const createLab = async (req: ExpressRequest, res: Response): Promise<voi
     sendResponse(res, 201, { lab, message: 'Lab partner created.' });
   } catch (err) {
     console.error('[AdminCreateLab Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to create lab partner. Please try again.');
   }
 };
 
@@ -52,7 +52,7 @@ export const uploadLabLogo = async (req: ExpressRequest, res: Response): Promise
     const { labId } = req.params;
 
     if (!req.file) {
-      sendResponse(res, 400, { error: 'No image file provided.' });
+      sendError(res, 400, 'Please select an image file to upload.');
       return;
     }
 
@@ -60,14 +60,14 @@ export const uploadLabLogo = async (req: ExpressRequest, res: Response): Promise
     const lab = await LabPartner.findByIdAndUpdate(labId, { $set: { logo: logoUrl } }, { new: true });
 
     if (!lab) {
-      sendResponse(res, 404, { error: 'Lab not found.' });
+      sendError(res, 404, 'Lab partner not found.');
       return;
     }
 
     sendResponse(res, 200, { logo: logoUrl, message: 'Logo uploaded.' });
   } catch (err) {
     console.error('[AdminUploadLabLogo Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to upload lab logo. Please try again.');
   }
 };
 
@@ -75,7 +75,7 @@ export const updateLab = async (req: ExpressRequest, res: Response): Promise<voi
   try {
     const { error, value } = updateLabSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -83,14 +83,14 @@ export const updateLab = async (req: ExpressRequest, res: Response): Promise<voi
     const lab = await LabPartner.findByIdAndUpdate(labId, { $set: value }, { new: true });
 
     if (!lab) {
-      sendResponse(res, 404, { error: 'Lab not found.' });
+      sendError(res, 404, 'Lab partner not found.');
       return;
     }
 
     sendResponse(res, 200, { lab, message: 'Lab updated.' });
   } catch (err) {
     console.error('[AdminUpdateLab Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to update lab partner. Please try again.');
   }
 };
 
@@ -100,7 +100,7 @@ export const deleteLab = async (req: ExpressRequest, res: Response): Promise<voi
 
     const lab = await LabPartner.findById(labId);
     if (!lab) {
-      sendResponse(res, 404, { error: 'Lab not found.' });
+      sendError(res, 404, 'Lab partner not found.');
       return;
     }
 
@@ -112,7 +112,7 @@ export const deleteLab = async (req: ExpressRequest, res: Response): Promise<voi
     sendResponse(res, 200, { message: 'Lab and applications deleted.' });
   } catch (err) {
     console.error('[AdminDeleteLab Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to delete lab partner. Please try again.');
   }
 };
 
@@ -120,7 +120,7 @@ export const reorderLabs = async (req: ExpressRequest, res: Response): Promise<v
   try {
     const { error, value } = reorderSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -132,7 +132,7 @@ export const reorderLabs = async (req: ExpressRequest, res: Response): Promise<v
     sendResponse(res, 200, { message: 'Labs reordered.' });
   } catch (err) {
     console.error('[AdminReorderLabs Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to reorder lab partners. Please try again.');
   }
 };
 
@@ -199,7 +199,7 @@ export const getLabApplications = async (req: ExpressRequest, res: Response): Pr
     });
   } catch (err) {
     console.error('[AdminGetLabApplications Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load lab applications. Please try again.');
   }
 };
 
@@ -213,14 +213,14 @@ export const getLabApplicationDetail = async (req: ExpressRequest, res: Response
       .populate({ path: 'reviewedBy', select: 'firstName lastName email' });
 
     if (!application) {
-      sendResponse(res, 404, { error: 'Application not found.' });
+      sendError(res, 404, 'Application not found.');
       return;
     }
 
     sendResponse(res, 200, { application });
   } catch (err) {
     console.error('[AdminGetLabApplicationDetail Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load application details. Please try again.');
   }
 };
 
@@ -228,7 +228,7 @@ export const updateApplicationStatus = async (req: ExpressRequest, res: Response
   try {
     const { error, value } = updateApplicationStatusSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -254,13 +254,13 @@ export const updateApplicationStatus = async (req: ExpressRequest, res: Response
       .populate({ path: 'lab', select: 'name' });
 
     if (!application) {
-      sendResponse(res, 404, { error: 'Application not found.' });
+      sendError(res, 404, 'Application not found.');
       return;
     }
 
     sendResponse(res, 200, { application, message: 'Application status updated.' });
   } catch (err) {
     console.error('[AdminUpdateApplicationStatus Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to update application status. Please try again.');
   }
 };

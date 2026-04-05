@@ -17,23 +17,42 @@ Authorization: Bearer <token>
 ## Response Format
 
 ### Success
+Success responses vary per endpoint but always return `2xx` and **never** include a `success` field. Example:
 ```json
-{ "data_key": "value", "message": "optional message" }
+{ "course": { ... }, "message": "Course created successfully." }
 ```
 
 ### Error
+**All** error responses have this exact structure:
 ```json
-{ "error": "error message" }
+{
+  "success": false,
+  "error": "Human-readable message describing what went wrong."
+}
+```
+
+The `error` string is safe to display directly to the user in toasts or form error messages.
+
+On the frontend, detect errors like this:
+```js
+if (response.data.success === false) {
+  showToast(response.data.error);
+}
+// or with axios interceptor:
+// error.response.data.error
 ```
 
 ## Common HTTP Status Codes
-- `200` - OK
-- `201` - Created
-- `400` - Validation error / bad request
-- `401` - Missing or invalid token
-- `403` - Forbidden (wrong role or account banned/inactive)
-- `404` - Not found
-- `503` - Maintenance mode (students only)
+| Code | Meaning | When it happens |
+|------|---------|-----------------|
+| `200` | OK | Request succeeded |
+| `201` | Created | Resource created successfully |
+| `400` | Bad Request | Validation failed or invalid input |
+| `401` | Unauthorized | Missing, expired, or invalid token |
+| `403` | Forbidden | Valid token but insufficient permissions, or account suspended |
+| `404` | Not Found | Resource does not exist |
+| `500` | Server Error | Unexpected server-side failure |
+| `503` | Maintenance | Platform is under maintenance (students only) |
 
 ## Route Groups
 | File | Routes | Auth Required |

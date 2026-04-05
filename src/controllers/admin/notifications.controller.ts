@@ -4,14 +4,14 @@ import mongoose from 'mongoose';
 import { User } from '../../models/user.schema';
 import { Notification } from '../../models/notification.schema';
 import { NotificationRead } from '../../models/notification_read.schema';
-import { sendResponse } from '../../utils/sendResponse';
+import { sendResponse, sendError } from '../../utils/sendResponse';
 import { sendNotificationSchema } from '../../validators/admin.validator';
 
 export const sendNotification = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = sendNotificationSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -59,7 +59,7 @@ export const sendNotification = async (req: ExpressRequest, res: Response): Prom
     });
   } catch (err) {
     console.error('[AdminSendNotification Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to send notification. Please try again.');
   }
 };
 
@@ -69,7 +69,7 @@ export const deleteNotification = async (req: ExpressRequest, res: Response): Pr
 
     const notification = await Notification.findById(notificationId);
     if (!notification) {
-      sendResponse(res, 404, { error: 'Notification not found.' });
+      sendError(res, 404, 'Notification not found.');
       return;
     }
 
@@ -81,6 +81,6 @@ export const deleteNotification = async (req: ExpressRequest, res: Response): Pr
     sendResponse(res, 200, { message: 'Notification deleted.' });
   } catch (err) {
     console.error('[AdminDeleteNotification Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to delete notification. Please try again.');
   }
 };

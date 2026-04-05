@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { ExpressRequest } from '../../types/types';
 import { User } from '../../models/user.schema';
-import { sendResponse } from '../../utils/sendResponse';
+import { sendResponse, sendError } from '../../utils/sendResponse';
 import { uploadToCloudinary } from '../../utils/upload';
 import { updateAdminProfileSchema } from '../../validators/admin.validator';
 
@@ -9,13 +9,13 @@ export const getAdminMe = async (req: ExpressRequest, res: Response): Promise<vo
   try {
     const user = await User.findById(req.user!._id).select('-password -resetToken -resetTokenExpiry');
     if (!user) {
-      sendResponse(res, 404, { error: 'User not found.' });
+      sendError(res, 404, 'User not found.');
       return;
     }
     sendResponse(res, 200, { user });
   } catch (err) {
     console.error('[AdminGetMe Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to load profile. Please try again.');
   }
 };
 
@@ -23,7 +23,7 @@ export const updateAdminProfile = async (req: ExpressRequest, res: Response): Pr
   try {
     const { error, value } = updateAdminProfileSchema.validate(req.body);
     if (error) {
-      sendResponse(res, 400, { error: error.details[0].message });
+      sendError(res, 400, error.details[0].message);
       return;
     }
 
@@ -32,7 +32,7 @@ export const updateAdminProfile = async (req: ExpressRequest, res: Response): Pr
     if (username) {
       const existing = await User.findOne({ username, _id: { $ne: req.user!._id } });
       if (existing) {
-        sendResponse(res, 400, { error: 'Username is already taken.' });
+        sendError(res, 400, 'This username is already taken. Please choose a different one.');
         return;
       }
     }
@@ -51,14 +51,14 @@ export const updateAdminProfile = async (req: ExpressRequest, res: Response): Pr
     sendResponse(res, 200, { user, message: 'Profile updated successfully.' });
   } catch (err) {
     console.error('[AdminUpdateProfile Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to update profile. Please try again.');
   }
 };
 
 export const uploadAdminProfilePhoto = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     if (!req.file) {
-      sendResponse(res, 400, { error: 'No image file provided.' });
+      sendError(res, 400, 'Please select an image file to upload.');
       return;
     }
 
@@ -69,6 +69,6 @@ export const uploadAdminProfilePhoto = async (req: ExpressRequest, res: Response
     sendResponse(res, 200, { profilePhoto: photoUrl, message: 'Profile photo updated.' });
   } catch (err) {
     console.error('[AdminUploadProfilePhoto Error]', err);
-    sendResponse(res, 500, { error: 'Internal server error.' });
+    sendError(res, 500, 'Failed to upload profile photo. Please try again.');
   }
 };

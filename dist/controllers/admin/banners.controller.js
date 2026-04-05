@@ -12,7 +12,8 @@ const getBanners = async (_req, res) => {
     }
     catch (err) {
         console.error('[AdminGetBanners Error]', err);
-        (0, sendResponse_1.sendResponse)(res, 500, { error: 'Internal server error.' });
+        (0, 
+            _1.sendResponse)(res, 500, { error: 'Internal server error.' });
     }
 };
 exports.getBanners = getBanners;
