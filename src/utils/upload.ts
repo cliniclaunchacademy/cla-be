@@ -1,3 +1,4 @@
+import { Readable } from 'stream';
 import multer, { FileFilterCallback } from 'multer';
 import { v2 as cloudinary } from 'cloudinary';
 import { ExpressRequest } from '../types/types';
@@ -42,11 +43,13 @@ export const uploadToCloudinary = (
   resourceType: 'image' | 'raw' | 'auto' = 'image'
 ): Promise<string> => {
   return new Promise((resolve, reject) => {
-    cloudinary.uploader
-      .upload_stream({ folder, resource_type: resourceType }, (error, result) => {
+    const uploadStream = cloudinary.uploader.upload_chunked_stream(
+      { folder, resource_type: resourceType, chunk_size: 6 * 1024 * 1024 },
+      (error, result) => {
         if (error || !result) return reject(error || new Error('Cloudinary upload failed.'));
         resolve(result.secure_url);
-      })
-      .end(buffer);
+      }
+    );
+    Readable.from(buffer).pipe(uploadStream);
   });
 };
