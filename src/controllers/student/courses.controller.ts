@@ -54,7 +54,7 @@ export const getCourseDetail = async (req: ExpressRequest, res: Response): Promi
 
     const course = await Course.findById(courseId).populate({
       path: 'instructor',
-      select: 'firstName lastName title bio photo',
+      select: 'firstName lastName title bio photo linkedin instagram twitter website',
     });
 
     if (!course) {

@@ -25,7 +25,11 @@ Fetch all published courses with the student's progress on each.
         "firstName": "Dr. Sarah",
         "lastName": "Johnson",
         "title": "Senior Consultant",
-        "photo": "http://localhost:5000/uploads/instructor.jpg"
+        "photo": "http://localhost:5000/uploads/instructor.jpg",
+        "linkedin": "https://linkedin.com/in/drsarah",
+        "instagram": null,
+        "twitter": null,
+        "website": "https://drsarah.com"
       },
       "status": "published",
       "comingSoon": false,
