@@ -370,6 +370,7 @@ export const createLesson = async (req: ExpressRequest, res: Response): Promise<
       course: courseId,
       title: value.title,
       subheading: value.subheading,
+      description: value.description,
       videoEmbed: value.videoEmbed,
       status: value.status,
       comingSoon: value.comingSoon || false,
@@ -397,6 +398,7 @@ export const updateLesson = async (req: ExpressRequest, res: Response): Promise<
 
     if (value.title !== undefined) updateData.title = value.title;
     if (value.subheading !== undefined) updateData.subheading = value.subheading;
+    if (value.description !== undefined) updateData.description = value.description;
     if (value.videoEmbed !== undefined) updateData.videoEmbed = value.videoEmbed;
     if (value.status !== undefined) updateData.status = value.status;
     if (value.comingSoon !== undefined) updateData.comingSoon = value.comingSoon;

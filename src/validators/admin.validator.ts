@@ -63,6 +63,7 @@ export const updateModuleSchema = Joi.object({
 export const createLessonSchema = Joi.object({
   title: Joi.string().trim().required(),
   subheading: Joi.string().trim().optional().allow(''),
+  description: Joi.string().optional().allow(''),
   videoEmbed: Joi.string().optional().allow(''),
   status: Joi.string().valid('draft', 'published').required(),
   comingSoon: Joi.boolean().optional(),
@@ -72,6 +73,7 @@ export const createLessonSchema = Joi.object({
 export const updateLessonSchema = Joi.object({
   title: Joi.string().trim().optional(),
   subheading: Joi.string().trim().optional().allow(''),
+  description: Joi.string().optional().allow(''),
   videoEmbed: Joi.string().optional().allow(''),
   status: Joi.string().valid('draft', 'published').optional(),
   comingSoon: Joi.boolean().optional(),
