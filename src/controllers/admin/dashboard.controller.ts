@@ -3,6 +3,7 @@ import { ExpressRequest } from '../../types/types';
 import mongoose from 'mongoose';
 import { User } from '../../models/user.schema';
 import { Course } from '../../models/course.schema';
+import { Lesson } from '../../models/lesson.schema';
 import { Progress } from '../../models/progress.schema';
 import { ActivityLog } from '../../models/activity_log.schema';
 import { Notification } from '../../models/notification.schema';
@@ -27,11 +28,41 @@ export const getDashboardStats = async (_req: ExpressRequest, res: Response): Pr
     // Total lessons completed
     const totalLessonsCompleted = await Progress.countDocuments({ completed: true });
 
+    // Course completion rate:
+    // % of (user, course) enrollments where the student has completed all published lessons
+    const [publishedLessonCounts, enrollmentProgress] = await Promise.all([
+      Lesson.aggregate<{ _id: mongoose.Types.ObjectId; publishedLessons: number }>([
+        { $match: { status: 'published' } },
+        { $group: { _id: '$course', publishedLessons: { $sum: 1 } } },
+      ]),
+      Progress.aggregate<{ _id: { user: mongoose.Types.ObjectId; course: mongoose.Types.ObjectId }; completedLessons: number }>([
+        { $group: { _id: { user: '$user', course: '$course' }, completedLessons: { $sum: { $cond: ['$completed', 1, 0] } } } },
+      ]),
+    ]);
+
+    const lessonCountMap: Record<string, number> = {};
+    for (const item of publishedLessonCounts) {
+      lessonCountMap[item._id.toString()] = item.publishedLessons;
+    }
+
+    const totalEnrollments = enrollmentProgress.length;
+    let completedEnrollments = 0;
+    for (const row of enrollmentProgress) {
+      const published = lessonCountMap[row._id.course.toString()] ?? 0;
+      if (published > 0 && row.completedLessons >= published) {
+        completedEnrollments++;
+      }
+    }
+
+    const courseCompletionRate =
+      totalEnrollments > 0 ? Math.round((completedEnrollments / totalEnrollments) * 100) : 0;
+
     sendResponse(res, 200, {
       stats: {
         activeLearnersLast30Days,
         newUsersThisWeek,
         totalLessonsCompleted,
+        courseCompletionRate,
       },
     });
   } catch (err) {

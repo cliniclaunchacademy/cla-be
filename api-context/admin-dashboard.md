@@ -18,9 +18,19 @@ No body or query parameters.
   "stats": {
     "activeLearnersLast30Days": 142,
     "newUsersThisWeek": 18,
-    "totalLessonsCompleted": 3450
+    "totalLessonsCompleted": 3450,
+    "courseCompletionRate": 34
   }
 }
+```
+
+### Field Descriptions
+| Field | Description |
+|-------|-------------|
+| `activeLearnersLast30Days` | Distinct students with any activity log entry in the last 30 days |
+| `newUsersThisWeek` | Students who joined in the last 7 days |
+| `totalLessonsCompleted` | Platform-wide total of individual lesson completions |
+| `courseCompletionRate` | Percentage of (student, course) enrollments where all published lessons are completed. `0` if no enrollments exist.
 ```
 
 ---
