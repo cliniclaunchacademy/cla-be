@@ -9,6 +9,7 @@ import {
   updateLabSchema,
   reorderSchema,
   updateApplicationStatusSchema,
+  bulkUpdateApplicationStatusSchema,
 } from '../../validators/admin.validator';
 
 export const getLabs = async (_req: ExpressRequest, res: Response): Promise<void> => {
@@ -262,5 +263,40 @@ export const updateApplicationStatus = async (req: ExpressRequest, res: Response
   } catch (err) {
     console.error('[AdminUpdateApplicationStatus Error]', err);
     sendError(res, 500, 'Failed to update application status. Please try again.');
+  }
+};
+
+export const bulkUpdateApplicationStatus = async (req: ExpressRequest, res: Response): Promise<void> => {
+  try {
+    const { error, value } = bulkUpdateApplicationStatusSchema.validate(req.body);
+    if (error) {
+      sendError(res, 400, error.details[0].message);
+      return;
+    }
+
+    const { applicationIds, status, rejectionReason } = value;
+
+    const updateData: Record<string, unknown> = {
+      status,
+      reviewedAt: new Date(),
+      reviewedBy: req.user!._id,
+    };
+
+    if (status === 'rejected' && rejectionReason) {
+      updateData.rejectionReason = rejectionReason;
+    }
+
+    const result = await LabApplication.updateMany(
+      { _id: { $in: applicationIds } },
+      { $set: updateData }
+    );
+
+    sendResponse(res, 200, {
+      updatedCount: result.modifiedCount,
+      message: `${result.modifiedCount} application(s) updated to "${status}".`,
+    });
+  } catch (err) {
+    console.error('[AdminBulkUpdateApplicationStatus Error]', err);
+    sendError(res, 500, 'Failed to bulk update application statuses. Please try again.');
   }
 };

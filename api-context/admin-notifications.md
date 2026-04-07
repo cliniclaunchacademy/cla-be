@@ -7,7 +7,7 @@
 
 ## POST `/api/admin/notifications`
 
-Send a notification to users. The notification is immediately delivered to targeted users.
+Send or schedule a notification. If `scheduledFor` is omitted, the notification is delivered immediately. If provided, it is saved with `status: "scheduled"` and no `notification_read` entries are created until it is actually sent.
 
 ### Request Body
 ```json
@@ -17,7 +17,8 @@ Send a notification to users. The notification is immediately delivered to targe
   "type": "new_course",                 // required — see type values below
   "targetType": "all",                  // required: "all" | "user" | "role"
   "targetUsers": [],                    // required (can be empty array) if targetType = "user", array of user ObjectIds
-  "targetRole": "student"              // required if targetType = "role": "student" | "admin"
+  "targetRole": "student",             // required if targetType = "role": "student" | "admin"
+  "scheduledFor": "2024-06-01T09:00:00.000Z" // optional — ISO date in the future; omit to send immediately
 }
 ```
 
@@ -85,6 +86,7 @@ Send a notification to users. The notification is immediately delivered to targe
     "targetUsers": [],
     "targetRole": null,
     "status": "sent",
+    "scheduledFor": null,
     "sentAt": "2024-01-15T10:30:00.000Z",
     "createdBy": "64f1a2b3c4d5e6f7a8b9c0d1",
     "createdAt": "2024-01-15T10:30:00.000Z"
@@ -92,6 +94,50 @@ Send a notification to users. The notification is immediately delivered to targe
   "recipientCount": 250,
   "message": "Notification sent successfully."
 }
+```
+
+When scheduled, `status` is `"scheduled"`, `sentAt` is `null`, `scheduledFor` holds the target datetime, and `recipientCount` is `null`.
+
+---
+
+## PATCH `/api/admin/notifications/:notificationId/cancel`
+
+Cancel a scheduled notification. Only works if `status` is `"scheduled"`.
+
+### URL Parameters
+- `notificationId` — MongoDB ObjectId of the notification
+
+### Response `200`
+```json
+{ "message": "Scheduled notification cancelled." }
+```
+
+### Errors
+| Status | Condition |
+|--------|-----------|
+| `400` | Notification is not in `scheduled` status |
+
+---
+
+## POST `/api/admin/notifications/:notificationId/resend`
+
+Resend a failed notification to its original target audience.
+
+### URL Parameters
+- `notificationId` — MongoDB ObjectId of the notification
+
+### Response `200`
+```json
+{
+  "recipientCount": 250,
+  "message": "Notification resent successfully."
+}
+```
+
+### Errors
+| Status | Condition |
+|--------|-----------|
+| `400` | Notification is not in `failed` status |
 ```
 
 ---

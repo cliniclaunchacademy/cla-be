@@ -7,7 +7,8 @@ export interface INotification extends Document {
   targetType: 'all' | 'user' | 'role';
   targetUsers?: Types.ObjectId[];
   targetRole?: 'student' | 'admin';
-  status: 'sent' | 'failed';
+  status: 'sent' | 'failed' | 'scheduled';
+  scheduledFor?: Date;
   sentAt?: Date;
   createdBy: Types.ObjectId;
   createdAt: Date;
@@ -46,9 +47,12 @@ const notificationSchema = new Schema<INotification>(
     },
     status: {
       type: String,
-      enum: ['sent', 'failed'],
+      enum: ['sent', 'failed', 'scheduled'],
       default: 'sent',
       required: true,
+    },
+    scheduledFor: {
+      type: Date,
     },
     sentAt: {
       type: Date,

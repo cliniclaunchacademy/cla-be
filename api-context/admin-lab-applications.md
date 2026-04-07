@@ -57,6 +57,29 @@ Fetch paginated list of lab applications with optional filters.
 
 ---
 
+## PATCH `/api/admin/lab-applications/bulk-status`
+
+Update the status of multiple applications at once.
+
+### Request Body
+```json
+{
+  "applicationIds": ["64f1a2b3c4d5e6f7a8b9c0a1", "64f1a2b3c4d5e6f7a8b9c0a2"], // required, min 1
+  "status": "verified",              // required: "pending" | "verified" | "rejected"
+  "rejectionReason": "Not eligible"  // optional, recommended when status is "rejected"
+}
+```
+
+### Response `200`
+```json
+{
+  "updatedCount": 2,
+  "message": "2 application(s) updated to \"verified\"."
+}
+```
+
+---
+
 ## GET `/api/admin/lab-applications/:applicationId`
 
 Fetch a single lab application by ID.

@@ -102,3 +102,110 @@ Fetch paginated history of sent notifications.
 
 ### Notification `targetType` values
 `all` | `user` | `role`
+
+---
+
+## GET `/api/admin/dashboard/weekly-signups`
+
+Weekly new student signup counts for the past 12 weeks.
+
+### Response `200`
+```json
+{
+  "weeklySignups": [
+    { "week": "2024-03", "count": 12 },
+    { "week": "2024-04", "count": 18 }
+  ]
+}
+```
+`week` is formatted as `YYYY-WW` (ISO year and week number).
+
+---
+
+## GET `/api/admin/dashboard/popular-courses`
+
+Top 5 courses ranked by unique student enrollment.
+
+### Response `200`
+```json
+{
+  "popularCourses": [
+    {
+      "_id": "64f1a2b3c4d5e6f7a8b9c0d1",
+      "title": "Introduction to Clinic Management",
+      "thumbnail": "https://res.cloudinary.com/.../thumb.jpg",
+      "status": "published",
+      "enrollmentCount": 84
+    }
+  ]
+}
+```
+
+---
+
+## GET `/api/admin/dashboard/activity-heatmap`
+
+Activity event counts grouped by day-of-week and hour (for all students).
+
+### Response `200`
+```json
+{
+  "heatmap": [
+    { "dayOfWeek": 2, "hour": 9, "count": 42 },
+    { "dayOfWeek": 3, "hour": 14, "count": 67 }
+  ]
+}
+```
+`dayOfWeek`: 1 = Sunday … 7 = Saturday. `hour`: 0–23.
+
+---
+
+## GET `/api/admin/dashboard/at-risk-learners`
+
+Students who have logged in at least once but not in the last 7 days.
+
+### Response `200`
+```json
+{
+  "atRiskLearners": [
+    {
+      "_id": "64f1a2b3c4d5e6f7a8b9c0d1",
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "email": "jane@example.com",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "lastLogin": "2024-01-05T10:30:00.000Z"
+    }
+  ]
+}
+```
+
+---
+
+## GET `/api/admin/dashboard/users/:userId/overview`
+
+Full activity breakdown for a specific student.
+
+### URL Parameters
+- `userId` — MongoDB ObjectId of the student
+
+### Response `200`
+```json
+{
+  "user": { /* user object without password */ },
+  "stats": {
+    "enrolledCourses": 3,
+    "completedLessons": 24,
+    "inProgress": 8
+  },
+  "recentActivity": [
+    {
+      "_id": "...",
+      "action": "watched",
+      "lesson": { "_id": "...", "title": "Lesson 1" },
+      "course": { "_id": "...", "title": "Course A" },
+      "createdAt": "2024-01-15T10:30:00.000Z"
+    }
+  ]
+}
+```

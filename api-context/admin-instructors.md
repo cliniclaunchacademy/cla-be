@@ -21,6 +21,10 @@ Fetch all instructors.
       "bio": "Dr. Sarah has 15 years of experience...",
       "photo": "http://localhost:5000/uploads/instructor.jpg",
       "status": "active",
+      "linkedin": "https://linkedin.com/in/drsarah",
+      "instagram": null,
+      "twitter": null,
+      "website": "https://drsarah.com",
       "coursesAssigned": 3,
       "createdAt": "2024-01-01T00:00:00.000Z"
     }
@@ -44,7 +48,11 @@ Create a new instructor.
   "lastName": "Johnson",                 // required
   "title": "Senior Clinic Consultant",   // required
   "bio": "Dr. Sarah has 15 years...",    // optional
-  "status": "active"                     // required: "active" | "inactive"
+  "status": "active",                    // required: "active" | "inactive"
+  "linkedin": "https://linkedin.com/in/drsarah", // optional
+  "instagram": "https://instagram.com/drsarah",  // optional
+  "twitter": "https://twitter.com/drsarah",      // optional
+  "website": "https://drsarah.com"               // optional
 }
 ```
 
@@ -58,6 +66,10 @@ Create a new instructor.
   "bio": "Dr. Sarah has 15 years...",
   "photo": null,
   "status": "active",
+  "linkedin": "https://linkedin.com/in/drsarah",
+  "instagram": null,
+  "twitter": null,
+  "website": null,
   "createdAt": "2024-01-15T00:00:00.000Z"
 }
 ```
@@ -78,7 +90,11 @@ Update an existing instructor.
   "lastName": "Johnson",
   "title": "Lead Consultant",
   "bio": "Updated biography...",
-  "status": "inactive"
+  "status": "inactive",
+  "linkedin": "https://linkedin.com/in/drsarah",
+  "instagram": "https://instagram.com/drsarah",
+  "twitter": "https://twitter.com/drsarah",
+  "website": "https://drsarah.com"
 }
 ```
 

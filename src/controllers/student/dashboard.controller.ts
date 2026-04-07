@@ -111,6 +111,19 @@ export const getCommunityBanner = async (_req: ExpressRequest, res: Response): P
   }
 };
 
+export const getWatchTime = async (req: ExpressRequest, res: Response): Promise<void> => {
+  try {
+    const userId = new mongoose.Types.ObjectId(req.user!._id);
+
+    const watchEvents = await ActivityLog.countDocuments({ user: userId, action: 'watched' });
+
+    sendResponse(res, 200, { watchTime: { totalWatchEvents: watchEvents } });
+  } catch (err) {
+    console.error('[GetWatchTime Error]', err);
+    sendResponse(res, 500, { error: 'Internal server error.' });
+  }
+};
+
 export const getRecentActivity = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const userId = new mongoose.Types.ObjectId(req.user!._id);

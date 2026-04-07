@@ -144,3 +144,22 @@ Fetch the student's recent learning activity (lessons watched and completed).
 
 ### `action` values
 `watched` | `completed`
+
+---
+
+## GET `/api/student/dashboard/watch-time`
+
+Fetch the student's total watch event count as a watch time indicator.
+
+### Response `200`
+```json
+{
+  "watchTime": {
+    "totalWatchEvents": 87
+  }
+}
+```
+
+### Notes
+- `totalWatchEvents` is the count of `"watched"` action entries in the student's activity log
+- This is a proxy for watch time; exact duration tracking requires video event hooks not yet implemented

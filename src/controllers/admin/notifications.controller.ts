@@ -15,19 +15,23 @@ export const sendNotification = async (req: ExpressRequest, res: Response): Prom
       return;
     }
 
-    const { title, message, type, targetType, targetUsers, targetRole } = value;
+    const { title, message, type, targetType, targetUsers, targetRole, scheduledFor } = value;
     const adminId = new mongoose.Types.ObjectId(req.user!._id);
+
+    const isScheduled = !!scheduledFor;
 
     let targetUserIds: mongoose.Types.ObjectId[] = [];
 
-    if (targetType === 'all') {
-      const users = await User.find({ role: 'student' }).select('_id');
-      targetUserIds = users.map((u) => u._id as mongoose.Types.ObjectId);
-    } else if (targetType === 'role' && targetRole) {
-      const users = await User.find({ role: targetRole }).select('_id');
-      targetUserIds = users.map((u) => u._id as mongoose.Types.ObjectId);
-    } else if (targetType === 'user' && targetUsers && targetUsers.length > 0) {
-      targetUserIds = targetUsers.map((id: string) => new mongoose.Types.ObjectId(id));
+    if (!isScheduled) {
+      if (targetType === 'all') {
+        const users = await User.find({ role: 'student' }).select('_id');
+        targetUserIds = users.map((u) => u._id as mongoose.Types.ObjectId);
+      } else if (targetType === 'role' && targetRole) {
+        const users = await User.find({ role: targetRole }).select('_id');
+        targetUserIds = users.map((u) => u._id as mongoose.Types.ObjectId);
+      } else if (targetType === 'user' && targetUsers && targetUsers.length > 0) {
+        targetUserIds = targetUsers.map((id: string) => new mongoose.Types.ObjectId(id));
+      }
     }
 
     const notification = await Notification.create({
@@ -35,15 +39,15 @@ export const sendNotification = async (req: ExpressRequest, res: Response): Prom
       message,
       type,
       targetType,
-      targetUsers: targetType === 'user' ? targetUserIds : undefined,
+      targetUsers: targetType === 'user' ? (isScheduled ? targetUsers?.map((id: string) => new mongoose.Types.ObjectId(id)) : targetUserIds) : undefined,
       targetRole: targetType === 'role' ? targetRole : undefined,
-      status: 'sent',
-      sentAt: new Date(),
+      status: isScheduled ? 'scheduled' : 'sent',
+      scheduledFor: isScheduled ? scheduledFor : undefined,
+      sentAt: isScheduled ? undefined : new Date(),
       createdBy: adminId,
     });
 
-    // Create notification_read entries for all target users
-    if (targetUserIds.length > 0) {
+    if (!isScheduled && targetUserIds.length > 0) {
       const reads = targetUserIds.map((userId) => ({
         notification: notification._id,
         user: userId,
@@ -54,12 +58,86 @@ export const sendNotification = async (req: ExpressRequest, res: Response): Prom
 
     sendResponse(res, 201, {
       notification,
-      recipientCount: targetUserIds.length,
-      message: 'Notification sent successfully.',
+      recipientCount: isScheduled ? null : targetUserIds.length,
+      message: isScheduled ? 'Notification scheduled successfully.' : 'Notification sent successfully.',
     });
   } catch (err) {
     console.error('[AdminSendNotification Error]', err);
     sendError(res, 500, 'Failed to send notification. Please try again.');
+  }
+};
+
+export const cancelNotification = async (req: ExpressRequest, res: Response): Promise<void> => {
+  try {
+    const { notificationId } = req.params;
+
+    const notification = await Notification.findById(notificationId);
+    if (!notification) {
+      sendError(res, 404, 'Notification not found.');
+      return;
+    }
+
+    if (notification.status !== 'scheduled') {
+      sendError(res, 400, 'Only scheduled notifications can be cancelled.');
+      return;
+    }
+
+    await Notification.findByIdAndUpdate(notificationId, { $set: { status: 'failed' } });
+    sendResponse(res, 200, { message: 'Scheduled notification cancelled.' });
+  } catch (err) {
+    console.error('[AdminCancelNotification Error]', err);
+    sendError(res, 500, 'Failed to cancel notification. Please try again.');
+  }
+};
+
+export const resendNotification = async (req: ExpressRequest, res: Response): Promise<void> => {
+  try {
+    const { notificationId } = req.params;
+
+    const notification = await Notification.findById(notificationId);
+    if (!notification) {
+      sendError(res, 404, 'Notification not found.');
+      return;
+    }
+
+    if (notification.status !== 'failed') {
+      sendError(res, 400, 'Only failed notifications can be resent.');
+      return;
+    }
+
+    const { targetType, targetUsers, targetRole } = notification;
+    let targetUserIds: mongoose.Types.ObjectId[] = [];
+
+    if (targetType === 'all') {
+      const users = await User.find({ role: 'student' }).select('_id');
+      targetUserIds = users.map((u) => u._id as mongoose.Types.ObjectId);
+    } else if (targetType === 'role' && targetRole) {
+      const users = await User.find({ role: targetRole }).select('_id');
+      targetUserIds = users.map((u) => u._id as mongoose.Types.ObjectId);
+    } else if (targetType === 'user' && targetUsers && targetUsers.length > 0) {
+      targetUserIds = targetUsers as mongoose.Types.ObjectId[];
+    }
+
+    await Notification.findByIdAndUpdate(notificationId, {
+      $set: { status: 'sent', sentAt: new Date(), scheduledFor: undefined },
+    });
+
+    if (targetUserIds.length > 0) {
+      const reads = targetUserIds.map((userId) => ({
+        notification: notification._id,
+        user: userId,
+        read: false,
+      }));
+      await NotificationRead.insertMany(reads, { ordered: false });
+    }
+
+    sendResponse(res, 200, {
+      recipientCount: targetUserIds.length,
+      message: 'Notification resent successfully.',
+    });
+  } catch (err) {
+    console.error('[AdminResendNotification Error]', err);
+    sendError(res, 500, 'Failed to resend notification. Please try again.');
   }
 };
 

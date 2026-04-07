@@ -102,6 +102,10 @@ export const createInstructorSchema = Joi.object({
   title: Joi.string().trim().required(),
   bio: Joi.string().optional().allow(''),
   status: Joi.string().valid('active', 'inactive').required(),
+  linkedin: Joi.string().optional().allow(''),
+  instagram: Joi.string().optional().allow(''),
+  twitter: Joi.string().optional().allow(''),
+  website: Joi.string().optional().allow(''),
 });
 
 export const updateInstructorSchema = Joi.object({
@@ -110,6 +114,10 @@ export const updateInstructorSchema = Joi.object({
   title: Joi.string().trim().optional(),
   bio: Joi.string().optional().allow(''),
   status: Joi.string().valid('active', 'inactive').optional(),
+  linkedin: Joi.string().optional().allow(''),
+  instagram: Joi.string().optional().allow(''),
+  twitter: Joi.string().optional().allow(''),
+  website: Joi.string().optional().allow(''),
 });
 
 export const createRecordingCategorySchema = Joi.object({
@@ -182,6 +190,27 @@ export const sendNotificationSchema = Joi.object({
   targetType: Joi.string().valid('all', 'user', 'role').required(),
   targetUsers: Joi.array().items(Joi.string()).optional(),
   targetRole: Joi.string().valid('student', 'admin').optional(),
+  scheduledFor: Joi.date().greater('now').optional().allow(null),
+});
+
+export const bulkUpdateApplicationStatusSchema = Joi.object({
+  applicationIds: Joi.array().items(Joi.string()).min(1).required(),
+  status: Joi.string().valid('pending', 'verified', 'rejected').required(),
+  rejectionReason: Joi.string().optional().allow(''),
+});
+
+export const createCommunityLinkSchema = Joi.object({
+  imageUrl: Joi.string().required(),
+  discord: Joi.string().optional().allow(''),
+  order: Joi.number().integer().min(1).optional(),
+  active: Joi.boolean().optional(),
+});
+
+export const updateCommunityLinkSchema = Joi.object({
+  imageUrl: Joi.string().optional(),
+  discord: Joi.string().optional().allow(''),
+  order: Joi.number().integer().min(1).optional(),
+  active: Joi.boolean().optional(),
 });
 
 export const saveSettingsSchema = Joi.object({

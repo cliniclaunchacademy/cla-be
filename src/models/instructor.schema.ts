@@ -7,6 +7,10 @@ export interface IInstructor extends Document {
   bio?: string;
   photo?: string;
   status: 'active' | 'inactive';
+  linkedin?: string;
+  instagram?: string;
+  twitter?: string;
+  website?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -40,6 +44,10 @@ const instructorSchema = new Schema<IInstructor>(
       default: 'active',
       required: true,
     },
+    linkedin: { type: String },
+    instagram: { type: String },
+    twitter: { type: String },
+    website: { type: String },
   },
   {
     timestamps: true,
