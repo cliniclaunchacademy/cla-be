@@ -3,7 +3,11 @@ import mongoose, { Document, Schema, Types } from 'mongoose';
 export interface ILabApplication extends Document {
   user: Types.ObjectId;
   lab: Types.ObjectId;
-  status: 'pending' | 'verified' | 'rejected';
+  // Flexible key-value store for the raw GHL webhook payload
+  formData: Map<string, unknown>;
+  // Raw email from the GHL form submission (for traceability)
+  submittedEmail?: string;
+  status: 'pending' | 'in-review' | 'approved' | 'rejected';
   rejectionReason?: string;
   appliedAt: Date;
   reviewedAt?: Date;
@@ -24,9 +28,17 @@ const labApplicationSchema = new Schema<ILabApplication>(
       ref: 'LabPartner',
       required: true,
     },
+    formData: {
+      type: Map,
+      of: Schema.Types.Mixed,
+      default: {},
+    },
+    submittedEmail: {
+      type: String,
+    },
     status: {
       type: String,
-      enum: ['pending', 'verified', 'rejected'],
+      enum: ['pending', 'in-review', 'approved', 'rejected'],
       default: 'pending',
       required: true,
     },
@@ -48,6 +60,8 @@ const labApplicationSchema = new Schema<ILabApplication>(
   {
     timestamps: true,
     collection: 'lab_applications',
+    toJSON: { flattenMaps: true },
+    toObject: { flattenMaps: true },
   }
 );
 

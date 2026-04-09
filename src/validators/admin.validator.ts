@@ -168,7 +168,7 @@ export const updateLabSchema = Joi.object({
 });
 
 export const updateApplicationStatusSchema = Joi.object({
-  status: Joi.string().valid('pending', 'verified', 'rejected').required(),
+  status: Joi.string().valid('pending', 'in-review', 'approved', 'rejected').required(),
   rejectionReason: Joi.string().optional().allow(''),
 });
 
@@ -195,7 +195,7 @@ export const sendNotificationSchema = Joi.object({
 
 export const bulkUpdateApplicationStatusSchema = Joi.object({
   applicationIds: Joi.array().items(Joi.string()).min(1).required(),
-  status: Joi.string().valid('pending', 'verified', 'rejected').required(),
+  status: Joi.string().valid('pending', 'in-review', 'approved', 'rejected').required(),
   rejectionReason: Joi.string().optional().allow(''),
 });
 

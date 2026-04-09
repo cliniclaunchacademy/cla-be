@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import authRoutes from './auth.routes';
+import ghlWebhookRoutes from './webhooks/ghl.routes';
 
 // Admin routes
 import adminDashboardRoutes from './admin/dashboard.routes';
@@ -33,6 +34,9 @@ const router = Router();
 
 // ─── Auth ─────────────────────────────────────────────────────────────────────
 router.use('/auth', authRoutes);
+
+// ─── Webhooks (no JWT — verified via header secret) ───────────────────────────
+router.use('/webhooks/ghl', ghlWebhookRoutes);
 
 // ─── Admin ────────────────────────────────────────────────────────────────────
 router.use('/admin/dashboard', adminDashboardRoutes);

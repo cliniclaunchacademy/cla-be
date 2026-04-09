@@ -3,7 +3,7 @@
 **Base path:** `/api/student/labs`
 **Authentication:** Required — Student JWT (`Authorization: Bearer <token>`)
 
-Labs are external tools/environments. Students can apply to gain access to a lab.
+Labs are external tools/environments. Students apply by submitting a GoHighLevel (GHL) form — the form triggers a webhook that creates the application automatically. The student portal only reads application status.
 
 ---
 
@@ -26,7 +26,7 @@ Fetch all labs along with the student's application status for each.
       "releaseDate": null,
       "maintenanceMsg": "",
       "order": 1,
-      "applicationStatus": "verified",
+      "applicationStatus": "approved",
       "rejectionReason": null,
       "applicationId": "64f1a2b3c4d5e6f7a8b9c0a1"
     },
@@ -64,59 +64,32 @@ Fetch all labs along with the student's application status for each.
 }
 ```
 
-### `status` values
+### `status` values (lab partner status)
 | Value | Description |
 |-------|-------------|
-| `live` | Lab is active — students can apply |
+| `live` | Lab is active |
 | `coming_soon` | Lab not yet released |
 | `maintenance` | Lab temporarily unavailable — show `maintenanceMsg` |
 
 ### `applicationStatus` values
 | Value | Description |
 |-------|-------------|
-| `null` | Student has not applied |
-| `pending` | Application submitted, awaiting admin review |
-| `verified` | Application approved — student has access |
+| `null` | Student has not applied (no GHL form submitted) |
+| `pending` | Application received via GHL form, awaiting admin review |
+| `in-review` | Admin is actively reviewing the application |
+| `approved` | Application approved — student has access |
 | `rejected` | Application denied — see `rejectionReason` |
 
 ### UI Logic Hints
-- Show "Apply" button only if `applicationStatus === null` and `status === "live"`
+- If `applicationStatus === null` and `status === "live"`: show the GHL embedded form (`applicationEmbed`) so student can apply
 - Show "Pending" badge if `applicationStatus === "pending"`
-- Show "Access Lab" / portal link if `applicationStatus === "verified"` (use `portalUrl`)
+- Show "In Review" badge if `applicationStatus === "in-review"`
+- Show "Access Lab" / portal link if `applicationStatus === "approved"` (use `portalUrl`)
 - Show "Rejected" with reason if `applicationStatus === "rejected"` (show `rejectionReason`)
 - Show "Coming Soon" label if `status === "coming_soon"` (optionally show `releaseDate`)
 - Show maintenance message if `status === "maintenance"` (show `maintenanceMsg`)
-- If `applicationEmbed` is set, render it as an embedded application form when the student applies
-
----
-
-## POST `/api/student/labs/:labId/apply`
-
-Submit an application to access a lab.
-
-### URL Parameters
-- `labId` — MongoDB ObjectId of the lab
-
-### Request Body
-None
-
-### Response `201`
-```json
-{
-  "applicationId": "64f1a2b3c4d5e6f7a8b9c0a2",
-  "status": "pending",
-  "appliedAt": "2024-01-15T11:00:00.000Z"
-}
-```
-
-### Errors
-All error responses follow the standard structure: `{ "success": false, "error": "Human-readable message." }` — see `overview.md`.
-
-| Status | Condition |
-|--------|-----------|
-| `400` | Student has already applied to this lab |
-| `404` | Lab not found |
 
 ### Notes
-- A student can only have one application per lab
-- After applying, the application appears in the admin's lab applications panel for review
+- Applications are created automatically via the GHL webhook (`POST /api/webhooks/ghl/lab-application`) — there is no manual apply endpoint
+- The student is matched to their application by the email on their account
+- `applicationEmbed` contains the GHL form embed code to render in the UI when the student has not yet applied

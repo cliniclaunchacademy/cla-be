@@ -58,6 +58,7 @@ if (response.data.success === false) {
 | File | Routes | Auth Required |
 |------|--------|---------------|
 | `auth.md` | `/api/auth/*` | No (public) |
+| `webhooks-ghl.md` | `/api/webhooks/ghl/*` | No — verified via `x-ghl-secret` header |
 | `admin-dashboard.md` | `/api/admin/dashboard/*` | Admin JWT |
 | `admin-users.md` | `/api/admin/users/*` | Admin JWT |
 | `admin-courses.md` | `/api/admin/courses/*` + modules + lessons | Admin JWT |
