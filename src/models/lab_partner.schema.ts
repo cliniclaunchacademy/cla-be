@@ -5,6 +5,7 @@ export interface ILabPartner extends Document {
   subheading?: string;
   logo?: string;
   portalUrl?: string;
+  partnerUrl?: string;
   applicationEmbed?: string;
   status: 'live' | 'coming_soon' | 'maintenance';
   releaseDate?: Date;
@@ -28,6 +29,9 @@ const labPartnerSchema = new Schema<ILabPartner>(
       type: String,
     },
     portalUrl: {
+      type: String,
+    },
+    partnerUrl: {
       type: String,
     },
     applicationEmbed: {

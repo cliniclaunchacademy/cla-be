@@ -84,7 +84,7 @@ Fetch all labs along with the student's application status for each.
 - If `applicationStatus === null` and `status === "live"`: show the GHL embedded form (`applicationEmbed`) so student can apply
 - Show "Pending" badge if `applicationStatus === "pending"`
 - Show "In Review" badge if `applicationStatus === "in-review"`
-- Show "Access Lab" / portal link if `applicationStatus === "approved"` (use `portalUrl`)
+- Show "Access Lab" button if `applicationStatus === "approved"` — link to `partnerUrl`
 - Show "Rejected" with reason if `applicationStatus === "rejected"` (show `rejectionReason`)
 - Show "Coming Soon" label if `status === "coming_soon"` (optionally show `releaseDate`)
 - Show maintenance message if `status === "maintenance"` (show `maintenanceMsg`)
