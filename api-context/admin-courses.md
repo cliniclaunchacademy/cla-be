@@ -177,6 +177,7 @@ Fetch full course structure for the course editor (includes modules and lessons)
           "title": "Lesson 1: Welcome",
           "subheading": "Introduction to the course",
           "description": "An overview of what you will learn in this course.",
+          "thumbnail": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1234567890/cla/lessons-thumbnails/abc123.jpg",
           "videoEmbed": "https://player.vimeo.com/video/1159391844",
           "status": "published",
           "order": 1
@@ -375,6 +376,35 @@ Update an existing lesson.
 
 ### Response `200`
 Updated lesson object.
+
+---
+
+## POST `/api/admin/courses/:courseId/modules/:moduleId/lessons/:lessonId/thumbnail`
+
+Upload a thumbnail image for a lesson.
+
+### URL Parameters
+- `courseId` — MongoDB ObjectId of the course
+- `moduleId` — MongoDB ObjectId of the module
+- `lessonId` — MongoDB ObjectId of the lesson
+
+### Request
+- **Content-Type:** `multipart/form-data`
+- **Field name:** `thumbnail`
+- **Accepted formats:** JPEG, PNG, WebP
+
+### Response `200`
+```json
+{
+  "thumbnail": "https://res.cloudinary.com/dy0j4c40y/image/upload/v1234567890/cla/lessons-thumbnails/abc123.jpg",
+  "message": "Lesson thumbnail uploaded."
+}
+```
+
+### Notes
+- Image is uploaded to Cloudinary under the `cla/lessons-thumbnails` folder
+- Response URL is a full Cloudinary `https://` URL — save and use it directly as `<img src>`
+- Max file size: 5MB. Accepted formats: JPEG, PNG, WebP
 
 ---
 

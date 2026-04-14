@@ -422,6 +422,34 @@ export const updateLesson = async (req: ExpressRequest, res: Response): Promise<
   }
 };
 
+export const uploadLessonThumbnail = async (req: ExpressRequest, res: Response): Promise<void> => {
+  try {
+    const { lessonId } = req.params;
+
+    if (!req.file) {
+      sendError(res, 400, 'Please select an image file to upload.');
+      return;
+    }
+
+    const thumbnailUrl = await uploadToCloudinary(req.file.buffer, 'cla/lessons-thumbnails');
+    const lesson = await Lesson.findByIdAndUpdate(
+      lessonId,
+      { $set: { thumbnail: thumbnailUrl } },
+      { new: true }
+    );
+
+    if (!lesson) {
+      sendError(res, 404, 'Lesson not found.');
+      return;
+    }
+
+    sendResponse(res, 200, { thumbnail: thumbnailUrl, message: 'Lesson thumbnail uploaded.' });
+  } catch (err) {
+    console.error('[AdminUploadLessonThumbnail Error]', err);
+    sendError(res, 500, 'Failed to upload lesson thumbnail. Please try again.');
+  }
+};
+
 export const reorderLessons = async (req: ExpressRequest, res: Response): Promise<void> => {
   try {
     const { error, value } = reorderSchema.validate(req.body);

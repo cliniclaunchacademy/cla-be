@@ -16,6 +16,7 @@ import {
   deleteModule,
   createLesson,
   updateLesson,
+  uploadLessonThumbnail,
   reorderLessons,
   deleteLesson,
 } from '../../controllers/admin/courses.controller';
@@ -43,6 +44,7 @@ router.delete('/:courseId/modules/:moduleId', authenticate(ROLES.ADMIN), deleteM
 router.post('/:courseId/modules/:moduleId/lessons', authenticate(ROLES.ADMIN), createLesson);
 router.patch('/:courseId/modules/:moduleId/lessons/reorder', authenticate(ROLES.ADMIN), reorderLessons);
 router.put('/:courseId/modules/:moduleId/lessons/:lessonId', authenticate(ROLES.ADMIN), updateLesson);
+router.post('/:courseId/modules/:moduleId/lessons/:lessonId/thumbnail', authenticate(ROLES.ADMIN), imageUpload.single('thumbnail'), uploadLessonThumbnail);
 router.delete('/:courseId/modules/:moduleId/lessons/:lessonId', authenticate(ROLES.ADMIN), deleteLesson);
 
 export default router;

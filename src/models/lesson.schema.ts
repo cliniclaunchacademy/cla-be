@@ -6,6 +6,7 @@ export interface ILesson extends Document {
   title: string;
   subheading?: string;
   description?: string;
+  thumbnail?: string;
   videoEmbed?: string;
   status: 'published' | 'draft';
   comingSoon?: boolean;
@@ -36,6 +37,9 @@ const lessonSchema = new Schema<ILesson>(
       type: String,
     },
     description: {
+      type: String,
+    },
+    thumbnail: {
       type: String,
     },
     videoEmbed: {
