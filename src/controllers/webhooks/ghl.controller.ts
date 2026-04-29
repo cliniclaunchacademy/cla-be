@@ -209,13 +209,14 @@ export const receiveGHLUserCreated = async (req: Request, res: Response): Promis
   });
 
   // ── 6. Generate reset token and send set-password welcome email ──────────────
-  const resetToken = crypto.randomBytes(32).toString('hex');
+  const rawToken = crypto.randomBytes(32).toString('hex');
+  const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
   const resetTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
 
-  await User.findByIdAndUpdate(user._id, { resetToken, resetTokenExpiry, welcomeEmailSent: true });
+  await User.findByIdAndUpdate(user._id, { resetToken: hashedToken, resetTokenExpiry, welcomeEmailSent: true });
 
   try {
-    await sendWelcomeSetPasswordEmail(email, firstName, lastName, resetToken);
+    await sendWelcomeSetPasswordEmail(email, firstName, lastName, rawToken);
   } catch (emailErr) {
     // Account is created — don't fail the webhook over an email error
     console.error('[GHL UserCreated] Welcome email failed for:', email, emailErr instanceof Error ? emailErr.message : emailErr);

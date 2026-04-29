@@ -217,11 +217,12 @@ export const resendWelcomeEmail = async (req: ExpressRequest, res: Response): Pr
       return;
     }
 
-    const resetToken = crypto.randomBytes(32).toString('hex');
+    const rawToken = crypto.randomBytes(32).toString('hex');
+    const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
     const resetTokenExpiry = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 
-    await User.findByIdAndUpdate(userId, { resetToken, resetTokenExpiry, welcomeEmailSent: true });
-    await sendWelcomeSetPasswordEmail(user.email, user.firstName, user.lastName, resetToken);
+    await User.findByIdAndUpdate(userId, { resetToken: hashedToken, resetTokenExpiry, welcomeEmailSent: true });
+    await sendWelcomeSetPasswordEmail(user.email, user.firstName, user.lastName, rawToken);
 
     sendResponse(res, 200, { message: 'Welcome email sent successfully.' });
   } catch (err) {
