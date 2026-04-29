@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { receiveGHLLabApplication } from '../../controllers/webhooks/ghl.controller';
+import { receiveGHLLabApplication, receiveGHLUserCreated } from '../../controllers/webhooks/ghl.controller';
 
 const router = Router();
 
@@ -19,5 +19,14 @@ router.get('/health', (_req, res) => {
  * with header: x-ghl-secret: <GHL_WEBHOOK_SECRET>
  */
 router.post('/lab-application', receiveGHLLabApplication);
+
+/**
+ * Webhook receiver for GoHighLevel contact creation.
+ * Automatically provisions a student account and sends a set-password email.
+ * Configure in GHL as:
+ *   POST https://your-api-domain.com/api/webhooks/ghl/user-created
+ * with header: x-ghl-secret: <GHL_WEBHOOK_SECRET>
+ */
+router.post('/user-created', receiveGHLUserCreated);
 
 export default router;
